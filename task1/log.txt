@@ -1,0 +1,11 @@
+commit 8ef457a2c3b5aef77fefb77eaae4607eeeaa31ec
+Author: Darina Skovysh <darina.skovysh@gmail.com>
+Date:   Thu Feb 18 19:55:05 2021 +0300
+
+    add status.txt
+
+commit ef3bc0f5aad404e97db02ccd9d9366bf597a9ffb
+Author: Darina Skovysh <darina.skovysh@gmail.com>
+Date:   Thu Feb 18 19:53:49 2021 +0300
+
+    add .gitignore
