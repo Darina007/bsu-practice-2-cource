@@ -1,0 +1,111 @@
+/*******************************/
+CoinDesk
+
+GET
+Bitcoin-Price-data-request
+Historical data from Bitcoin Price Index from 2013-09-01 to 2013-09-05
+
+Request Params
+start 2013-09-01 - the date from which the data is displayed  
+end  2013-09-05 - the date until which the data is displayed
+
+GET
+BPI-convension-request
+This BPI conversion data to any of the supported currencies can be accessed using this request
+
+GET
+current-BPI
+The CoinDesk website publishes BPI in USD, EUR and GBP, calculated every minute based on criteria discussed on the CoinDesk BPI page. The same data can be obtained using the endpoint.
+
+
+
+/*******************************/
+Deck of Cards
+
+GET
+Shuffle-the-Cards
+Creates a new board with 1 deck of shuffled cards.
+
+Request Params
+deck_count 1 - define the number of Decks
+
+GET
+Partial-the-cards
+Creates a board with the specified cards and draws them.
+
+Request Params
+cards AS,2S,KS,AD,2D,KD,AC,2C,KC,AH,2H,KH -  a series of user-selected specified cards
+
+GET
+Adding-cards
+Adds cards and jokers to the board.
+
+Request Params
+deck_count 1 - define the number of Decks
+jokers_enabled true - adds jokers to the game
+cards AS,2S - a series of user-selected specified cards
+
+
+
+/*******************************/
+FreeGeoIP
+
+GET
+data-by-IP
+Returns data by IP
+
+GET
+lookup-IP
+Standard search is used to find individual IPv4 or IPv6 addresses.
+
+Request Params
+hostname 1 - enable Hostname Lookup
+security 1 - enable the Security module
+language ru - a 2-letter language code according to the Specify Output Language section to change output language.
+
+POST
+data-by-some-objects
+From the subscription and options selected for the API request, the ipstack API will respond using a series of different modules and objects.
+
+Authorization
+API Key
+This request is using an authorization helper from collection
+ 
+Request Params
+fields - location.capital, location.country_flag, location.languages
+fields to be displayed
+
+
+
+/*******************************/
+twitter
+
+GET
+get-followers
+Returns a cursored collection of user objects for users following the specified user.
+
+Authorization
+API Key
+This request is using an authorization helper from collection twitter
+
+Request Headers
+Authorization
+Bearer 
+
+Request Params
+cursor -1
+screen_name Potato_Citizen - username by which the information will be returned
+skip_status true
+include_user_entities false
+
+
+POST
+generate-token
+generates access_token for twitter's api
+
+
+GET
+friendship-show
+Returns detailed information about the relationship between two arbitrary users.
+
+
