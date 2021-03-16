@@ -7,10 +7,6 @@ import java.io.PrintWriter;
 @WebFilter(urlPatterns = {"/status"})
 public class FilterServlet implements javax.servlet.Filter {
     @Override
-    public void init(FilterConfig filterConfig) {
-    }
-
-    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         String method = httpRequest.getMethod();
@@ -20,11 +16,6 @@ public class FilterServlet implements javax.servlet.Filter {
         String path = httpRequest.getRequestURI();
         PrintWriter pw = servletResponse.getWriter();
         pw.println(String.format("%s %s -done (%d ms)", method, path, end - start));
-    }
-
-
-    @Override
-    public void destroy() {
     }
 }
 

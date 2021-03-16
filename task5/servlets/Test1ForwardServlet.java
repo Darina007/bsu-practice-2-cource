@@ -10,13 +10,17 @@ import java.io.IOException;
 
 @WebServlet("/test1")
 public class Test1ForwardServlet extends HttpServlet {
+    private static final String PATH = "/status";
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        String path = "/status";
         ServletContext servletContext = getServletContext();
-        RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(path);
+        RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(PATH);
         requestDispatcher.forward(request, response);
     }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         response.setContentType("application/json");

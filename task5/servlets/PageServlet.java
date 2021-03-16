@@ -8,6 +8,7 @@ import java.io.IOException;
 
 @WebServlet("/page")
 public class PageServlet extends HttpServlet {
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher view = request.getRequestDispatcher("WEB-INF/page.html");
         view.forward(request, response);

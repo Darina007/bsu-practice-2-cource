@@ -8,16 +8,13 @@ import java.io.PrintWriter;
 
 @WebServlet("/check")
 public class CheckServlet extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         PrintWriter pw = response.getWriter();
         response.setContentType("application/json");
         pw.println("{\"success\" : true}");
         pw.flush();
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }
 
