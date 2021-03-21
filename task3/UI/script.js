@@ -416,4 +416,43 @@ let posts = [
     }
 
 
+    //------tests---------
+    console.log(getPosts(0, 10));
+    console.log(getPosts(10, 10));
+    console.log(getPosts(0, 10, {author: "Иванов Иван"}));
+    console.log(getPosts(0, 10, {tags: ['love']}));
+    console.log(getPosts(0, 10, {createdAt: new Date('2020-03-17T23:00:00')}));
+    console.log(getPost(3));
+    console.log(getPosts(0, 10, {validateUntil: new Date('2020-03-17T23:00:00')}));
+    console.log(getPosts(0, 10, {validateUntil: new Date()}));
+    console.log(getPosts(0, 10, {discount: 50}));
+    console.log(getPosts(0, 10, {rating: 5}));
+
+    console.log(addPost({
+        id: 25,
+        createdAt: new Date('2021-03-22T23:00:18'),
+        author: 'Иванов Иван',
+        description: 'Корпусная мебель с МИНИМАЛЬНОЙ выгодой.',
+        tags: ['discount', 'sale'],
+        discount: 12,
+        validateUntil: new Date('2021-03-27T23:00:00'),
+        rating: null,
+        likes: [],
+    }));
+    console.log(addPost({
+        id: 26,
+        createdAt: new Date('2021-03-22T23:00:18'),
+        author: 'Иванов Иван',
+        description: 'Корпусная мебель с МИНИМАЛЬНОЙ выгодой.',
+        tags: ['discount', 'sale'],
+        discount: 122,
+        validateUntil: new Date('2021-03-27T23:00:00'),
+        rating: null,
+        likes: [],
+    }));
+    console.log(getPost(25));
+    console.log(editPost(25, {description: 'Корпусная мебель с МАКСИМАЛЬНОЙ выгодой',}));
+    console.log(getPost(25));
+    console.log(removePost(25));
+    console.log(getPosts(20, 10));
 }());
