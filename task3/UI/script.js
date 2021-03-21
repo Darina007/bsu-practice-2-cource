@@ -2,14 +2,13 @@
 /* id: required field
 description: required field (length < 200)
 createdAt: required field
-validateUntil: required field    ////////
+validateUntil: required field
 author: required field
 photoLink: optional field
 hashTags: optional field
 discount: required field (in percent)   /////
 rating: optional field (from 1 to 5)    ///////
 likes: optional field*/
-
 
 
 let posts = [
@@ -299,3 +298,122 @@ let posts = [
         likes: ['Соловьева Евгения', 'Попова Ксения'],
     },
 ];
+
+
+//------functions--------
+
+;(function () {
+    function getPosts(skip, top, filterConfig) {
+        let countSkippedPosts = skip || 0;
+        let countReceivedPosts = top || 10;
+        let workingArray = posts.slice();
+        if (typeof filterConfig !== 'undefined') {
+            if (typeof filterConfig.author != 'undefined') {
+                workingArray = workingArray.filter(function (value) {
+                    return value.author === filterConfig.author;
+                })
+            }
+            if (typeof filterConfig.createdAt != 'undefined') {
+                workingArray = workingArray.filter(function (value) {
+                    return value.createdAt.getDate() === filterConfig.createdAt.getDate()
+                        && value.createdAt.getMonth() === filterConfig.createdAt.getMonth()
+                        && value.createdAt.getFullYear() === filterConfig.createdAt.getFullYear();
+                })
+            }
+            if (typeof filterConfig.tags != 'undefined') {
+                workingArray = workingArray.filter(function (value) {
+                    let flag = false;
+                    value.hashTags.forEach(val => {
+                        if (filterConfig.tags.includes(val)) {
+                            flag = true;
+                        }
+                    });
+                    return flag;
+                })
+            }
+            if (typeof filterConfig.validateUntil != 'undefined') {
+                workingArray = workingArray.filter(function (value) {
+                    let flag = false;
+                    if (value.validateUntil-filterConfig.validateUntil >= 0) {
+                        flag = true;
+                    }
+                    return flag;
+                })
+            }
+            if (typeof filterConfig.discount != 'undefined') {
+                workingArray = workingArray.filter(function (value) {
+                    let flag = false;
+                    if (value.discount-filterConfig.discount >= 0) {
+                        flag = true;
+                    }
+                    return flag;
+                })
+            }
+            if (typeof filterConfig.rating != 'undefined') {
+                workingArray = workingArray.filter(function (value) {
+                    let flag = false;
+                    if (value.rating-filterConfig.rating >= 0) {
+                        flag = true;
+                    }
+                    return flag;
+                })
+            }
+        }
+
+        workingArray.sort(function (firstPost, secondPost) {
+            return secondPost.createdAt - firstPost.createdAt;
+        });
+        workingArray = workingArray.slice(countSkippedPosts, countSkippedPosts + countReceivedPosts);
+        return workingArray;
+    }
+
+    function getPost(id) {
+        return posts.find(item => item.id === id);
+    }
+
+    function validatePost(post) {
+        let flag = false;
+        if (typeof post.id != 'undefined' && typeof post.description != 'undefined'
+            && typeof post.author != 'undefined' && typeof post.createdAt != 'undefined'
+            && (post.validateUntil - post.createdAt) > 0
+            && post.discount > 0 && post.discount <= 100) {
+            if (post.author.length !== 0 && post.description.length < 200) {
+                let unique = posts.findIndex(item => item.id === post.id);
+                if (unique === -1) {
+                    flag = true;
+                }
+            }
+        }
+        return flag;
+    }
+
+    function addPost(post) {
+        if (validatePost(post)) {
+            posts.push(post);
+            return true;
+        }
+        return false;
+    }
+
+    function editPost(id, edit) {
+        let unchanged = getPost(id);
+        let original = {...unchanged};
+        original.description = edit.description || original.description;
+        original.photoLink = edit.photoLink || original.photoLink;
+        original.hashTags = edit.tags || original.hashTags;
+        removePost(id);
+        if (validatePost(original)) {
+            addPost(original);
+            return true;
+        } else {
+            addPost(unchanged);
+            return false;
+        }
+    }
+
+    function removePost(id) {
+        return posts.splice(posts.findIndex(item => item.id === id), 1);
+    }
+
+
+}());
