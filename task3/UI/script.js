@@ -6,9 +6,9 @@ validateUntil: required field
 author: required field
 photoLink: optional field
 hashTags: optional field
-discount: required field (in percent)   /////
-rating: optional field (from 1 to 5)    ///////
-likes: optional field*/
+discount: required field (in percent)
+rating: optional field (from 1 to 5)
+likes: optional field  */
 
 
 let posts = [
@@ -194,6 +194,7 @@ let posts = [
         id: '16',
         description: 'В центре Львова, в его исторической части расположен четырехзвездочный отель Швейцарский.',
         createdAt: new Date('2021-03-21T22:00:00'),
+        validateUntil: new Date('2021-5-23T23:00:00'),
         author: 'Соловьева Евгения',
         photoLink: null,
         hashTags: ['tourist', 'love'],
