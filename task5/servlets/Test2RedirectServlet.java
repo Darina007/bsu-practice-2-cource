@@ -14,10 +14,5 @@ public class Test2RedirectServlet extends HttpServlet {
         response.sendRedirect(PATH);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        response.setContentType("application/json");
-    }
 }
 

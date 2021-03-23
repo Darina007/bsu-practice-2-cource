@@ -19,10 +19,4 @@ public class Test1ForwardServlet extends HttpServlet {
         RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(PATH);
         requestDispatcher.forward(request, response);
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        response.setContentType("application/json");
-    }
 }
