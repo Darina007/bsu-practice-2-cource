@@ -18,7 +18,7 @@ class AdCollection {
     addAll(adList) {
         let notValidPosts = [];
         adList.forEach((post) => {
-            if (AdCollection._validate(post) && this.get(post.id)) {
+            if (AdCollection._validate(post) && !this.get(post.id)) {
                 this._adList.push(post);
             } else {
                 notValidPosts.push(post);
@@ -55,13 +55,13 @@ class AdCollection {
                 })
             }
             if (filterConfig.validateUntil) {
-                workingArray = workingArray.filter(value => value.validateUntil - filterConfig.validateUntil >= 0)
+                workingArray = workingArray.filter(value => value.validateUntil >= filterConfig.validateUntil)
             }
             if (filterConfig.discount) {
-                workingArray = workingArray.filter(value => value.discount - filterConfig.discount >= 0)
+                workingArray = workingArray.filter(value => value.discount >= filterConfig.discount)
             }
             if (filterConfig.rating) {
-                workingArray = workingArray.filter(value => value.rating - filterConfig.rating >= 0)
+                workingArray = workingArray.filter(value => value.rating >= filterConfig.rating)
             }
         }
 
@@ -75,7 +75,7 @@ class AdCollection {
     }
 
     edit(id, adItem) {
-        let mutablePost = this.get(id);
+        let mutablePost = Object.assign(this.get(id));
         let mutableFields = Object.keys(adItem);
         if (mutablePost) {
             mutableFields.forEach((field) => {
@@ -84,9 +84,8 @@ class AdCollection {
                     }
                 }
             )
-            if (AdCollection._validate(mutablePost) && this.get(adItem.id)) {
-                this.remove(id);
-                this.add(mutablePost);
+            if (AdCollection._validate(mutablePost) && this.get(id)) {
+                this._adList.splice(id, mutablePost);
                 return true;
             }
         }
@@ -111,7 +110,7 @@ class AdCollection {
     }
 
     clearAll() {
-        this._adList.splice(0, this._adList.length);
+        this._adList = [];
     }
 
     clear(skip, top, filterConfig) {
