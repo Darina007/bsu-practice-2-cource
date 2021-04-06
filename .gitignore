@@ -2,3 +2,5 @@
 testProject.iml
 *.xml
 *.iml
+*.class
+target/
