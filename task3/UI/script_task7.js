@@ -75,7 +75,10 @@ class AdCollection {
     }
 
     edit(id, adItem) {
-        let mutablePost = Object.assign(this.get(id));
+        let mutablePost;
+        if (this.get(id)) {
+            mutablePost = Object.assign(this.get(id));
+        }
         let mutableFields = Object.keys(adItem);
         if (mutablePost) {
             mutableFields.forEach((field) => {
@@ -85,7 +88,10 @@ class AdCollection {
                 }
             )
             if (AdCollection._validate(mutablePost) && this.get(id)) {
-                this._adList.splice(id, mutablePost);
+                let index = this._adList.indexOf(this.get(id));
+                if (index !== -1) {
+                    this._adList.splice(index, 1, mutablePost);
+                }
                 return true;
             }
         }
