@@ -1,0 +1,25 @@
+[
+Post{
+id: 6, 
+author:  Ivanov Alexander, 
+description: Any cards eventually fall into a deplorable state, but it is difficult to understand the players who, serenely losing significant amounts of preference, "save" on the deck.
+, 
+creationDate: Sun Feb 01 23:00:00 MSK 1920, 
+validateUntil: Thu Feb 12 23:00:00 MSK 1920, 
+photoLink: http://files.library.by/images/files/1476356097.jpg, 
+hashTags: [game, cards], 
+likes: [Popova Ksenia, Ivanov Ivan, Solovieva Evgeniya], 
+rating: 4, 
+discount: 12},
+Post{
+id: 8, 
+author:  Ivanov Alexander, 
+description: The Plantbook has a flexible display, touch keyboard, and… it rolls up into a tube! Also, to charge it, you can not only use ordinary solar energy, but also water!
+, 
+creationDate: Sun May 01 23:00:00 MSD 1921, 
+validateUntil: Wed May 25 23:00:00 MSD 1921, 
+photoLink: https://russianyellowpages.us/images/articles/29abuduschee.jpg, 
+hashTags: [technology, science], 
+likes: [Popova Ksenia, Ivanov Ivan, Solovieva Evgeniya], 
+rating: 5, 
+discount: 80}]

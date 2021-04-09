@@ -1,0 +1,12 @@
+Post{
+id: 10, 
+author:  Cat, 
+description: Interesting midnight tygydyk, 
+creationDate: Mon Feb 10 00:00:00 MSK 2020, 
+validateUntil: Thu Feb 20 00:00:00 MSK 2020, 
+photoLink: null, 
+hashTags: [tag], 
+likes: null, 
+rating: 0, 
+discount: 10}
+Success

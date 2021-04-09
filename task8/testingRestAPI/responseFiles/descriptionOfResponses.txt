@@ -1,0 +1,7 @@
+responseDoDelete - response at deleting of non-existent post
+
+responseDoPost - response at creating of new post
+
+responseGetPost - response at finding of existent post
+
+responseSearchPosts -  response at finding of posts by parameters
