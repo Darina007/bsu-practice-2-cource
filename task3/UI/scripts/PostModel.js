@@ -1,12 +1,14 @@
 class PostModel {
-    _posts = new Map();
-
     constructor(posts) {
-        this._posts = new Map(posts.map((post) => [post.id, post]));
+        if (posts) {
+            this._posts = posts.slice();
+        } else {
+            this._posts = [];
+        }
     }
 
     get(id) {
-        return this._posts.has(id) ? this._posts.get(id) : null;
+        return this._posts.find((item) => item.id === id);
     }
 
     getPage(skip, top, filterConfig) {
@@ -53,21 +55,21 @@ class PostModel {
     }
 
     add(post) {
-        if (PostModel._validate(post) && !this._posts.has(post.id)) {
-            this._posts.set(post.id, post);
+        if (PostModel._validate(post) && !this.get(post.id)) {
+            this._posts.push(post);
             return true;
         }
         return false;
     }
 
     addAll(posts) {
-        posts.forEach((post) => this.add(post));
+        posts.forEach((post) => this._posts.add(post));
     }
 
     edit(id, changes) {
         let mutablePost;
-        if (this._posts.has(id)) {
-            mutablePost = Object.assign(this._posts.get(id));
+        if (this.get(id)) {
+            mutablePost = Object.assign(this.get(id));
         }
         let mutableFields = Object.keys(changes);
         if (mutablePost) {
@@ -77,7 +79,7 @@ class PostModel {
                     }
                 }
             )
-            if (PostModel._validate(mutablePost) && this._posts.get(id)) {
+            if (PostModel._validate(mutablePost) && this.get(id)) {
                 let index = this._posts.indexOf(this.get(id));
                 if (index !== -1) {
                     this._posts.splice(index, 1, mutablePost);
@@ -102,8 +104,8 @@ class PostModel {
     }
 
     remove(id) {
-        if (this._posts.has(id)) {
-            this._posts.delete(id);
+        if (this.get(id)) {
+            this._posts.delete(this.get(id));
             return true;
         }
         return false;

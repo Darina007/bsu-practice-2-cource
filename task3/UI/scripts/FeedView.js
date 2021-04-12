@@ -1,9 +1,9 @@
 class FeedView {
     postViewer = new PostView(true);
-    feed = document.querySelector('div.section__data');
     constructor(posts, users, userData) {
         if (userData.author) {
             this.postViewer.isGuest = false;
+            this.postViewer.userName = userData.author;
         }
         this.fillFilter(users);
         this.drawPosts(posts);

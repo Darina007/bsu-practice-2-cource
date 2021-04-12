@@ -8,7 +8,7 @@ function addPost(post, postModel, feedView) {
 
 function editPost(id, changes, postModel, feedView) {
     if (postModel.edit(id, changes)) {
-        postModel.postViewer.redrawPost(id, postModel.get(id));
+        feedView.postViewer.redrawPost(id, postModel.get(id));
         return true;
     }
     return false;

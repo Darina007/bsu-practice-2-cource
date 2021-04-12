@@ -175,6 +175,8 @@ let posts = [
         author: 'Player',
         photoLink: 'https://opt-1289634.ssl.1c-bitrix-cdn.ru/upload/iblock/790/7906fe4ed570929ca640580f05a7b4f6.jpg?1562573455190287',
         hashTags: ['guitar', 'learning_online'],
+        discount: 10,
+        rating: 2,
         likes: ['Иванов Александр'],
     },
     {
@@ -303,7 +305,7 @@ let posts = [
         createdAt: new Date('2021-03-22T23:00:18'),
         author: 'Иванов Иван',
         description: 'Корпусная мебель с МИНИМАЛЬНОЙ выгодой.',
-        tags: ['discount', 'sale'],
+        hashTags: ['discount', 'sale'],
         discount: 12,
         validateUntil: new Date('2021-03-27T23:00:00'),
         rating: null,
@@ -318,5 +320,5 @@ let posts = [
 
     deletePost('25', postModel, feedView);
 
-    showFeed({tags: ['love']}, postModel, feedView);
+    showFeed({hashTags: ['love']}, postModel, feedView);
 }());
