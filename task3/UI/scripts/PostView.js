@@ -40,21 +40,21 @@ class PostView {
 
     _fillPostData(newPost, postData) {
         let article = newPost.querySelector('div.post');
-        article.id = postData.id;
+        article.id = postData[1].id;
         let photo = newPost.querySelector('[data-target = "photoLink"]');
-        photo.src = postData.photoLink;
+        photo.src = postData[1].photoLink;
         let author = newPost.querySelector('[data-target = "author"]');
-        author.textContent = postData.author;
-        let validUntil = newPost.querySelector('[data-target = "validUntil"]');
-        validUntil.textContent = postData.validateUntil.toDateString();
+        author.textContent = postData[1].author;
+        let validUntil = newPost.querySelector('[data-target = "validateUntil"]');
+        validUntil.textContent = postData[1].validateUntil.toDateString();
         let description = newPost.querySelector('[data-target="description"]');
-        description.textContent = postData.description;
+        description.textContent = postData[1].description;
         let discount = newPost.querySelector('[data-target="discount"]');
-        discount.textContent = postData.discount;
+        discount.textContent = postData[1].discount;
         let rating = newPost.querySelector('[data-target="rating"]');
-        rating.textContent = postData.rating;
+        rating.textContent = postData[1].rating;
         let tags = newPost.querySelector('[data-target="hashTags"]');
-        postData.tags.forEach((tag) => tags.appendChild(this._createTag(tag)));
+        postData[1].hashTags.forEach((tag) => tags.appendChild(this._createTag(tag)));
     }
 
     _createTag(tagText) {

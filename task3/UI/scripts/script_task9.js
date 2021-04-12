@@ -296,7 +296,7 @@ let posts = [
         photoLink: null
     };
     let firstPosts = postModel.getPage();
-    let feedView = new FeedView((firstPosts));
+    let feedView = new FeedView(firstPosts, users, user);
 
     addPost({
         id: '25',
