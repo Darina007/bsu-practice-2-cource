@@ -320,5 +320,8 @@ let posts = [
 
     deletePost('25', postModel, feedView);
 
+    showFeed({discount: 20}, postModel, feedView);
     showFeed({hashTags: ['love']}, postModel, feedView);
+
+    clear(postModel, feedView);
 }());

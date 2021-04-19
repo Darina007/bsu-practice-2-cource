@@ -18,16 +18,15 @@ class PostView {
         if (this.isGuest) {
             article.appendChild(this._drawLike());
         } else if (this.userName === postData.author) {
-            article.appendChild(this._drawPostButtons());
+            this._drawPostButtons();
         }
-
         this.feedPosts.insertBefore(newPost, this.feedPosts.firstChild);
     }
 
     redrawPost(id, newPostData) {
         let oldPost = document.getElementById(id);
         let newPost = document.importNode(this._postTemplate.content, true);
-        this._fillPostData((newPost, newPostData));
+        this._fillPostData(newPost, newPostData);
         let article = newPost.querySelector("div.post");
         if (!this.isGuest) {
             article.appendChild(this._drawLike());
@@ -43,6 +42,7 @@ class PostView {
     }
 
     _fillPostData(newPost, postData) {
+        console.log(newPost);
         let article = newPost.querySelector('div.post');
         article.id = postData.id;
         let photo = newPost.querySelector('[data-target = "photoLink"]');
@@ -81,17 +81,19 @@ class PostView {
     }
 
     _drawPostButtons() {
-        let lastTag = document.querySelector("div.post__info__hashtags");
-        lastTag.appendChild(this._drawPostButton("delete"));
-        lastTag.appendChild(this._drawPostButton("edit"));
+        let lastTag = document.querySelector(".post__info__hashtags");
+        let buttonDelete = this._drawPostButton("delete");
+        let buttonEdit = this._drawPostButton("edit");
+        lastTag.appendChild(buttonDelete);
+        lastTag.appendChild(buttonEdit);
         return lastTag;
     }
 
     _drawPostButton(type) {
         let button = document.createElement("button");
         button.className = type;
-        let image = document.createElement('img');
-        image.src = 'img/' + type + '.png';
+        let image = document.createElement("img");
+        image.src = "img/" + type + ".png";
         image.alt = type;
         button.appendChild(image);
         return button;

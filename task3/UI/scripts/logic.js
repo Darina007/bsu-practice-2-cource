@@ -25,3 +25,8 @@ function deletePost(id, postModel, feedView) {
 function showFeed(filterConfig = {}, postModel, feedView) {
     feedView.redrawPosts(postModel.getPage(0, 10, filterConfig));
 }
+
+function clear(postModel, feedView){
+    postModel.clear()
+    feedView.redrawPosts(postModel.getPage(0, 10));
+}

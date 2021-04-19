@@ -8,7 +8,8 @@ class PostModel {
     }
 
     get(id) {
-        return this._posts.find((item) => item.id === id);
+        let post = this._posts.find((item) => item.id === id)
+        return post;
     }
 
     getPage(skip, top, filterConfig) {
@@ -17,39 +18,44 @@ class PostModel {
         let workingArray = [...this._posts];
         if (filterConfig) {
             if (filterConfig.author) {
-                workingArray = workingArray.filter(value => value.author === filterConfig.author)
+                workingArray = workingArray.filter(value => value.author === filterConfig.author);
+                workingArray.sort((firstPost, secondPost) => secondPost.author - firstPost.author);
             }
             if (filterConfig.createdAt) {
                 workingArray = workingArray.filter(value => {
                     return value.createdAt.getDate() === filterConfig.createdAt.getDate()
                         && value.createdAt.getMonth() === filterConfig.createdAt.getMonth()
                         && value.createdAt.getFullYear() === filterConfig.createdAt.getFullYear();
-                })
+                });
+                workingArray.sort((firstPost, secondPost) => secondPost.createdAt - firstPost.createdAt);
             }
-            if (filterConfig.tag) {
+            if (filterConfig.hashTags) {
                 workingArray = workingArray.filter(value => {
                     let flag = false;
-                    value.hashTags.forEach(tag => {
-                            if (filterConfig.tag.includes(tag)) {
-                                flag = true;
-                            }
+                    filterConfig.hashTags.forEach(tag => {
+                        if (value.hashTags.includes(tag)) {
+                            flag = true;
                         }
-                    )
+                    })
                     return flag;
-                })
+                });
+                workingArray.sort((firstPost, secondPost) => secondPost.createdAt - firstPost.createdAt);
             }
             if (filterConfig.validateUntil) {
-                workingArray = workingArray.filter(value => value.validateUntil >= filterConfig.validateUntil)
+                workingArray = workingArray.filter(value => value.validateUntil >= filterConfig.validateUntil);
+                workingArray.sort((firstPost, secondPost) => firstPost.validateUntil - secondPost.validateUntil);
             }
             if (filterConfig.discount) {
-                workingArray = workingArray.filter(value => value.discount >= filterConfig.discount)
+                workingArray = workingArray.filter(value => value.discount >= filterConfig.discount);
+                workingArray.sort((firstPost, secondPost) => secondPost.discount - firstPost.discount);
             }
             if (filterConfig.rating) {
-                workingArray = workingArray.filter(value => value.rating >= filterConfig.rating)
+                workingArray = workingArray.filter(value => value.rating >= filterConfig.rating);
+                workingArray.sort((firstPost, secondPost) => secondPost.rating - firstPost.rating);
             }
+        } else {
+            workingArray.sort((firstPost, secondPost) => secondPost.createdAt - firstPost.createdAt);
         }
-
-        workingArray.sort((firstPost, secondPost) => secondPost.createdAt - firstPost.createdAt);
         workingArray = workingArray.slice(countSkippedPosts, countSkippedPosts + countReceivedPosts);
         return workingArray;
     }
@@ -105,13 +111,14 @@ class PostModel {
 
     remove(id) {
         if (this.get(id)) {
-            this._posts.delete(this.get(id));
+            let index = this._posts.indexOf(this.get(id));
+            this._posts.splice(index, 1, this.get(id));
             return true;
         }
         return false;
     }
 
     clear() {
-        this._posts.clear();
+        this._posts = [];
     }
 }
