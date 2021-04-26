@@ -1,0 +1,138 @@
+.post {
+    display: flex;
+    flex: 0 1 45%;
+    margin: 20px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    text-align: center;
+    border: black solid;
+    border-radius: 15px;
+    background-color: #f5f3e8;
+}
+
+.post__info {
+    display: flex;
+    flex: 0 0 100%;
+}
+
+.post__info__section {
+    display: flex;
+    flex: 0 1 40%;
+    justify-content: center;
+    flex-flow: column;
+    padding: 5px;
+
+}
+
+.post__text {
+    display: flex;
+    justify-content: flex-start;
+    flex-flow: column;
+    align-items: center;
+    align-content: center;
+    padding: 0;
+    flex: 0 1 60%;
+}
+
+.service__name {
+    background: #e9e8d4;
+    margin: 5%;
+}
+
+.grade {
+    background-color: #e9e8d4;
+}
+
+.validity__info {
+    display: flex;
+}
+
+.validity__info div {
+    display: flex;
+    margin: 5px;
+    background: #eaddc4;
+}
+
+.validity__info__text {
+    flex: 1 1 10%;
+}
+
+.description {
+    flex: 0 0 50%;
+    background: #e9e8d4;
+    min-width: 100%;
+    min-height: 50%;
+}
+
+.post__info__hashtags {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+.post__info__hashtags button {
+    display: flex;
+    flex: 0 0 auto;
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 25px;
+    height: 25px;
+}
+
+.hashtag {
+    width: 60%;
+    background: #d9cec0;
+    border-radius: 10px;
+
+}
+
+.sale {
+    width: 20%;
+    background: #e9d2b5;
+    border-radius: 5px;
+}
+
+.grade img {
+    width: 25px;
+    height: 25px;
+}
+
+.like {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 25px;
+    height: 25px;
+}
+
+.comments {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 25px;
+    height: 25px;
+}
+
+.review {
+    display: flex;
+    justify-content: center;
+}
+
+.review button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    width: 50%;
+    height: 50%;
+
+}

@@ -1,0 +1,54 @@
+.section-filter {
+    position: fixed;
+    display: flex;
+    align-self: end;
+    padding: 10% 20px 20px 20px;
+    top: 20%;
+    right: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    justify-content: normal;
+    border-radius: 20px;
+    flex: 1 1 20%;
+    flex-grow: 1;
+    max-width: 40%;
+    min-height: 100%;
+    background-color: #798851;
+}
+
+.filter-title {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    align-items: center;
+    padding: 0;
+    margin: 5px;
+}
+
+.date-filter {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    align-items: center;
+    padding: 0;
+    margin: 5px;
+}
+
+.hashtag-filter {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    align-items: center;
+    padding: 0;
+    margin: 5px;
+}
+
+.vendor-filter {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    align-items: center;
+    padding: 0;
+    margin: 5px;
+}

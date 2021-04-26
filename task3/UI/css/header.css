@@ -1,0 +1,59 @@
+.header {
+    position: fixed;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex: 0 1 auto;
+    flex-grow: 1;
+    padding: 1%;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    background: #6e7c44;
+}
+
+.header__site__name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: large;
+    flex: 0 1 auto;
+    padding: 0;
+    margin: 0 2% 0 0;
+}
+
+.site__name {
+    top: 15px;
+    font-size: 120%;
+    font-family: Ravie, serif;
+}
+
+.header__user__info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: large;
+    flex: 0 1 auto;
+    padding: 0;
+    margin: 0 2% 0 0;
+}
+
+.user__img img {
+    width: 70px;
+    height: 70px;
+}
+
+.user__info {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    align-items: center;
+    padding: 0;
+    margin: 5px;
+}
+
+.user-name {
+    font-family: Candara, serif;
+}

@@ -1,0 +1,50 @@
+.footer {
+    position: fixed;
+    width: 100%;
+    padding: 1%;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+    background: #6e7c44;
+}
+
+.footer__content {
+    display: flex;
+    justify-content: space-between;
+    flex: auto;
+    flex-grow: 1;
+    width: 85%;
+}
+
+.creator__info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: large;
+    flex: 0 1 auto;
+    padding: 0;
+    margin: 0 2% 0 0;
+}
+
+.footer__site__name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: large;
+    flex: 0 1 auto;
+    padding: 0;
+    margin: 0 2% 0 0;
+}
+
+.mail__info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: large;
+    flex: 0 1 auto;
+    padding: 0;
+    margin: 0 2% 0 0;
+}
