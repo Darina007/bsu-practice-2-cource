@@ -27,6 +27,7 @@ class FeedView {
             userName.textContent = user;
             let button = document.getElementById("login-button");
             button.className = "logout-button"
+            button.id = "logout-button";
             button.textContent = "Log out";
             this.postViewer.userName = user;
             this.postViewer.isGuest = false;
@@ -36,8 +37,9 @@ class FeedView {
     unFillUser() {
         let userName = document.getElementById("user-name");
         userName.textContent = "Guest";
-        let button = document.getElementById("login-button");
+        let button = document.getElementById("logout-button");
         button.className = "login-button";
+        button.id = "login-button";
         button.textContent = "Log in";
         this.postViewer.userName = null;
         this.postViewer.isGuest = true;
@@ -108,6 +110,6 @@ class FeedView {
 
 (() => {
     window.view = new FeedView();
-    window.view.fillUser("Иванов Иван");
+    //window.view.fillUser("Иванов Иван");
 })();
 

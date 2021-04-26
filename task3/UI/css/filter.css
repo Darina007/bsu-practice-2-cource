@@ -2,7 +2,7 @@
     position: fixed;
     display: flex;
     align-self: end;
-    padding: 10% 20px 20px 20px;
+    padding: 10px 20px 20px 20px;
     top: 20%;
     right: 0;
     flex-direction: column;

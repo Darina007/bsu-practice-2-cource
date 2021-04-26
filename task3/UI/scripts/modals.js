@@ -20,7 +20,6 @@ class Modals {
                     <i class="fa fa-user fa-lg" style="color: black" aria-hidden="true"></i>
                     <input class="username-input" placeholder=" username">
                 </div>
-    
                 <div class="password-input-div">
                     <i class="fa fa-asterisk fa-lg" style="color: black" aria-hidden="true"></i>
                     <input class="password" type="password" placeholder=" password">
@@ -87,7 +86,6 @@ class Modals {
             return false;
         };
         form.addEventListener('submit', () => {
-
         });
     }
 
@@ -101,7 +99,6 @@ class Modals {
                     <button class="sign-in-modal-button"><strong>Yes</strong></button>
                 </div>
           </div>`;
-
         let yesBtn = document.querySelector('.sign-in-modal-button');
         window.modals.closeModal(modal);
         yesBtn.addEventListener('click', () => {
@@ -109,7 +106,6 @@ class Modals {
             makePage();
             toggleModal();
         });
-        window.modals.closeModal(modal);
     }
 }
 

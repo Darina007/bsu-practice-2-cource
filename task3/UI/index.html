@@ -90,312 +90,43 @@
             </div>
         </form>
     </div>
-    <div class="section__data">
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
+    <div class="section__data" id="container">
+        <template class="post__template" id="post__template">
+            <div class="post">
+                <div class="post__info">
+                    <div class="post__info__section">
+                        <div class="post-img" data-target="photoLink"><a></a><img src="img/post_img.png" alt=""></a>
+                        </div>
+                        <div class="grade" data-target="rating">
+                            <img src="img/star_pressed.png" alt="">
+                            <img src="img/star_unpressed.png" alt="">
+                            <img src="img/star_unpressed.png" alt="">
+                            <img src="img/star_unpressed.png" alt="">
+                            <img src="img/star_unpressed.png" alt="">
+                        </div>
+                        <div class="review">
+                            <button class="comments">comment &nbsp<img src="img/comment.png" alt=""></button>
+                            <button class="like"> like &nbsp<img src="img/heart_unpressed.png" alt=""></button>
+                        </div>
                     </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description</div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
+                    <div class="post__text">
+                        <div class="service__name" data-target="author"></div>
+                        <div class="validity__info">
+                            <div class="validity__info__text">Offer is valid until</div>
+                            <div data-target="validateUntil"></div>
+                        </div>
+                        <div class="description" data-target="description"></div>
+                        <a href="" data-target="link">see more</a>
                     </div>
                 </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description</div>
-                    <a href="">see more</a>
+                <div class="post__info__hashtags">
+                    <div class="hashtag" data-target="hashTags"></div>
+                    <div class="sale" data-target="discount"></div>
                 </div>
             </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description</div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description</div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description</div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description</div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description</div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description</div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description</div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                        <img src="img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description</div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
+        </template>
     </div>
     <div class="navigation">
-        <button class="previous__page"><img src="img/previous.png"></button>
-        <div class="page">1</div>
-        <button class="next__page"><img src="img/next.png"></button>
         <button class="navigation__page__prev"><img src="img/previous.png"></button>
         <div id="page" class="page">1</div>
         <button class="navigation__page__next"><img src="img/next.png"></button>
@@ -415,32 +146,7 @@
     </div>
 
 </footer>
-<div class="modal">
-    <dialog class="modal-body">
-        <div class="modal-content">
-            <span class="close">×</span>
-            <div class="modal-logo">
-                <img class="logo" src="" alt="Logo">
-            </div>
-            <h1 class="modal-text">Sign in</h1>
-            <form id="sign-in-form">
-                <div class="username-input-div">
-                    <i class="fa fa-user fa-lg" style="color: black" aria-hidden="true"></i>
-                    <input class="username-input" placeholder=" username">
-                </div>
-
-                <div class="password-input-div">
-                    <i class="fa fa-asterisk fa-lg" style="color: black" aria-hidden="true"></i>
-                    <input class="password" type="password" placeholder=" password">
-                </div>
-                <p class="sign-in-warning">There is no such user. Try again.</p>
-                <div class="load-more-posts">
-                    <input type="submit" class="sign-in-modal-button" value="Sign in">
-                </div>
-            </form>
-        </div>
-    </dialog>
-</div>
+<div class="modal"></div>
 <script src="scripts/PostModel.js"></script>
 <script src="scripts/PostView.js"></script>
 <script src="scripts/FeedView.js"></script>

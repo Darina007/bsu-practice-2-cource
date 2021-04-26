@@ -10,7 +10,7 @@ discount: required field (in percent)
 rating: optional field (from 1 to 5)
 likes: optional field  */
 
-let posts = [
+window.posts = [
     {
         id: '1',
         description: 'Более 76 тыс. человек во всем мире уже излечились от заболевания, спровоцированного новым коронавирусом. Новая вакцина специально для вас!',
