@@ -14,55 +14,55 @@ class PostView {
     drawPost(postData) {
         let newPost = document.importNode(this._postTemplate.content, true);
         this._fillPostData(newPost, postData);
-        let article = newPost.querySelector('div.post');
-        if (this.isGuest) {
-            article.appendChild(this._drawLike());
-        } else if (this.userName === postData.author) {
-            this._drawPostButtons();
+        if (!this.isGuest) {
+            if (this.userName === postData.author) {
+                this._drawAuthorPostButtons(newPost);
+            }
+            this._drawUserPostButtons(newPost, false);
+        } else {
+            this._drawUserPostButtons(newPost, true);
         }
         this.feedPosts.insertBefore(newPost, this.feedPosts.firstChild);
     }
 
+    //something wrong
     redrawPost(id, newPostData) {
         let oldPost = document.getElementById(id);
         let newPost = document.importNode(this._postTemplate.content, true);
         this._fillPostData(newPost, newPostData);
         let article = newPost.querySelector("div.post");
-        if (!this.isGuest) {
-            article.appendChild(this._drawLike());
-        } else if (this.userName === newPost.author) {
-            article.appendChild(this._drawPostButtons());
-        }
+        // if (!this.isGuest) {
+        //     article.appendChild(this._drawLike());
+        // } else if (this.userName === newPost.author) {
+        //     article.appendChild(this._drawAuthorPostButtons());
+        // }
         this.feedPosts.replaceChild(newPost, oldPost);
     }
 
     pressLike(postId) {
-        if (!this.isGuest) {
-            const username = this.userName;
-            const post = window.postsCollection.get(postId);
-            const likeIndex = post.likes.indexOf(username);
-            if (likeIndex === -1) {
-                post.likes.push(username);
-                this.updateLike(postId);
-            } else {
-                post.likes.splice(likeIndex, 1);
-                this.updateLike(postId);
-            }
-        }
-    }
-
-    updateLike(postId) {
         const username = this.userName;
-        const post = window.postsCollection.get(postId);
-        const article = document.getElementById(post.id);
-        let like = article.getElementsByClassName('add-like').item(0);
-        if (post.likes.indexOf(username) !== -1) {
-            like.src = "img/heart.png";
+        const post = document.getElementById(postId);
+        const postCol = window.postsCollection.get(postId);
+        const likeIndex = postCol.likes.indexOf(username);
+        if (likeIndex === -1) {
+            postCol.likes.push(username);
+            this.updateLike(post);
         } else {
-            like.src = "img/heart_unpressed.png";
+            postCol.likes.splice(likeIndex, 1);
+            this.updateLike(post);
         }
     }
 
+    updateLike(post) {
+        let like = post.querySelector('[class="like"]');
+        if (like.getAttribute("alt") === "like") {
+            like.src = "img/liked.png";
+            like.alt = "unlike";
+        } else {
+            like.src = "img/like.png";
+            like.alt = "like";
+        }
+    }
 
     deletePost(id) {
         let post = document.getElementById(id);
@@ -95,21 +95,8 @@ class PostView {
         return tag;
     }
 
-    _drawLike() {
-        let like = document.createElement('button');
-        like.className = "like";
-
-        let image = document.createElement('img');
-        image.className = "add-like";
-        image.src = "../img/heart_unpressed.png";
-        image.alt = "like";
-
-        like.appendChild(image);
-        return like;
-    }
-
-    _drawPostButtons() {
-        let lastTag = document.querySelector(".post__info__hashtags");
+    _drawAuthorPostButtons(newPost) {
+        let lastTag = newPost.querySelector('[class="post__info__hashtags"]');
         let buttonDelete = this._drawPostButton("delete");
         let buttonEdit = this._drawPostButton("edit");
         lastTag.appendChild(buttonDelete);
@@ -117,9 +104,26 @@ class PostView {
         return lastTag;
     }
 
-    _drawPostButton(type) {
+    _drawUserPostButtons(newPost, isGuest) {
+        let lastTag = newPost.querySelector('[class="review"]');
+        if (!isGuest) {
+            let buttonLike = this._drawPostButton("like", "like");
+            let buttonComment = this._drawPostButton("comment", "comment");
+            lastTag.appendChild(buttonLike);
+            lastTag.appendChild(buttonComment);
+        } else {
+            let buttonComment = this._drawPostButton("comment", "view comments");
+            lastTag.appendChild(buttonComment);
+        }
+        return lastTag;
+    }
+
+    _drawPostButton(type, buttonText) {
         let button = document.createElement("button");
         button.className = type;
+        if (buttonText) {
+            button.textContent = buttonText;
+        }
         let image = document.createElement("img");
         image.src = "img/" + type + ".png";
         image.alt = type;

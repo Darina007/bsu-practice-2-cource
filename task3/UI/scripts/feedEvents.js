@@ -67,7 +67,7 @@ function initializeFilter() {
         }
         const tags = document.getElementById("hashtags").value;
         if (tags) {
-            filterConf.tags = tags.split(" ");
+            filterConf.hashTags = tags.split(" ");
         }
         const createAt = document.getElementById("createdAt").value;
         if (createAt) {
@@ -79,7 +79,7 @@ function initializeFilter() {
         }
         window.view.setFilter(filterConf);
         let posts = window.postsCollection.getPage(0, 10, window.view.getFilter());
-        window.view.drawPosts(posts);
+        window.view.redrawPosts(posts);
     })
 }
 
@@ -97,10 +97,12 @@ function makePage(firstPostNumber, postNumber) {
     initializeFilter();
     if (window.view.isAuthorized()) {
         let logOutBtn = document.querySelector('.logout-button');
+        logOutBtn.removeEventListener('click', window.modals.createSingInModal);
         logOutBtn.addEventListener('click', window.modals.createLogOutModal);
         setPostEvents(posts);
     } else {
         let signInBtn = document.querySelector('.login-button');
+        signInBtn.removeEventListener('click', window.modals.createLogOutModal);
         signInBtn.addEventListener('click', window.modals.createSingInModal);
     }
 }
@@ -134,10 +136,8 @@ function loadPreviousPosts() {
 
 function setPostEvents(posts) {
     posts.forEach(post => {
-        if (post.author === window.view.postViewer.userName) {
-            let article = document.getElementById(post.id);
-            window.postEvent.setPostEventListener(article, post.id);
-        }
+        let postElem = document.getElementById(post.id);
+        window.postEvent.setPostEventListener(postElem, post.id);
     })
 }
 

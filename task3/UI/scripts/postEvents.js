@@ -4,7 +4,7 @@ class PostEvents {
         if (like) {
             like.addEventListener('click',
                 evt => {
-                    window.view.pressLike(postId);
+                    window.view.postViewer.pressLike(postId);
                     evt.stopPropagation();
                 }
             );
@@ -23,6 +23,7 @@ class PostEvents {
         if (editPost) {
             editPost.addEventListener('click',
                 evt => {
+                    //set getter for post data
                     window.view.postViewer.redrawPost(postId, post);
                     evt.stopPropagation();
                 })

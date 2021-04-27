@@ -61,6 +61,9 @@ class FeedView {
         if (filter.rating) {
             this.filter.rating = filter.rating;
         }
+        if (filter.hashTags) {
+            this.filter.hashTags = filter.hashTags;
+        }
     }
 
     getFilter() {
@@ -110,6 +113,6 @@ class FeedView {
 
 (() => {
     window.view = new FeedView();
-    //window.view.fillUser("Иванов Иван");
+    window.view.fillUser("Иванов Иван");
 })();
 
