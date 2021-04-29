@@ -30,8 +30,20 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
+    justify-content: center;
     padding: 1rem 1.5rem;
     width: 24rem;
+    border-radius: 0.5rem;
+}
+
+.modal-content-edit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 1rem 1.5rem;
+    width: 28rem;
     border-radius: 0.5rem;
 }
 
@@ -57,12 +69,34 @@
 }
 
 .username-input-div, .password-input-div, h1 {
+    justify-content: center;
+    flex-direction: column;
     text-align: center;
     margin-top: 5%;
 }
 
-.sign-in-warning {
+.sign-in-warning, .username-warning, .password-warning {
     text-align: center;
     color: red;
     display: none;
+}
+
+.show-warning {
+    display: contents;
+}
+
+.log-button-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.log-button {
+    flex: 0 0 auto;
+    align-self: center;
+    margin: 15px;
+    background-color: #482D8F;
+    color: #EDF1FF;
+    border-radius: 20px;
+    padding: 2px 10px;
 }

@@ -8,7 +8,8 @@ photoLink: optional field
 hashTags: optional field
 discount: required field (in percent)
 rating: optional field (from 1 to 5)
-likes: optional field  */
+likes: optional field
+comments: optional field*/
 
 window.posts = [
     {
@@ -22,6 +23,12 @@ window.posts = [
         discount: 12,
         rating: 2,
         likes: ['Kitty_love', 'Гитарный гений', 'Соловьева Евгения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '2',
@@ -34,6 +41,18 @@ window.posts = [
         discount: 100,
         rating: 5,
         likes: ['Иванов Иван'],
+        comments: [{
+            commentAuthor: 'Иванов Иван',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'I like it!',
+            commentMark: 5
+        },
+            {
+                commentAuthor: 'Соловьева Евгения',
+                commentDate: new Date('2021-03-20T23:00:00'),
+                commentText: 'I have two cats and i need more!!!',
+                commentMark: 5
+            }]
     },
     {
         id: '3',
@@ -46,6 +65,12 @@ window.posts = [
         discount: 25,
         rating: 3,
         likes: ['Иванов Иван', 'Соловьева Евгения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '4',
@@ -58,6 +83,7 @@ window.posts = [
         discount: 30,
         rating: 2,
         likes: ['Иванов Иван'],
+        comments: []
     },
     {
         id: '5',
@@ -70,6 +96,7 @@ window.posts = [
         discount: 12,
         rating: 4,
         likes: ['Иванов Иван', 'Соловьева Евгения', 'Соколов Иван', 'Lylalyuk Anna'],
+        comments: []
     },
     {
         id: '6',
@@ -82,6 +109,12 @@ window.posts = [
         discount: 52,
         rating: 1,
         likes: ['Соколов Иван', 'Lylalyuk Anna'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '7',
@@ -94,6 +127,7 @@ window.posts = [
         discount: 80,
         rating: 5,
         likes: ['Соловьева Евгения', 'Lylalyuk Anna'],
+        comments: []
     },
     {
         id: '8',
@@ -106,6 +140,12 @@ window.posts = [
         discount: 60,
         rating: 3,
         likes: ['Соколов Иван'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '9',
@@ -118,6 +158,7 @@ window.posts = [
         discount: 95,
         rating: 4,
         likes: ['Иванов Александр', 'Попова Ксения'],
+        comments: []
     },
     {
         id: '10',
@@ -130,6 +171,7 @@ window.posts = [
         discount: 10,
         rating: 2,
         likes: ['Джонатан Трапп', 'Соколов Иван', 'Соколов Иван'],
+        comments: []
     },
     {
         id: '11',
@@ -142,6 +184,12 @@ window.posts = [
         discount: 22,
         rating: 5,
         likes: ['Иванов Александр'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '12',
@@ -154,6 +202,7 @@ window.posts = [
         discount: 5,
         rating: 2,
         likes: ['Соколов Иван', 'Джонатан Трапп'],
+        comments: []
     },
     {
         id: '13',
@@ -166,6 +215,12 @@ window.posts = [
         discount: 12,
         rating: 2,
         likes: ['Соловьева Евгения', 'Иванов Александр'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '14',
@@ -178,6 +233,7 @@ window.posts = [
         discount: 32,
         rating: 3,
         likes: ['Соколов Иван'],
+        comments: []
     },
     {
         id: '15',
@@ -188,6 +244,12 @@ window.posts = [
         photoLink: 'https://opt-1289634.ssl.1c-bitrix-cdn.ru/upload/iblock/790/7906fe4ed570929ca640580f05a7b4f6.jpg?1562573455190287',
         hashTags: ['guitar', 'learning_online'],
         likes: ['Иванов Александр'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '16',
@@ -200,6 +262,7 @@ window.posts = [
         discount: 44,
         rating: 3,
         likes: ['Соколов Иван'],
+        comments: []
     },
     {
         id: '17',
@@ -212,6 +275,7 @@ window.posts = [
         discount: 31,
         rating: 3,
         likes: ['Попова Ксения'],
+        comments: []
     },
     {
         id: '18',
@@ -224,6 +288,12 @@ window.posts = [
         discount: 72,
         rating: 3,
         likes: ['Соколов Иван', 'Соловьева Евгения', 'Попова Ксения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '19',
@@ -236,6 +306,7 @@ window.posts = [
         discount: 10,
         rating: 3,
         likes: ['Соловьева Евгения', 'Попова Ксения'],
+        comments: []
     },
     {
         id: '20',
@@ -248,6 +319,7 @@ window.posts = [
         discount: 22,
         rating: 2,
         likes: ['Соколов Иван'],
+        comments: []
     },
     {
         id: '21',
@@ -260,6 +332,12 @@ window.posts = [
         discount: 25,
         rating: 2,
         likes: ['Попова Ксения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '22',
@@ -272,6 +350,7 @@ window.posts = [
         discount: 12,
         rating: 4,
         likes: ['Соколов Иван'],
+        comments: []
     },
     {
         id: '23',
@@ -284,6 +363,7 @@ window.posts = [
         discount: 2,
         rating: 2,
         likes: ['user1'],
+        comments: []
     },
     {
         id: '24',
@@ -296,6 +376,12 @@ window.posts = [
         discount: 50,
         rating: 5,
         likes: ['Соловьева Евгения', 'Попова Ксения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
 ];
 
@@ -366,7 +452,7 @@ let users = [
         password: '1234'
     }
 ];
-
+let storage = window.localStorage;
 window.postsCollection.addAll(posts);
 window.usersCollection.addAll(users);
 makePage(0, 10);

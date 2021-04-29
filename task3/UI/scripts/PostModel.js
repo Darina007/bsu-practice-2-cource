@@ -7,13 +7,12 @@ class PostModel {
         }
     }
 
-    countPosts(){
+    countPosts() {
         return this._posts.length;
     }
 
     get(id) {
-        let post = this._posts.find((item) => item.id === id)
-        return post;
+        return this._posts.find((item) => item.id === id);
     }
 
     getPage(skip, top, filterConfig) {
@@ -111,6 +110,31 @@ class PostModel {
             }
         }
         return flag;
+    }
+
+    static _validateComment(comment) {
+        if (!comment.commentAuthor) {
+            return false;
+        }
+        if (!comment.commentDate) {
+            return false;
+        }
+        if (!comment.commentText) {
+            return false;
+        }
+        if (!comment.commentMark) {
+            return false;
+        }
+        return true;
+    }
+
+    addComment(id, commentData) {
+        let post = this.get(id);
+        if (PostModel._validateComment(commentData)) {
+            post.comments.push(commentData);
+            return true;
+        }
+        return false;
     }
 
     removePost(id) {

@@ -1,54 +1,67 @@
 .section-filter {
     position: fixed;
     display: flex;
-    align-self: end;
-    padding: 10px 20px 20px 20px;
-    top: 20%;
+    padding: 12% 1.5%;
     right: 0;
+    top: 0;
     flex-direction: column;
     align-items: center;
-    justify-items: center;
-    justify-content: normal;
-    border-radius: 20px;
-    flex: 1 1 20%;
-    flex-grow: 1;
-    max-width: 40%;
+    flex: 1 1 auto;
     min-height: 100%;
-    background-color: #798851;
+    background-color: #482D8F;
+    color: #D5DEFB;
 }
 
 .filter-title {
     display: flex;
-    justify-content: center;
     flex-flow: column;
     align-items: center;
+    font-size: x-large;
     padding: 0;
     margin: 5px;
 }
 
-.date-filter {
+.date-filter, .hashtag-filter, .vendor-filter,
+.discount-filter, .rating-filter {
     display: flex;
-    justify-content: center;
     flex-flow: column;
     align-items: center;
-    padding: 0;
+    padding: 5px;
     margin: 5px;
+    font-size: large;
 }
 
-.hashtag-filter {
+.search-button {
     display: flex;
+    flex-direction: row;
     justify-content: center;
-    flex-flow: column;
-    align-items: center;
-    padding: 0;
-    margin: 5px;
 }
 
-.vendor-filter {
+.search, .reset {
+    background-color: #D5DEFB;
+    color: #000925;
+    margin: 2% 5%;
+    padding: 2px 5px;
+    border-radius: 20px;
+    border-bottom-width: 0;
+}
+
+.createdAt, .validateUntil {
     display: flex;
-    justify-content: center;
-    flex-flow: column;
-    align-items: center;
-    padding: 0;
-    margin: 5px;
+    padding: 5px;
+}
+
+#createdAt, #validateUntil, #hashtags,
+#vendor-filter, #discount, #rating {
+    background-color: #D5DEFB;
+    color: #000925;
+    margin: 0 5%;
+    padding: 0 5px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+#hashtags {
+    width: 10rem;
+    height: 5rem;
 }

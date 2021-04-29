@@ -3,36 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>CashBat</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/page.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/post.css">
     <link rel="stylesheet" href="css/filter.css">
     <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/addPostModal.css">
+    <link rel="stylesheet" href="css/commentModal.css">
 </head>
 <body>
 <header class="header">
-    <div class="header__site__name">
-        <div class="site__name">CashBat</div>
+    <div class="header-site-name">
+        <div class="site-name">CashBat</div>
     </div>
-    <div class="header__user__info">
+    <div class="header-user-info">
         <div class="user_info">You are logged in as a <br>
             <div class="user-name">
                 <b id="user-name">Guest</b>
             </div>
             <button id="login-button" class="login-button">Log in</button>
         </div>
-        <div class="user__img"><img src="img/guest_icon.png"/></div>
+        <div class="user-img"><img src="img/guest_icon.png"/></div>
     </div>
 </header>
 <main class="main">
     <div class="section-filter">
         <form id="filter">
-            <div class="filter-title">
-                <p>Post filters</p>
-            </div>
+            <div class="filter-title">Post filters</div>
             <div class="date-filter">
-                <div>Date</div>
+                Date
                 <div class="createdAt">
                     <label for="createdAt">From</label>
                     <input type="date" id="createdAt" name="date">
@@ -43,85 +43,72 @@
                 </div>
             </div>
             <div class="hashtag-filter">
-                <div>Hashtags#</div>
-                <div>
-                    <label>
-                        <input type="text" name="hashtags" id="hashtags">
-                    </label>
-                </div>
+                Hashtags#
+                <input type="text" placeholder="Input hashTags" id="hashtags">
             </div>
             <div class="vendor-filter">
-                <div>Vendor name</div>
+                Vendor name
                 <select id="vendor-filter">
                     <option selected="selected">all vendors</option>
                 </select>
             </div>
             <div class="discount-filter">
-                <div>Discount</div>
-                <div>
-                    <label>
-                        <input type="text" name="discount" id="discount">
-                    </label>
-                </div>
+                Discount
+                <input type="text" id="discount">
             </div>
             <div class="rating-filter">
-                <div>Rating</div>
-                <div>
-                    <label>
-                        <input type="text" name="rating" id="rating">
-                    </label>
-                </div>
+                Rating
+                <input type="text" name="rating" id="rating">
             </div>
-            <div class="search__button">
-                <button type="submit">Search</button>
+            <div class="search-button">
+                <button type="submit" class="search">Search</button>
             </div>
         </form>
     </div>
-    <div class="section__data" id="container">
-        <template class="post__template" id="post__template">
-            <div class="post">
-                <div class="post__info">
-                    <div class="post__info__section">
-                        <div class="post-img" data-target="photoLink"><a></a><img src="img/post_img.png" alt=""></a>
+    <div class="section-data" id="container">
+        <template class="post-template" id="post-template">
+            <div class="post-container">
+                <div class="post">
+                    <div class="first-post-raw">
+                        <div class="first-post-column">
+                            <div class="post-img" data-target="photoLink"><img id="photoLink" src="img/post_img.png" alt=""></div>
+                            <div class="grade" data-target="rating" id="grade"></div>
+                            <div class="review" data-target="review" id="review"></div>
                         </div>
-                        <div class="grade" data-target="rating">
-                        </div>
-                        <div class="review" data-target="review">
+                        <div class="second-post-column">
+                            <div class="vendor-name" data-target="author"></div>
+                            <div class="validity-info">
+                                <div class="validity-info-text">Offer is valid until</div>
+                                <div data-target="validateUntil" class="validity-date"></div>
+                            </div>
+                            <div class="description" data-target="description"></div>
+                            <a href="" data-target="link">see more</a>
                         </div>
                     </div>
-                    <div class="post__text">
-                        <div class="service__name" data-target="author"></div>
-                        <div class="validity__info">
-                            <div class="validity__info__text">Offer is valid until</div>
-                            <div data-target="validateUntil"></div>
-                        </div>
-                        <div class="description" data-target="description"></div>
-                        <a href="" data-target="link">see more</a>
+                    <div class="second-post-raw">
+                        <div class="hashtags" data-target="hashTags"></div>
+                        <div class="sale" data-target="discount"></div>
                     </div>
-                </div>
-                <div class="post__info__hashtags">
-                    <div class="hashtag" data-target="hashTags"></div>
-                    <div class="sale" data-target="discount"></div>
                 </div>
             </div>
         </template>
     </div>
     <div class="navigation">
-        <button class="navigation__page__prev"><img src="img/previous.png"></button>
+        <button class="navigation-page-prev"><img src="img/previous.png"></button>
         <div id="page" class="page">1</div>
-        <button class="navigation__page__next"><img src="img/next.png"></button>
+        <button class="navigation-page-next"><img src="img/next.png"></button>
     </div>
 </main>
 <footer class="footer">
-    <div class="footer__content">
-        <div class="creator__info">
+    <div class="footer-content">
+        <div class="creator-info">
             <div>Darina Skovysh</br> 2 course, 6 group, MMF</div>
         </div>
-        <div class="footer__site__name">
-            <div class="site__name">CashBat</div>
+        <div class="footer-site-name">
+            <div class="site-name">CashBat</div>
         </div>
-        <div class="mail__info">
-            <div class="creator__mail">darina.skovysh@gmail.com</div>
+        <div class="mail-info">
+            darina.skovysh@gmail.com
         </div>
     </div>
 

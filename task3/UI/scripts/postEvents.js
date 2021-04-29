@@ -10,11 +10,21 @@ class PostEvents {
             );
         }
 
+        const comment = postElement.getElementsByClassName('comment').item(0);
+        if (comment) {
+            comment.addEventListener('click',
+                evt => {
+                    createCommentArea(postId);
+                    evt.stopPropagation();
+                }
+            );
+        }
+
         const deletePost = postElement.getElementsByClassName('delete').item(0);
         if (deletePost) {
             deletePost.addEventListener('click',
                 evt => {
-                    window.modals.buildDeleteModal(postId);
+                    window.modals.createDeleteModal(postId);
                     evt.stopPropagation();
                 });
         }
@@ -23,8 +33,7 @@ class PostEvents {
         if (editPost) {
             editPost.addEventListener('click',
                 evt => {
-                    //set getter for post data
-                    window.view.postViewer.redrawPost(postId, post);
+                    window.modals.createEditModal(postId);
                     evt.stopPropagation();
                 })
         }

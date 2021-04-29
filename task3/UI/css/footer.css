@@ -5,46 +5,33 @@
     left: 0;
     bottom: 0;
     z-index: 2;
-    background: #6e7c44;
+    background: #301C66;
 }
 
-.footer__content {
+.footer-content {
     display: flex;
     justify-content: space-between;
-    flex: auto;
-    flex-grow: 1;
-    width: 85%;
+    flex: 1 1 auto;
+    width: 80%;
+    color: #EDF1FF;
+    margin: 0 2%;
 }
 
-.creator__info {
+.creator-info {
     display: flex;
-    justify-content: center;
     align-items: center;
     text-align: center;
     font-size: large;
     flex: 0 1 auto;
     padding: 0;
-    margin: 0 2% 0 0;
 }
 
-.footer__site__name {
+.mail-info {
     display: flex;
-    justify-content: center;
     align-items: center;
     text-align: center;
     font-size: large;
     flex: 0 1 auto;
     padding: 0;
-    margin: 0 2% 0 0;
-}
-
-.mail__info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: large;
-    flex: 0 1 auto;
-    padding: 0;
-    margin: 0 2% 0 0;
+    margin: 0 2%;
 }

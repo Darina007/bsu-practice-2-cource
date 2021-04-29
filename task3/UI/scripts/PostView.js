@@ -1,8 +1,8 @@
 class PostView {
     isGuest = true;
     userName;
-    feedPosts = document.querySelector('div.section__data');
-    _postTemplate = document.getElementById('post__template');
+    feedPosts = document.querySelector('div.section-data');
+    _postTemplate = document.getElementById('post-template');
 
     constructor(isGuest, userName) {
         this.isGuest = isGuest;
@@ -25,20 +25,6 @@ class PostView {
         this.feedPosts.insertBefore(newPost, this.feedPosts.firstChild);
     }
 
-    //something wrong
-    redrawPost(id, newPostData) {
-        let oldPost = document.getElementById(id);
-        let newPost = document.importNode(this._postTemplate.content, true);
-        this._fillPostData(newPost, newPostData);
-        let article = newPost.querySelector("div.post");
-        // if (!this.isGuest) {
-        //     article.appendChild(this._drawLike());
-        // } else if (this.userName === newPost.author) {
-        //     article.appendChild(this._drawAuthorPostButtons());
-        // }
-        this.feedPosts.replaceChild(newPost, oldPost);
-    }
-
     pressLike(postId) {
         const username = this.userName;
         const post = document.getElementById(postId);
@@ -54,9 +40,10 @@ class PostView {
     }
 
     updateLike(post) {
-        let like = post.querySelector('[class="like"]');
+        let button = post.querySelector('[class="like"]');
+        let like = button.querySelector("img");
         if (like.getAttribute("alt") === "like") {
-            like.src = "img/liked.png";
+            like.src = "img/unlike.png";
             like.alt = "unlike";
         } else {
             like.src = "img/like.png";
@@ -66,7 +53,7 @@ class PostView {
 
     deletePost(id) {
         let post = document.getElementById(id);
-        this.feedPosts.removeChild(post);
+        this.feedPosts.removeChild(post.parentNode);
     }
 
     _fillPostData(newPost, postData) {
@@ -83,9 +70,22 @@ class PostView {
         let discount = newPost.querySelector('[data-target="discount"]');
         discount.textContent = postData.discount + "%";
         let rating = newPost.querySelector('[data-target="rating"]');
-        rating.textContent = postData.rating;
+        this._drawRating(rating, postData.rating);
         let tags = newPost.querySelector('[data-target="hashTags"]');
         postData.hashTags.forEach((tag) => tags.appendChild(this._createTag(tag)));
+    }
+
+    _drawRating(placeHolder, rating) {
+        let img;
+        for (let i = 1; i <= 5; i++) {
+            if (rating > 0) {
+                img = this._createImage("star_pressed");
+            } else {
+                img = this._createImage("star_unpressed");
+            }
+            placeHolder.appendChild(img);
+            rating--;
+        }
     }
 
     _createTag(tagText) {
@@ -96,9 +96,9 @@ class PostView {
     }
 
     _drawAuthorPostButtons(newPost) {
-        let lastTag = newPost.querySelector('[class="post__info__hashtags"]');
-        let buttonDelete = this._drawPostButton("delete");
-        let buttonEdit = this._drawPostButton("edit");
+        let lastTag = newPost.querySelector('[class="second-post-raw"]');
+        let buttonDelete = this._drawPostButton("delete", "delete");
+        let buttonEdit = this._drawPostButton("edit", "edit");
         lastTag.appendChild(buttonDelete);
         lastTag.appendChild(buttonEdit);
         return lastTag;
@@ -106,28 +106,41 @@ class PostView {
 
     _drawUserPostButtons(newPost, isGuest) {
         let lastTag = newPost.querySelector('[class="review"]');
+        let post = newPost.querySelector('[class="post"]');
         if (!isGuest) {
-            let buttonLike = this._drawPostButton("like", "like");
-            let buttonComment = this._drawPostButton("comment", "comment");
+            const postCol = window.postsCollection.get(post.id);
+            const likeIndex = postCol.likes.indexOf(this.userName);
+            let buttonLike;
+            if (likeIndex === -1) {
+                buttonLike = this._drawPostButton("like", "like", "like");
+            } else {
+                buttonLike = this._drawPostButton("like", "unlike", "like");
+            }
+            let buttonComment = this._drawPostButton("comment", "comment", "comment");
             lastTag.appendChild(buttonLike);
             lastTag.appendChild(buttonComment);
         } else {
-            let buttonComment = this._drawPostButton("comment", "view comments");
+            let buttonComment = this._drawPostButton("comment", "comment", "view comments");
             lastTag.appendChild(buttonComment);
         }
         return lastTag;
     }
 
-    _drawPostButton(type, buttonText) {
+    _drawPostButton(type, imgName, buttonText) {
         let button = document.createElement("button");
-        button.className = type;
         if (buttonText) {
             button.textContent = buttonText;
         }
-        let image = document.createElement("img");
-        image.src = "img/" + type + ".png";
-        image.alt = type;
+        button.className = type;
+        let image = this._createImage(imgName);
         button.appendChild(image);
         return button;
+    }
+
+    _createImage(imgName) {
+        let image = document.createElement("img");
+        image.src = "img/" + imgName + ".png";
+        image.alt = imgName;
+        return image;
     }
 }
