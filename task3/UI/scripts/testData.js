@@ -11,7 +11,7 @@ rating: optional field (from 1 to 5)
 likes: optional field
 comments: optional field*/
 
-window.posts = [
+let posts = [
     {
         id: '1',
         description: 'Более 76 тыс. человек во всем мире уже излечились от заболевания, спровоцированного новым коронавирусом. Новая вакцина специально для вас!',
@@ -243,6 +243,8 @@ window.posts = [
         author: 'Player',
         photoLink: 'https://opt-1289634.ssl.1c-bitrix-cdn.ru/upload/iblock/790/7906fe4ed570929ca640580f05a7b4f6.jpg?1562573455190287',
         hashTags: ['guitar', 'learning_online'],
+        discount: 42,
+        rating: 3,
         likes: ['Иванов Александр'],
         comments: [{
             commentAuthor: 'Kitty_love',
@@ -255,9 +257,9 @@ window.posts = [
         id: '16',
         description: 'В центре Львова, в его исторической части расположен четырехзвездочный отель Швейцарский.',
         createdAt: new Date('2021-03-21T22:00:00'),
-        validateUntil: new Date('2021-5-23T23:00:00'),
+        validateUntil: new Date('2021-05-23T23:00:00'),
         author: 'Соловьева Евгения',
-        photoLink: null,
+        photoLink: 'null',
         hashTags: ['tourist', 'love'],
         discount: 44,
         rating: 3,
@@ -270,7 +272,7 @@ window.posts = [
         createdAt: new Date('2020-10-13T23:00:00'),
         validateUntil: new Date('2021-10-23T23:00:00'),
         author: 'Иванов Александр',
-        photoLink: 'http://files.library.by/images/files/1476356097.jpg',
+        photoLink: 'https://files.library.by/images/files/1476356097.jpg',
         hashTags: ['game', 'cards'],
         discount: 31,
         rating: 3,
@@ -384,10 +386,9 @@ window.posts = [
         }]
     },
 ];
-
 let users = [
     {
-        username: 'Иванов Иван',
+        username: 'Darroman',
         photoLink: 'https://www.pressball.by/images/stories/2020/03/20200310231542.jpg',
         password: '1111'
     },
@@ -452,7 +453,12 @@ let users = [
         password: '1234'
     }
 ];
-let storage = window.localStorage;
-window.postsCollection.addAll(posts);
+window.storage = window.localStorage;
+if (!storage.length) {
+    posts.forEach(post => {
+        storage.setItem("post" + post.id, postsCollection.postToJSON(post));
+        console.log(postsCollection.JSONToPost(storage.getItem("post"+post.id)));
+    })
+}
 window.usersCollection.addAll(users);
 makePage(0, 10);

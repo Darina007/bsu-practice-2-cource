@@ -22,7 +22,7 @@ class FeedView {
         return !!this.postViewer.userName;
     }
 
-    getUser(){
+    getUser() {
         return this.postViewer.userName;
     }
 
@@ -63,10 +63,10 @@ class FeedView {
         field.appendChild(button);
     }
 
-    deleteAddPostButton(){
+    deleteAddPostButton() {
         let field = document.getElementById("container");
         let button = document.getElementById("add-post");
-        if(button){
+        if (button) {
             field.removeChild(button);
         }
     }
@@ -101,7 +101,7 @@ class FeedView {
     }
 
     fillFilterUser(users) {
-        let filter = document.getElementById('vendor__filter');
+        let filter = document.getElementById('vendor-filter');
         users.forEach((user) => filter.appendChild(this._createOption(user)));
     }
 
@@ -143,6 +143,10 @@ class FeedView {
 
 (() => {
     window.view = new FeedView();
-    window.view.fillUser("Иванов Иван");
+    window.view.fillUser('Darroman');
+    let users = ['Darroman', 'Иванов Иван', 'Соловьева Евгения', 'Попова Ксения',
+        'Соколов Иван', 'Джонатан Трапп', 'Lylalyuk Anna', 'Новиков Алексей',
+        'Просто мебель', 'Иванов Александр', 'Player', 'Kitty_love', 'Мажей Виктор'];
+    window.view.fillFilterUser(users);
 })();
 

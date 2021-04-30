@@ -28,7 +28,7 @@ class PostView {
     pressLike(postId) {
         const username = this.userName;
         const post = document.getElementById(postId);
-        const postCol = window.postsCollection.get(postId);
+        const postCol = postsCollection.get(postId);
         const likeIndex = postCol.likes.indexOf(username);
         if (likeIndex === -1) {
             postCol.likes.push(username);
@@ -64,7 +64,10 @@ class PostView {
         let author = newPost.querySelector('[data-target = "author"]');
         author.textContent = postData.author;
         let validUntil = newPost.querySelector('[data-target = "validateUntil"]');
-        validUntil.textContent = postData.validateUntil.toDateString();
+        let dateReverse = this.dateForm(postData.validateUntil);
+        let dateArr = dateReverse.split("-");
+        dateArr = dateArr.reverse();
+        validUntil.textContent = dateArr.join(".");
         let description = newPost.querySelector('[data-target="description"]');
         description.textContent = postData.description;
         let discount = newPost.querySelector('[data-target="discount"]');
@@ -142,5 +145,10 @@ class PostView {
         image.src = "img/" + imgName + ".png";
         image.alt = imgName;
         return image;
+    }
+
+    dateForm(date) {
+        return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2)
+            + '-' + ('0' + (date.getDate() + 1)).slice(-2);
     }
 }

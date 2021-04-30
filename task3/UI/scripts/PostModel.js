@@ -15,6 +15,10 @@ class PostModel {
         return this._posts.find((item) => item.id === id);
     }
 
+    getCountPosts() {
+        return this._posts.length;
+    }
+
     getPage(skip, top, filterConfig) {
         let countSkippedPosts = skip || 0;
         let countReceivedPosts = top || 10;
@@ -69,6 +73,21 @@ class PostModel {
             return true;
         }
         return false;
+    }
+
+    addFromStorage(postDate) {
+        let post = [];
+        post.description = postDate.description;
+        post.createdAt = new Date(postDate.createdAt);
+        post.validateUntil = new Date(postDate.validateUntil);
+        post.author = postDate.author;
+        post.photoLink = postDate.photoLink;
+        post.hashTags = postDate.hashTags;
+        post.discount = postDate.discount;
+        post.rating = postDate.rating;
+        post.likes = postDate.likes;
+        post.comments = postDate.comments;
+        this.add(post);
     }
 
     addAll(posts) {
@@ -148,6 +167,27 @@ class PostModel {
 
     clear() {
         this._posts = [];
+    }
+
+    postToJSON(post) {
+        if (!PostModel._validate(post)) {
+            return;
+        }
+        return JSON.stringify(post);
+    }
+
+    JSONToPost(post) {
+        let postObj = JSON.parse(post);
+        if (postObj.comments) {
+            postObj.comments.forEach(commentData => {
+                commentData.commentDate = new Date(commentData.commentDate);
+            })
+        } else {
+            postObj.comments = [];
+        }
+        postObj.validateUntil = new Date(postObj.validateUntil);
+        postObj.createdAt = new Date(postObj.createdAt);
+        return postObj;
     }
 }
 

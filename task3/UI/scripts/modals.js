@@ -66,9 +66,11 @@ class Modals {
           </div>`;
 
         let yesBtn = document.querySelector('.sign-in-modal-button');
-        window.modals.closeModal(modal);
+        modals.closeModal(modal);
         yesBtn.addEventListener('click', () => {
-            window.view.postViewer.deletePost(postId);
+            view.postViewer.deletePost(postId);
+            postsCollection.removePost(postId);
+            storage.removeItem("post" + postId);
             toggleModal();
         });
 
@@ -92,7 +94,7 @@ class Modals {
                         <div class="vendor-name" data-target="author">${editPost.author}</div>
                         <div class="validity-info">
                             <div class="validity-info-text">Offer is valid until</div>
-                            <div ><input type="date" id="validateUntil" value="${this._dateForm(editPost.validateUntil)}"></div>
+                            <div><input type="date" id="validateUntil" value="${window.view.postViewer.dateForm(editPost.validateUntil)}"></div>
                         </div>
                         <div class="description" ><textarea id="description">${editPost.description}</textarea></div>
                         <a href="" data-target="link">see more</a>
@@ -116,11 +118,6 @@ class Modals {
         form.addEventListener('submit', () => {
             readInputFieldsEdit(postId);
         });
-    }
-
-    _dateForm(date) {
-        return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2)
-            + '-' + ('0' + (date.getDate() + 1)).slice(-2);
     }
 }
 

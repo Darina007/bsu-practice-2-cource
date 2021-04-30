@@ -4,7 +4,8 @@ class PostEvents {
         if (like) {
             like.addEventListener('click',
                 evt => {
-                    window.view.postViewer.pressLike(postId);
+                    view.postViewer.pressLike(postId);
+                    storage.setItem("post" + postId, postsCollection.postToJSON(postsCollection.get(postId)));
                     evt.stopPropagation();
                 }
             );
@@ -24,7 +25,7 @@ class PostEvents {
         if (deletePost) {
             deletePost.addEventListener('click',
                 evt => {
-                    window.modals.createDeleteModal(postId);
+                    modals.createDeleteModal(postId);
                     evt.stopPropagation();
                 });
         }
@@ -33,7 +34,7 @@ class PostEvents {
         if (editPost) {
             editPost.addEventListener('click',
                 evt => {
-                    window.modals.createEditModal(postId);
+                    modals.createEditModal(postId);
                     evt.stopPropagation();
                 })
         }
