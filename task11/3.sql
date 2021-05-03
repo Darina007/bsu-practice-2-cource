@@ -1,0 +1,6 @@
+USE usersdb;
+
+SELECT *
+FROM post
+WHERE USER_ID = 2
+	AND POST_DESCRIPTION LIKE '%cat%';

@@ -1,0 +1,6 @@
+USE usersdb;
+
+SELECT CONCAT(DATEDIFF(CURRENT_TIMESTAMP, CREATED_AT),' days ago') 'first post loaded' 
+FROM POST 
+ORDER BY CREATED_AT 
+LIMIT 1;
