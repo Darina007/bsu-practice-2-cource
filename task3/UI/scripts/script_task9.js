@@ -323,5 +323,5 @@ let posts = [
     showFeed({discount: 20}, postModel, feedView);
     showFeed({hashTags: ['love']}, postModel, feedView);
 
-    clear(postModel, feedView);
+    //clear(postModel, feedView);
 }());
