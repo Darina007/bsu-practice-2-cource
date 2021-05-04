@@ -1,9 +1,13 @@
+import lombok.Builder;
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+@Builder
 public class Post {
-    private static int counterForId = 1;
-    private int id;
+    private String id;
     private String author;
     private String description;
     private Date creationDate;
@@ -14,38 +18,27 @@ public class Post {
     private int rating;
     private int discount;
 
-    public Post(String author, String description, Date creationDate,
-                Date validateUntil, String photoLink,
-                List<String> hashTags, List<String> likes, int rating, int discount) {
-        this.author = author;
-        this.description = description;
-        this.creationDate = creationDate;
-        this.validateUntil = validateUntil;
-        this.photoLink = photoLink;
-        this.hashTags = hashTags;
-        this.likes = likes;
-        this.rating = rating;
-        this.discount = discount;
-        this.id = counterForId;
-        counterForId++;
+    public static String generateID() {
+        return UUID.randomUUID().toString();
     }
 
-    public Post(String author, String description, Date creationDate,
-                Date validateUntil, String photoLink,
-                List<String> hashTags, int discount) {
-        this.author = author;
-        this.description = description;
-        this.creationDate = creationDate;
-        this.validateUntil = validateUntil;
-        this.photoLink = photoLink;
-        this.hashTags = hashTags;
-        this.discount = discount;
-        this.id = counterForId;
-        counterForId++;
+    public boolean isValid() {
+        if (description == null || description.length() > 200) {
+            return false;
+        }
+        if (author == null) {
+            return false;
+        }
+        if (!creationDate.before(validateUntil)) {
+            return false;
+        }
+        if (discount < 0 || discount > 100) {
+            return false;
+        }
+        return true;
     }
 
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -53,88 +46,99 @@ public class Post {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
     public Date getValidateUntil() {
         return validateUntil;
-    }
-
-    public void setValidateUntil(Date validateUntil) {
-        this.validateUntil = validateUntil;
     }
 
     public String getPhotoLink() {
         return photoLink;
     }
 
-    public void setPhotoLink(String photoLink) {
-        this.photoLink = photoLink;
-    }
-
     public List<String> getHashTags() {
         return hashTags;
-    }
-
-    public void setHashTags(List<String> hashTags) {
-        this.hashTags = hashTags;
-    }
-
-    public int getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(int discount) {
-        this.discount = discount;
     }
 
     public List<String> getLikes() {
         return likes;
     }
 
-    public void setLikes(List<String> likes) {
-        this.likes = likes;
-    }
-
     public int getRating() {
         return rating;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    @Override
+    public String toString() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("description", description);
+        json.put("author", author);
+        if (photoLink != null) {
+            json.put("photoLink", photoLink);
+        } else {
+            json.put("photoLink", "");
+        }
+        json.put("Date of creation", creationDate);
+        json.put("Date of validity", validateUntil);
+        if (likes != null) {
+            json.put("likes", likes.toString());
+        } else {
+            json.put("likes", "");
+        }
+        json.put("rating", rating);
+        json.put("discount", discount);
+        if (hashTags != null) {
+            json.put("hashTags", hashTags.toString());
+        } else {
+            json.put("hashTags", "");
+        }
+        return json.toString();
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setValidateUntil(Date validateUntil) {
+        this.validateUntil = validateUntil;
+    }
+
+    public void setPhotoLink(String photoLink) {
+        this.photoLink = photoLink;
+    }
+
+    public void setHashTags(List<String> hashTags) {
+        this.hashTags = hashTags;
+    }
+
+    public void setLikes(List<String> likes) {
+        this.likes = likes;
     }
 
     public void setRating(int rating) {
         this.rating = rating;
     }
 
-    @Override
-    public String toString() {
-        return "Post{\n" +
-                "id: " + id +
-                ", \nauthor:  " + author +
-                ", \ndescription: " + description +
-                ", \ncreationDate: " + creationDate +
-                ", \nvalidateUntil: " + validateUntil +
-                ", \nphotoLink: " + photoLink +
-                ", \nhashTags: " + hashTags +
-                ", \nlikes: " + likes +
-                ", \nrating: " + rating +
-                ", \ndiscount: " + discount +
-                '}';
+    public void setDiscount(int discount) {
+        this.discount = discount;
     }
-
 }

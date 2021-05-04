@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @MultipartConfig
 @WebServlet("/upload")
@@ -17,9 +19,10 @@ public class FileUploadServlet extends HttpServlet {
     private static final String KEY_FILE_NAME = "fileName";
     private static final String CONTENT_TYPE = "image/jpeg";
     private static final String CONTENT_DISPOSITION = "content-disposition";
+    private static Logger log = Logger.getLogger(FileUploadServlet.class.getName());
 
     protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response) throws ServletException, IOException {
+                          HttpServletResponse response) {
         String applicationPath = request.getServletContext().getRealPath("");
         String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
 
@@ -28,15 +31,19 @@ public class FileUploadServlet extends HttpServlet {
             fileSaveDir.mkdirs();
         }
         String fileName = null;
-        for (Part part : request.getParts()) {
-            fileName = getFileName(part);
-            part.write(uploadFilePath + File.separator + fileName);
+        try {
+            for (Part part : request.getParts()) {
+                fileName = getFileName(part);
+                part.write(uploadFilePath + File.separator + fileName);
+            }
+            response.getWriter().write(fileName + SUCCESS_UPLOADING + uploadFilePath);
+        } catch (IOException | ServletException e) {
+            log.log(Level.SEVERE, "Exception: ", e);
         }
-        response.getWriter().write(fileName + SUCCESS_UPLOADING + uploadFilePath);
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) {
         String URLAfterWebDomain = request.getRequestURI();
         String fileName = request.getParameter(KEY_FILE_NAME);
         String applicationPath = request.getServletContext().getRealPath("");
@@ -45,19 +52,17 @@ public class FileUploadServlet extends HttpServlet {
             return;
         }
         response.setContentType(CONTENT_TYPE);
-        ServletOutputStream outStream;
-        outStream = response.getOutputStream();
-        FileInputStream fin = new FileInputStream(uploadFilePath + "/" + fileName);
-        BufferedInputStream bin = new BufferedInputStream(fin);
-        BufferedOutputStream bout = new BufferedOutputStream(outStream);
-        int ch;
-        while ((ch = bin.read()) != -1) {
-            bout.write(ch);
+        try (ServletOutputStream outStream = response.getOutputStream();
+             FileInputStream fin = new FileInputStream(uploadFilePath + "/" + fileName);
+             BufferedInputStream bin = new BufferedInputStream(fin);
+             BufferedOutputStream bout = new BufferedOutputStream(outStream)) {
+            int ch;
+            while ((ch = bin.read()) != -1) {
+                bout.write(ch);
+            }
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Exception: ", e);
         }
-        bin.close();
-        fin.close();
-        bout.close();
-        outStream.close();
     }
 
     private String getFileName(Part part) {
