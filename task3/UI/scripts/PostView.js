@@ -131,6 +131,7 @@ class PostView {
 
     _drawPostButton(type, imgName, buttonText) {
         let button = document.createElement("button");
+        button.setAttribute("type", "button");
         if (buttonText) {
             button.textContent = buttonText;
         }
