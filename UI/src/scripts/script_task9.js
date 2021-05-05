@@ -324,5 +324,6 @@ let posts = [
     showFeed({hashTags: ['love']}, postModel, feedView);
     logIn(feedView);
     logIn(feedView, "Darroman");
+    //logIn(feedView);
     //clear(postModel, feedView);
 }());

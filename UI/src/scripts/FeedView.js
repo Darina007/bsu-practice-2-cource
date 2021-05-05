@@ -16,9 +16,9 @@ class FeedView {
     }
 
     fillUser(user) {
-        let userName = document.getElementsByClassName("type-authorization");
+        let userName = document.getElementById("user-name");
         userName.textContent = user;
-        let button = document.getElementsByClassName("login-button");
+        let button = document.getElementById("login-button");
         button.className = "logout-button"
         button.id = "logout-button";
         button.textContent = "Log out";
@@ -28,9 +28,9 @@ class FeedView {
     }
 
     unFillUser() {
-        let userName = document.getElementsByClassName("type-authorization");
+        let userName = document.getElementById("user-name");
         userName.textContent = "Guest";
-        let button = document.getElementsByClassName("logout-button");
+        let button = document.getElementById("logout-button");
         button.className = "login-button";
         button.id = "login-button";
         button.textContent = "Log in";
