@@ -322,6 +322,7 @@ let posts = [
 
     showFeed({discount: 20}, postModel, feedView);
     showFeed({hashTags: ['love']}, postModel, feedView);
-
+    logIn(feedView);
+    logIn(feedView, "Darroman");
     //clear(postModel, feedView);
 }());

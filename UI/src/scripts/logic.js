@@ -26,7 +26,15 @@ function showFeed(filterConfig = {}, postModel, feedView) {
     feedView.redrawPosts(postModel.getPage(0, 10, filterConfig));
 }
 
-function clear(postModel, feedView){
+function clear(postModel, feedView) {
     postModel.clear()
     feedView.redrawPosts(postModel.getPage(0, 10));
+}
+
+function logIn(feedView, userName) {
+    if (feedView.isAuthorized()) {
+        feedView.unFillUser();
+        return;
+    }
+    feedView.fillUser(userName);
 }

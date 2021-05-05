@@ -1,12 +1,59 @@
 class FeedView {
     postViewer = new PostView(true);
+
     constructor(posts, users, userData) {
         if (userData.author) {
             this.postViewer.isGuest = false;
             this.postViewer.userName = userData.author;
+            this.fillUser(userData.author);
         }
         this.fillFilter(users);
         this.drawPosts(posts);
+    }
+
+    isAuthorized() {
+        return !!this.postViewer.userName;
+    }
+
+    fillUser(user) {
+        let userName = document.getElementsByClassName("type-authorization");
+        userName.textContent = user;
+        let button = document.getElementsByClassName("login-button");
+        button.className = "logout-button"
+        button.id = "logout-button";
+        button.textContent = "Log out";
+        this.postViewer.userName = user;
+        this.postViewer.isGuest = false;
+        this.drawAddPostButton();
+    }
+
+    unFillUser() {
+        let userName = document.getElementsByClassName("type-authorization");
+        userName.textContent = "Guest";
+        let button = document.getElementsByClassName("logout-button");
+        button.className = "login-button";
+        button.id = "login-button";
+        button.textContent = "Log in";
+        this.postViewer.userName = null;
+        this.postViewer.isGuest = true;
+        this.deleteAddPostButton();
+    }
+
+    drawAddPostButton() {
+        let field = document.getElementById("container");
+        let button = document.createElement("button");
+        button.className = "add-post";
+        button.id = "add-post";
+        button.textContent = "new post";
+        field.appendChild(button);
+    }
+
+    deleteAddPostButton() {
+        let field = document.getElementById("container");
+        let button = document.getElementById("add-post");
+        if (button) {
+            field.removeChild(button);
+        }
     }
 
     fillFilter(users) {
