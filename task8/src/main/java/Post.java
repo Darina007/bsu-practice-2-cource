@@ -7,35 +7,59 @@ import java.util.UUID;
 
 @Builder
 public class Post {
-    private String id;
-    private String author;
+    private final String id;
+    private final String author;
     private String description;
-    private Date creationDate;
+    private final Date creationDate;
     private Date validateUntil;
     private String photoLink;
     private List<String> hashTags;
     private List<String> likes;
+    private List<Comment> comments;
     private int rating;
     private int discount;
+    private static final int MAX_DISCOUNT = 100;
+    private static final int MAX_LENGTH_OF_DESCRIPTION = 100;
+    private static final int MIN_DISCOUNT = 100;
 
     public static String generateID() {
         return UUID.randomUUID().toString();
     }
 
     public boolean isValid() {
-        if (description == null || description.length() > 200) {
+        if (!isAuthor() && !isDescription() &&
+            !isDateOfCreation() && !isDateOfValidation()) {
             return false;
         }
-        if (author == null) {
-            return false;
-        }
-        if (!creationDate.before(validateUntil)) {
-            return false;
-        }
-        if (discount < 0 || discount > 100) {
-            return false;
-        }
-        return true;
+        return isValidDiscount() && isValidDescription();
+    }
+
+    public boolean isDescription() {
+        return description != null;
+    }
+
+    public boolean isAuthor() {
+        return author != null;
+    }
+
+    public boolean isDateOfValidation() {
+        return validateUntil != null;
+    }
+
+    public boolean isDateOfCreation() {
+        return creationDate != null;
+    }
+
+    public boolean isValidDescription() {
+        return description.length() <= MAX_LENGTH_OF_DESCRIPTION;
+    }
+
+    public boolean isValidDiscount() {
+        return discount >= MIN_DISCOUNT && discount <= MAX_DISCOUNT;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     public String getId() {
@@ -78,44 +102,45 @@ public class Post {
         return discount;
     }
 
+
+    public boolean isPhotoLink() {
+        return photoLink != null;
+    }
+
+    public boolean isLikes() {
+        return likes != null;
+    }
+
+    public boolean isHashTags() {
+        return hashTags != null;
+    }
+
+    public boolean isComments() {
+        return comments != null;
+    }
+
+
     @Override
     public String toString() {
         JSONObject json = new JSONObject();
         json.put("id", id);
         json.put("description", description);
         json.put("author", author);
-        if (photoLink != null) {
-            json.put("photoLink", photoLink);
-        } else {
-            json.put("photoLink", "");
-        }
+        String photoLink = isPhotoLink() ? this.photoLink : "";
+        json.put("photoLink", photoLink);
         json.put("Date of creation", creationDate);
         json.put("Date of validity", validateUntil);
-        if (likes != null) {
-            json.put("likes", likes.toString());
-        } else {
-            json.put("likes", "");
-        }
+        String likes = isLikes() ? this.likes.toString() : "";
+        json.put("likes", likes);
         json.put("rating", rating);
         json.put("discount", discount);
-        if (hashTags != null) {
-            json.put("hashTags", hashTags.toString());
-        } else {
-            json.put("hashTags", "");
-        }
+        String hashTags = isHashTags() ? this.hashTags.toString() : "";
+        json.put("hashTags", hashTags);
         return json.toString();
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
     }
 
     public void setValidateUntil(Date validateUntil) {

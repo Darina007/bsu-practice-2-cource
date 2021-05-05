@@ -73,12 +73,11 @@ public class PostCollection {
     }
 
     public boolean addPost(Post post) {
-        if (post.isValid()) {
-            posts.add(post);
-            return true;
-        } else {
+        if (!post.isValid()) {
             return false;
         }
+        posts.add(post);
+        return true;
     }
 
     public boolean editPost(String id, Post filterConfig) {
@@ -86,26 +85,30 @@ public class PostCollection {
         if (post == null) {
             return false;
         }
-        if (filterConfig.getDescription() != null && filterConfig.getDescription().length() <= 200) {
+        if (filterConfig.isDescription() && filterConfig.isValidDescription()) {
             post.setDescription(filterConfig.getDescription());
         }
-        if (filterConfig.getHashTags() != null) {
+        if (filterConfig.isDateOfValidation()) {
             post.setHashTags(filterConfig.getHashTags());
         }
-        if (filterConfig.getValidateUntil() != null) {
+        if (filterConfig.isHashTags()) {
             post.setHashTags(filterConfig.getHashTags());
+        } else {
+            post.getHashTags().clear();
+        }
+        if (filterConfig.isValidDiscount()) {
+            post.setDiscount(filterConfig.getDiscount());
         }
         return true;
     }
 
     public boolean removePost(String id) {
         Post post = getPost(id);
-        if (post != null) {
-            posts.remove(post);
-            return true;
-        } else {
+        if (post == null) {
             return false;
         }
+        posts.remove(post);
+        return true;
     }
 
     public void clearAll() {
