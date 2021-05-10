@@ -24,14 +24,14 @@ DROP TABLE IF EXISTS `comments`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `comments` (
   `COMMENT_ID` int NOT NULL AUTO_INCREMENT,
-  `POST_ID` int DEFAULT NULL,
-  `USER_ID` int DEFAULT NULL,
-  `CREATED_AT` date DEFAULT NULL,
-  `RATING` tinyint DEFAULT NULL,
-  `COMMENT_TEXT` varchar(201) DEFAULT NULL,
+  `POST_ID` int NOT NULL,
+  `USER_ID` int NOT NULL,
+  `CREATED_AT` date NOT NULL,
+  `RATING` tinyint NOT NULL,
+  `COMMENT_TEXT` varchar(201) NOT NULL,
   PRIMARY KEY (`COMMENT_ID`),
-  KEY `POST_ID` (`POST_ID`),
-  KEY `USER_ID` (`USER_ID`),
+  KEY `comments_ibfk_1` (`POST_ID`),
+  KEY `comments_ibfk_2` (`USER_ID`),
   CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`POST_ID`) REFERENCES `post` (`POST_ID`),
   CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`USER_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -56,11 +56,11 @@ DROP TABLE IF EXISTS `likes`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `likes` (
   `LIKE_ID` int NOT NULL AUTO_INCREMENT,
-  `POST_ID` int DEFAULT NULL,
-  `USER_ID` int DEFAULT NULL,
+  `POST_ID` int NOT NULL,
+  `USER_ID` int NOT NULL,
   PRIMARY KEY (`LIKE_ID`),
-  KEY `POST_ID` (`POST_ID`),
-  KEY `USER_ID` (`USER_ID`),
+  KEY `likes_ibfk_1` (`POST_ID`),
+  KEY `likes_ibfk_2` (`USER_ID`),
   CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`POST_ID`) REFERENCES `post` (`POST_ID`),
   CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`USER_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -85,16 +85,16 @@ DROP TABLE IF EXISTS `post`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `post` (
   `POST_ID` int NOT NULL AUTO_INCREMENT,
-  `USER_ID` int DEFAULT NULL,
-  `POST_DESCRIPTION` varchar(201) DEFAULT NULL,
-  `CREATED_AT` date DEFAULT NULL,
-  `VALIDATE_UNTIL` date DEFAULT NULL,
+  `USER_ID` int NOT NULL,
+  `POST_DESCRIPTION` varchar(201) NOT NULL,
+  `CREATED_AT` date NOT NULL,
+  `VALIDATE_UNTIL` date NOT NULL,
   `PHOTO_LINK` blob,
   `RATING` tinyint DEFAULT NULL,
-  `DISCOUNT` tinyint DEFAULT NULL,
+  `DISCOUNT` tinyint NOT NULL,
   `HASH_TAGS` text,
   PRIMARY KEY (`POST_ID`),
-  KEY `USER_ID` (`USER_ID`),
+  KEY `post_ibfk_1` (`USER_ID`),
   CONSTRAINT `post_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`USER_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -118,7 +118,7 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `USER_ID` int NOT NULL AUTO_INCREMENT,
-  `USERNAME` varchar(50) DEFAULT NULL,
+  `USERNAME` varchar(50) NOT NULL,
   PRIMARY KEY (`USER_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -142,4 +142,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-03 18:13:20
+-- Dump completed on 2021-05-11  0:25:15

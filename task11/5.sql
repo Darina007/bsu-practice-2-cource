@@ -1,8 +1,6 @@
-USE usersdb;
-
-#Since the number of posts from users does not exceed three, I took for clarity >= 2
-
-SELECT U.USER_ID, U.USERNAME, count(*)'posts number' 
+#Each registered user is considered both a buyer and a seller.
+#Therefore, I made a selection user - rating
+SELECT U.USERNAME, AVG(P.RATING) AS 'user raring'
 FROM USER AS U 
 JOIN POST AS P on P.USER_ID = U.USER_ID
-group by USERNAME having count(*) >= 2;
+GROUP BY USERNAME;
