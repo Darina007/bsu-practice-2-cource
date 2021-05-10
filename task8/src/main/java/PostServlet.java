@@ -50,31 +50,7 @@ public class PostServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        String author = request.getParameter(ConstantDictionary.KEY_AUTHOR);
-        String description = request.getParameter(ConstantDictionary.KEY_DESCRIPTION);
-        Date creationDate = null;
-        Date validateUntil = null;
-        try {
-            creationDate = new SimpleDateFormat(ConstantDictionary.DATE_PATTERN).parse(request.getParameter(ConstantDictionary.KEY_CREATION_DATE));
-            validateUntil = new SimpleDateFormat(ConstantDictionary.DATE_PATTERN).parse(request.getParameter(ConstantDictionary.KEY_VALIDATE_UNTIL));
-        } catch (ParseException e) {
-            log.log(Level.SEVERE, "Exception: ", e);
-        }
-        String photoLink = request.getParameter(ConstantDictionary.KEY_PHOTO_LINK);
-        List<String> hashTags = Collections.singletonList(request.getParameter(ConstantDictionary.KEY_HASHTAG));
-        int discount = Integer.parseInt(request.getParameter(ConstantDictionary.KEY_DISCOUNT));
-
-        Post post = Post.builder()
-                .author(author)
-                .description(description)
-                .creationDate(creationDate)
-                .validateUntil(validateUntil)
-                .photoLink(photoLink)
-                .hashTags(hashTags)
-                .discount(discount)
-                .likes(null)
-                .id(Post.generateID())
-                .build();
+        Post post = createPost(request);
         response.setContentType(ConstantDictionary.CONTENT_TYPE);
         response.setCharacterEncoding(ConstantDictionary.CHARACTER_ENCODING);
         try {
@@ -87,5 +63,45 @@ public class PostServlet extends HttpServlet {
         } catch (IOException e) {
             log.log(Level.SEVERE, "Exception: ", e);
         }
+    }
+
+    private Post createPost(HttpServletRequest request) {
+        String author = request.getParameter(ConstantDictionary.KEY_AUTHOR);
+        String description = request.getParameter(ConstantDictionary.KEY_DESCRIPTION);
+        Date creationDate = setCreationDate(request);
+        Date validateUntil = setValidationDate(request);
+        String photoLink = request.getParameter(ConstantDictionary.KEY_PHOTO_LINK);
+        List<String> hashTags = Collections.singletonList(request.getParameter(ConstantDictionary.KEY_HASHTAG));
+        int discount = Integer.parseInt(request.getParameter(ConstantDictionary.KEY_DISCOUNT));
+        return Post.builder()
+                .author(author)
+                .description(description)
+                .creationDate(creationDate)
+                .validateUntil(validateUntil)
+                .photoLink(photoLink)
+                .hashTags(hashTags)
+                .discount(discount)
+                .likes(null)
+                .id(Post.generateID())
+                .build();
+    }
+
+    private Date setCreationDate(HttpServletRequest request) {
+        Date creationDate = null;
+        try {
+            creationDate = new SimpleDateFormat(ConstantDictionary.DATE_PATTERN).parse(request.getParameter(ConstantDictionary.KEY_CREATION_DATE));
+        } catch (ParseException e) {
+            log.log(Level.SEVERE, "Exception: ", e);
+        }
+        return creationDate;
+    }
+    private Date setValidationDate(HttpServletRequest request) {
+        Date validateUntil = null;
+        try {
+            validateUntil = new SimpleDateFormat(ConstantDictionary.DATE_PATTERN).parse(request.getParameter(ConstantDictionary.KEY_VALIDATE_UNTIL));
+        } catch (ParseException e) {
+            log.log(Level.SEVERE, "Exception: ", e);
+        }
+        return validateUntil;
     }
 }

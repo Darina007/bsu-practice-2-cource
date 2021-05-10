@@ -1,6 +1,5 @@
 import lombok.Builder;
 import org.json.JSONObject;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -102,7 +101,6 @@ public class Post {
         return discount;
     }
 
-
     public boolean isPhotoLink() {
         return photoLink != null;
     }
@@ -119,6 +117,25 @@ public class Post {
         return comments != null;
     }
 
+    public void addComment(Comment comment) {
+        if (comment.isValidComment()) {
+            this.comments.add(comment);
+        }
+    }
+
+    private boolean findLike(String username) {
+        return this.likes.stream()
+                       .filter(like -> like.equals(username))
+                       .findFirst().orElse(null) == null;
+    }
+
+    public void updateLike(String username) {
+        if (findLike(username)) {
+            this.likes.add(username);
+        } else {
+            this.likes.remove(username);
+        }
+    }
 
     @Override
     public String toString() {
