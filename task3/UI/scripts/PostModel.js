@@ -75,21 +75,6 @@ class PostModel {
         return false;
     }
 
-    addFromStorage(postDate) {
-        let post = [];
-        post.description = postDate.description;
-        post.createdAt = new Date(postDate.createdAt);
-        post.validateUntil = new Date(postDate.validateUntil);
-        post.author = postDate.author;
-        post.photoLink = postDate.photoLink;
-        post.hashTags = postDate.hashTags;
-        post.discount = postDate.discount;
-        post.rating = postDate.rating;
-        post.likes = postDate.likes;
-        post.comments = postDate.comments;
-        this.add(post);
-    }
-
     addAll(posts) {
         posts.forEach((post) => this.add(post));
     }

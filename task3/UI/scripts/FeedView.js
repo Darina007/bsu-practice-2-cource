@@ -72,24 +72,11 @@ class FeedView {
     }
 
     setFilter(filter) {
-        if (filter.author !== "all vendors") {
-            this.filter.author = filter.author;
-        }
-        if (filter.createdAt) {
-            this.filter.createdAt = filter.createdAt;
-        }
-        if (filter.validateUntil) {
-            this.filter.validateUntill = filter.validateUntil;
-        }
-        if (filter.discount) {
-            this.filter.discount = filter.discount;
-        }
-        if (filter.rating) {
-            this.filter.rating = filter.rating;
-        }
-        if (filter.hashTags) {
-            this.filter.hashTags = filter.hashTags;
-        }
+        let filterFields = Object.keys(filter);
+        filterFields.forEach((field) => {
+                this.filter[field] = filter[field];
+            }
+        )
     }
 
     clearFilter() {

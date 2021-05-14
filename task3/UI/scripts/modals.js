@@ -7,44 +7,23 @@ class Modals {
     }
 
     createSingInModal() {
-        let modal = document.getElementsByClassName('modal').item(0);
-        modal.innerHTML = `
-        <div class="modal-content">
-            <span class="close">×</span>
-            <h1 class="modal-text">Sign in</h1>
-            <form id="sign-in-form">
-                <div class="username-input-div">
-                 <p class="username-warning">There is no such username. Try again.</p>
-                    <input class="username-input" placeholder=" username">
-                </div>
-                <div class="password-input-div">
-                 <p class="password-warning">Incorrect password. Try again.</p>
-                <input class="password" type="password" placeholder=" password">
-                </div>
-            <div class="log-button-area">
-            <p class="sign-in-warning">There is no such user. Try again.</p>
-            <input type="submit" class="log-button" value="Sign in">
-            </div>
-            </form>
-        </div>`;
+        let modal = document.getElementsByClassName("modal").item(0);
+        let signInTemplate = document.getElementById("sign-in-template");
+        let signInModal = document.importNode(signInTemplate.content, true);
+        modal.appendChild(signInModal);
         window.modals.closeModal(modal);
         const form = document.getElementById("sign-in-form");
         form.onsubmit = () => {
             return false;
         };
-        form.addEventListener('submit', readInputFieldsLogIn);
+        form.addEventListener("submit", readInputFieldsLogIn);
     }
 
     createLogOutModal() {
         let modal = document.getElementsByClassName('modal').item(0);
-        modal.innerHTML = ` 
-         <div class="modal-content">
-                <span class="close">×</span>
-                <h1 class="modal-text">Are you sure you want out?</h1>
-                <div class="log-button-area">
-                    <button class="log-button"><strong>Yes</strong></button>
-                </div>
-          </div>`;
+        let logOutTemplate = document.getElementById("log-out-template");
+        let logOutModal = document.importNode(logOutTemplate.content, true);
+        modal.appendChild(logOutModal);
         let yesBtn = document.querySelector('.log-button');
         window.modals.closeModal(modal);
         yesBtn.addEventListener('click', () => {
@@ -56,15 +35,9 @@ class Modals {
 
     createDeleteModal(postId) {
         let modal = document.getElementsByClassName('modal').item(0);
-        modal.innerHTML = ` 
-         <div class="modal-content">
-                <span class="close">×</span>
-                <h1 class="modal-text">Are you sure you want to delete this post?</h1>
-                <div class="log-button">
-                    <button class="sign-in-modal-button"><strong>Yes</strong></button>
-                </div>
-          </div>`;
-
+        let deleteTemplate = document.getElementById("delete-modal-template");
+        let deleteModal = document.importNode(deleteTemplate.content, true);
+        modal.appendChild(deleteModal);
         let yesBtn = document.querySelector('.sign-in-modal-button');
         modals.closeModal(modal);
         yesBtn.addEventListener('click', () => {
@@ -78,46 +51,37 @@ class Modals {
 
     createEditModal(postId) {
         let modal = document.getElementsByClassName('modal').item(0);
-        let editPost = window.postsCollection.get(postId);
-        modal.innerHTML = `
-        <div class="modal-content-edit">
-            <span class="close">×</span>
-            <h1 class="modal-text">Editing</h1>
-            <form id="edit-form">
-             <div class="post">
-                <div class="first-post-raw">
-                    <div class="first-post-column">
-                        <div class="post-img" data-target="photoLink"><a></a><img src="img/post_img.png" alt=""></a>
-                        </div>
-                    </div>
-                    <div class="second-post-column">
-                        <div class="vendor-name" data-target="author">${editPost.author}</div>
-                        <div class="validity-info">
-                            <div class="validity-info-text">Offer is valid until</div>
-                            <div><input type="date" id="validateUntil" value="${window.view.postViewer.dateForm(editPost.validateUntil)}"></div>
-                        </div>
-                        <div class="description" ><textarea id="description">${editPost.description}</textarea></div>
-                        <a href="" data-target="link">see more</a>
-                    </div>
-                </div>
-                <div class="second-post-raw">
-                    <div class="hashtag" ><textarea id="hashTags">${editPost.hashTags.join(' ')}</textarea></div>
-                    <div class="sale" ><textarea id="discount">${editPost.discount}</textarea></div>
-                </div>
-            </div>
-            <div class="load-more-posts">
-                <input type="submit" class="edit-modal-button" value="Edit">
-            </div>
-            </form>
-        </div>`;
+        let editTemplate = document.getElementById("edit-modal-template");
+        let editModal = document.importNode(editTemplate.content, true);
+        this._fillEditFields(postId, editModal);
+        modal.appendChild(editModal);
         window.modals.closeModal(modal);
         const form = document.getElementById("edit-form");
         form.onsubmit = () => {
             return false;
         };
+        const editPhoto = document.getElementById("edit-img-file");
+        editPhoto.addEventListener('click',() => {
+                addPhoto('edit-img-file', 'edit-file-preview');
+            }
+        );
         form.addEventListener('submit', () => {
             readInputFieldsEdit(postId);
         });
+    }
+
+    _fillEditFields(postId, editModal) {
+        let editPost = window.postsCollection.get(postId);
+        const author = editModal.getElementById("edit-author-field");
+        author.textContent = editPost.author;
+        const validateUntil = editModal.getElementById("edit-validate-until-field");
+        validateUntil.value = view.postViewer.dateForm(editPost.validateUntil);
+        const description = editModal.getElementById("description");
+        description.textContent = editPost.description;
+        const hashTags = editModal.getElementById("edit-hashTags-field");
+        hashTags.textContent = editPost.hashTags.join(' ');
+        const discount = editModal.getElementById("edit-discount-field");
+        discount.textContent = editPost.discount;
     }
 }
 

@@ -20,7 +20,6 @@ class PostEvents {
                 }
             );
         }
-
         const deletePost = postElement.getElementsByClassName('delete').item(0);
         if (deletePost) {
             deletePost.addEventListener('click',
@@ -46,6 +45,15 @@ class PostEvents {
             add.addEventListener('submit',
                 evt => {
                     addNewPost();
+                    evt.stopPropagation();
+                }
+            );
+        }
+        const addPost = postAreaElement.getElementsByTagName("input").item(0);
+        if (addPost) {
+            addPost.addEventListener('click',
+                evt => {
+                    addPhoto('img-file', 'file-preview');
                     evt.stopPropagation();
                 }
             );
