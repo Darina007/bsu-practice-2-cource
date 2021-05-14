@@ -60,7 +60,6 @@ function addPhoto(imageInputId, imageHolderId) {
     }
 }
 
-
 function initializeFilter() {
     const form = document.getElementById("filter");
     fillDateFilterFields();

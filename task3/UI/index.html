@@ -198,12 +198,19 @@
         </div>
     </div>
 </template>
+<template id="error-template">
+    <div class="modal-content">
+        <span class="close">×</span>
+        <h1 class="modal-text">Error</h1>
+        <div class="description" id="error-text"></div>
+    </div>
+</template>
 <template id="delete-modal-template">
     <div class="modal-content">
         <span class="close">×</span>
         <h1 class="modal-text">Are you sure you want to delete this post?</h1>
-        <div class="log-button">
-            <button class="sign-in-modal-button"><strong>Yes</strong></button>
+        <div class="sign-in-modal-button">
+            <button class="log-button"><strong>Yes</strong></button>
         </div>
     </div>
 </template>
@@ -225,7 +232,7 @@
                         <div class="vendor-name" id="edit-author-field"></div>
                         <div class="validity-info">
                             <div class="validity-info-text">Offer is valid until</div>
-                            <div><input type="date" id="edit-validate-until-field"></div>
+                            <input type="date" id="edit-validate-until-field">
                         </div>
                         <textarea class="description" id="description"></textarea>
                         <a href="" data-target="link">see more</a>

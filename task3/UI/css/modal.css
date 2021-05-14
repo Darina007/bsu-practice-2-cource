@@ -91,7 +91,7 @@
     justify-content: center;
 }
 
-.log-button .edit-modal-button {
+.log-button, .edit-modal-button {
     flex: 0 0 auto;
     align-self: center;
     margin: 15px;
@@ -108,4 +108,8 @@
     text-align: center;
     border-radius: 15px;
     padding: 5px;
+}
+
+.sign-in-modal-button{
+    text-align: center;
 }

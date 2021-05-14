@@ -61,13 +61,25 @@ class Modals {
             return false;
         };
         const editPhoto = document.getElementById("edit-img-file");
-        editPhoto.addEventListener('click',() => {
+        editPhoto.addEventListener('click', () => {
                 addPhoto('edit-img-file', 'edit-file-preview');
             }
         );
         form.addEventListener('submit', () => {
             readInputFieldsEdit(postId);
         });
+    }
+
+    createErrorModal(message) {
+        let modal = document.getElementsByClassName('modal').item(0);
+        let errorTemplate = document.getElementById("error-template");
+        let errorModal = document.importNode(errorTemplate.content, true);
+        let messageContainer = errorModal.getElementById("error-text");
+        let text = document.createElement("p");
+        text.textContent = message;
+        messageContainer.appendChild(text);
+        modal.appendChild(errorModal);
+        window.modals.closeModal(modal);
     }
 
     _fillEditFields(postId, editModal) {
