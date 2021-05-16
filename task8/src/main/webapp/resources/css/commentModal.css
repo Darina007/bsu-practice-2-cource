@@ -1,0 +1,42 @@
+#new-comment-form, .comment-holder{
+    border: black solid 2px;
+    border-radius: 15px;
+    padding: 1% 5%;
+    background-color: #D5DEFB;
+    margin: 5px 0;
+}
+
+#comment-text-input{
+    width: 100%;
+    text-align: center;
+    height: 5rem;
+    background-color: #DFD5FB;
+    border-radius: 20px;
+    margin: 5px 0;
+}
+
+#comment-text{
+    width: 100%;
+    text-align: center;
+    background-color: #DFD5FB;
+    border-radius: 20px;
+    margin: 5px 0;
+}
+
+.add-new-comment{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.first-comment-raw, .second-comment-raw{
+    display: flex;
+    justify-content: space-between;
+}
+
+#comment-author, #date-comment, #comment-text, #comment-mark{
+    text-align: center;
+    justify-content: center;
+    margin: 5px;
+    display: flex;
+}
