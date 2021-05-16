@@ -3,375 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <title>CashBat</title>
-    <link rel="stylesheet" href="resources/css/styles.css">
+    <link rel="stylesheet" href="resources/css/page.css">
+    <link rel="stylesheet" href="resources/css/header.css">
+    <link rel="stylesheet" href="resources/css/footer.css">
+    <link rel="stylesheet" href="resources/css/post.css">
+    <link rel="stylesheet" href="resources/css/filter.css">
+    <link rel="stylesheet" href="resources/css/modal.css">
+    <link rel="stylesheet" href="resources/css/addPostModal.css">
+    <link rel="stylesheet" href="resources/css/commentModal.css">
 </head>
 <body>
-<script src="resources/js/script_task7.js"></script>
 <header class="header">
-    <div class="header__site__name">
-        <div class="site__name">CashBat</div>
+    <div class="header-site-name">
+        <div class="site-name">CashBat</div>
     </div>
-    <div class="header__user__info">
+    <div class="header-user-info">
         <div class="user_info">You are logged in as a <br>
-            <div class="type-authorization">
-                <b>User Name</b>
+            <div class="user-name">
+                <b id="user-name">Guest</b>
             </div>
-            <button class="">Log out</button>
+            <button id="login-button" class="login-button">Log in</button>
         </div>
-        <div class="user__img"><img src="resources/img/guest_icon.png"/></div>
+        <div class="user-img"><img src="resources/img/guest_icon.png"/></div>
     </div>
 </header>
 <main class="main">
-    <div class="section__filter">
-        <div class="filter__title">
-            <p>Post filters</p>
-        </div>
-        <div class="date__filter">
-            <div>Date</div>
-            <div>
-                <label for="dateFrom">From</label>
-                <input type="date" id="dateFrom" name="date">
+    <div class="section-filter">
+        <form id="filter">
+            <div class="filter-title">Post filters</div>
+            <div class="date-filter">
+                Date
+                <div class="createdAt">
+                    <label for="createdAt">From</label>
+                    <input type="date" id="createdAt">
+                </div>
+                <div class="validateUntil">
+                    <label for="validateUntil">To&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <input type="date" id="validateUntil" name="date">
+                </div>
             </div>
-            <div>
-                <label for="dateTo">To&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input type="date" id="dateTo" name="date">
+            <div class="hashtag-filter">
+                Hashtags#
+                <input type="text" placeholder="Input hashTags" id="hashtags">
             </div>
-        </div>
-        <div class="hashtag__filter">
-            <div>Hashtags#</div>
-            <div>
-                <input type="text" name="hashtags" class="hashtagsField">
+            <div class="vendor-filter">
+                Vendor name
+                <select id="vendor-filter">
+                    <option selected="selected">all vendors</option>
+                </select>
             </div>
-        </div>
-        <div class="supplier__filter">
-            <div>Supplier name</div>
-            <input type="text" name="supplierName" class="supplierName">
-        </div>
-        <div class="search__button">
-            <button>Search</button>
-        </div>
+            <div class="discount-filter">
+                Discount
+                <input type="text" id="discount">
+            </div>
+            <div class="rating-filter">
+                Rating
+                <input type="text" name="rating" id="rating">
+            </div>
+            <div class="search-button">
+                <button type="submit" class="search">Search</button>
+            </div>
+        </form>
     </div>
-    <div class="section__data">
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="resources/img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
+    <div class="section-data" id="container">
+        <template class="post-template" id="post-template">
+            <div class="post-container">
+                <div class="post">
+                    <div class="first-post-raw">
+                        <div class="first-post-column">
+                            <div class="post-img" data-target="photoLink"><img id="photoLink"
+                                                                               src="resources/img/post_img.png"
+                                                                               alt=""></div>
+                            <div class="grade" data-target="rating" id="grade"></div>
+                            <div class="review" data-target="review" id="review"></div>
+                        </div>
+                        <div class="second-post-column">
+                            <div class="vendor-name" data-target="author"></div>
+                            <div class="validity-info">
+                                <div class="validity-info-text">Offer is valid until</div>
+                                <div data-target="validateUntil" class="validity-date"></div>
+                            </div>
+                            <div class="description" data-target="description"></div>
+                            <a href="" data-target="link">see more</a>
+                        </div>
                     </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description </div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="resources/img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
+                    <div class="second-post-raw">
+                        <div class="hashtags" data-target="hashTags"></div>
+                        <div class="sale" data-target="discount"></div>
                     </div>
                 </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description </div>
-                    <a href="">see more</a>
-                </div>
             </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="resources/img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description </div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="resources/img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description </div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="resources/img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description </div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="resources/img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description </div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="resources/img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description </div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="resources/img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description </div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="resources/img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description </div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
-        <div class="post">
-            <div class="post__info">
-                <div class="post__info__section">
-                    <div class="post-img"><img src="resources/img/post_img.png"></div>
-                    <div class="grade">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                        <img src="resources/img/unpressed.png">
-                    </div>
-                    <div class="review">
-                        <button>comments</button>
-                    </div>
-                </div>
-                <div class="post__text">
-                    <div class="service__name">Service name</div>
-                    <div class="validity__info">
-                        <div>Offer is valid until</div>
-                        <div>Date of validation</div>
-                    </div>
-                    <div class="description">Description </div>
-                    <a href="">see more</a>
-                </div>
-            </div>
-            <div class="post__info__hashtags">
-                <div class="hashtag">hashtags</div>
-                <div class="sale">sale</div>
-            </div>
-        </div>
+        </template>
     </div>
     <div class="navigation">
-        <button class="previous__page"><img src="resources/img/previous.png"></button>
-        <div class="page">1</div>
-        <button class="next__page"><img src="resources/img/next.png"></button>
+        <button class="navigation-page-prev"><img src="resources/img/previous.png"></button>
+        <div id="page" class="page">1</div>
+        <button class="navigation-page-next"><img src="resources/img/next.png"></button>
     </div>
 </main>
 <footer class="footer">
-    <div class="footer__content">
-        <div class="creator__info">
-        <div>Darina Skovysh</br> 2 course, 6 group, MMF</div>
-    </div>
-        <div class="footer__site__name">
-            <div class="site__name">CashBat</div>
+    <div class="footer-content">
+        <div class="creator-info">
+            <div>Darina Skovysh</br> 2 course, 6 group, MMF</div>
         </div>
-        <div class="mail__info">
-            <div class="creator__mail">darina.skovysh@gmail.com</div>
+        <div class="footer-site-name">
+            <div class="site-name">CashBat</div>
+        </div>
+        <div class="mail-info">
+            darina.skovysh@gmail.com
         </div>
     </div>
-
 </footer>
+<div class="modal"></div>
+<template id="add-new-post-template">
+    <form id="new-post-form">
+        <div class="post-add">
+            <div class="first-post-raw">
+                <div class="first-post-column">
+                    <div id="file-preview" class="file-preview"></div>
+                    <div class="file">
+                        <input id="img-file" accept=".img, .jpg, .png" type="file" name="image" class="input-file"
+                               src="img/post_img.png">
+                    </div>
+                </div>
+                <div class="second-post-column">
+                    <div class="vendor-name" id="author" data-target="author"></div>
+                    <div class="validity-info">
+                        <div class="validity-info-text">Offer is valid until</div>
+                        <input type="date" id="validate-until-field" value="">
+                    </div>
+                    <input id="description-field" placeholder="Enter post description"/>
+                </div>
+            </div>
+            <div class="second-post-raw">
+                <input id="hashTags-field" placeholder="hashTag">
+                <input id="discount-field" placeholder="discount">
+            </div>
+        </div>
+        <div class="add-new-post">
+            <input type="submit" class="add-button" value="Add">
+        </div>
+    </form>
+</template>
+<template id="comment-area-template">
+    <div class="new-comment-area">
+        <div class="new-user-comment"></div>
+        <div class="user-comments"></div>
+    </div>
+</template>
+<template id="add-comment-template">
+    <form id="new-comment-form">
+        <input id="comment-text-input" placeholder="Add your comment">
+        <div class="add-new-comment">
+            <div class="review-buttons"></div>
+            <input type="submit" class="add-button" value="Add">
+        </div>
+    </form>
+</template>
+<template id="comment-template">
+    <div class="first-comment-raw">
+        <div id="comment-author"></div>
+        <div id="date-comment"></div>
+    </div>
+    <div class="second-comment-raw">
+        <div id="comment-text"></div>
+        <div id="comment-mark"></div>
+    </div>
+</template>
+<template id="sign-in-template">
+    <div class="modal-content">
+        <span class="close">×</span>
+        <h1 class="modal-text">Sign in</h1>
+        <form id="sign-in-form">
+            <div class="username-input-div">
+                <p class="username-warning">There is no such username. Try again.</p>
+                <input class="username-input" placeholder=" username">
+            </div>
+            <div class="password-input-div">
+                <p class="password-warning">Incorrect password. Try again.</p>
+                <input class="password" type="password" placeholder=" password">
+            </div>
+            <div class="log-button-area">
+                <p class="sign-in-warning">There is no such user. Try again.</p>
+                <button type="submit" class="log-button">Sign in</button>
+            </div>
+        </form>
+    </div>
+</template>
+<template id="log-out-template">
+    <div class="modal-content">
+        <span class="close">×</span>
+        <h1 class="modal-text">Are you sure you want out?</h1>
+        <div class="log-button-area">
+            <button class="log-button"><strong>Yes</strong></button>
+        </div>
+    </div>
+</template>
+<template id="error-template">
+    <div class="modal-content">
+        <span class="close">×</span>
+        <h1 class="modal-text">Error</h1>
+        <div class="description" id="error-text"></div>
+    </div>
+</template>
+<template id="delete-modal-template">
+    <div class="modal-content">
+        <span class="close">×</span>
+        <h1 class="modal-text">Are you sure you want to delete this post?</h1>
+        <div class="sign-in-modal-button">
+            <button class="log-button"><strong>Yes</strong></button>
+        </div>
+    </div>
+</template>
+<template id="edit-modal-template">
+    <div class="modal-content-edit">
+        <span class="close">×</span>
+        <h1 class="modal-text">Editing</h1>
+        <form id="edit-form">
+            <div class="edit-post">
+                <div class="first-post-raw">
+                    <div class="first-post-column">
+                        <div id="edit-file-preview" class="file-preview"></div>
+                        <div class="file">
+                            <input id="edit-img-file" accept=".img, .jpg, .png" type="file" name="image"
+                                   class="input-file"
+                                   src="img/post_img.png">
+                        </div>
+                    </div>
+                    <div class="second-post-column">
+                        <div class="vendor-name" id="edit-author-field"></div>
+                        <div class="validity-info">
+                            <div class="validity-info-text">Offer is valid until</div>
+                            <input type="date" id="edit-validate-until-field">
+                        </div>
+                        <textarea class="description" id="description"></textarea>
+                        <a href="" data-target="link">see more</a>
+                    </div>
+                </div>
+                <div class="second-post-raw">
+                    <textarea class="hashtag" id="edit-hashTags-field"></textarea>
+                    <textarea class="sale" id="edit-discount-field"></textarea>
+                </div>
+            </div>
+            <div class="load-more-posts">
+                <button type="submit" class="edit-modal-button">Edit</button>
+            </div>
+        </form>
+    </div>
+</template>
+<script src="resources/scripts/PostModel.js"></script>
+<script src="resources/scripts/PostView.js"></script>
+<script src="resources/scripts/FeedView.js"></script>
+<script src="resources/scripts/UsersCollection.js"></script>
+<script src="resources/scripts/modals.js"></script>
+<script src="resources/scripts/feedEvents.js"></script>
+<script src="resources/scripts/postEvents.js"></script>
+<script src="resources/scripts/testData.js"></script>
 </body>
 </html>
