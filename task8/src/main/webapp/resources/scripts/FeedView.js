@@ -79,10 +79,6 @@ class FeedView {
         )
     }
 
-    clearFilter() {
-        this.filter = [];
-    }
-
     getFilter() {
         return this.filter;
     }
@@ -90,24 +86,6 @@ class FeedView {
     fillFilterUser(users) {
         let filter = document.getElementById('vendor-filter');
         users.forEach((user) => filter.appendChild(this._createOption(user)));
-    }
-
-    addNewUser(user) {
-        if (!this.users.find(user)) {
-            this.users.add(user);
-        }
-    }
-
-    addNewUsers(users) {
-        if (!this.users) {
-            this.users = users.slice();
-        } else {
-            users.forEach(user => {
-                if (!this.users.find(user)) {
-                    this.users.add(user);
-                }
-            });
-        }
     }
 
     drawPosts(posts) {

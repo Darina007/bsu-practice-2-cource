@@ -43,11 +43,11 @@ class Modals {
         yesBtn.addEventListener('click', () => {
             deletePost("/post", postId)
                 .then(() => {
-                alert("success");
-                view.postViewer.deletePost(postId);
-                postsCollection.removePost(postId);
-                storage.removeItem("post" + postId);
-            }).catch((reason => {
+                    alert("success");
+                    view.postViewer.deletePost(postId);
+                    postServise.removePost(postId);
+                    storage.removeItem("post" + postId);
+                }).catch((reason => {
                 alert("error " + reason.textContent);
             }))
             toggleModal();
@@ -77,7 +77,7 @@ class Modals {
 
     createErrorModal(message) {
         let modal = document.getElementsByClassName('modal').item(0);
-        let errorTemplate = document.getElementById("error-template");
+        let errorTemplate = document.getElementById("error-modal-template");
         let errorModal = document.importNode(errorTemplate.content, true);
         let messageContainer = errorModal.getElementById("error-text");
         let text = document.createElement("p");
@@ -88,7 +88,7 @@ class Modals {
     }
 
     _fillEditFields(postId, editModal) {
-        let editPost = window.postsCollection.get(postId);
+        let editPost = window.postServise.get(postId);
         const author = editModal.getElementById("edit-author-field");
         author.textContent = editPost.author;
         const validateUntil = editModal.getElementById("edit-validate-until-field");
@@ -101,7 +101,6 @@ class Modals {
         discount.textContent = editPost.discount;
     }
 }
-
 
 (() => {
     window.modals = new Modals();

@@ -8,8 +8,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-/*/posts/search*/
-@WebServlet("")
+
+
+@WebServlet("/post")
 public class PostServlet extends HttpServlet implements jsonParser, postParser {
     private PostCollection posts = new PostCollection(TestPosts.testPosts);
     private static Logger log = Logger.getLogger(PostServlet.class.getName());

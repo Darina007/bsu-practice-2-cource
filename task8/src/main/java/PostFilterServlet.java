@@ -30,12 +30,13 @@ public class PostFilterServlet extends HttpServlet {
         response.setContentType("application/json");
         try {
             if (result.size() == 0) {
-                //response.setStatus(404);
+                response.setStatus(404);
                 PrintWriter out = response.getWriter();
                 out.print(ConstantDictionary.RESULT_NOT_FOUND);
             } else {
                 response.setStatus(200);
                 PrintWriter out = response.getWriter();
+                System.out.println(posts.toJson());
                 out.print(posts.toJson());
             }
         } catch (IOException e) {

@@ -28,7 +28,7 @@ class PostView {
     pressLike(postId) {
         const username = this.userName;
         const post = document.getElementById(postId);
-        const postCol = postsCollection.get(postId);
+        const postCol = postServise.get(postId);
         const likeIndex = postCol.likes.indexOf(username);
         if (likeIndex === -1) {
             postCol.likes.push(username);
@@ -111,7 +111,7 @@ class PostView {
         let lastTag = newPost.querySelector('[class="review"]');
         let post = newPost.querySelector('[class="post"]');
         if (!isGuest) {
-            const postCol = window.postsCollection.get(post.id);
+            const postCol = postServise.get(post.id);
             const likeIndex = postCol.likes.indexOf(this.userName);
             let buttonLike;
             if (likeIndex === -1) {

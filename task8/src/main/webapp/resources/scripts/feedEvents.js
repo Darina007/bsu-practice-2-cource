@@ -86,34 +86,6 @@ function removePostArea() {
     dataField.remove();
 }
 
-async function postData(postData, url) {
-    let response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: postsCollection.postToJSON(postData)
-    });
-    if (response.status === 200) {
-        return Promise.resolve();
-    }
-    return Promise.reject(response);
-}
-
-async function deletePost(url, id) {
-    let response = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({id: id})
-    });
-    if (response.status === 200) {
-        return Promise.resolve();
-    }
-    return Promise.reject(response);
-}
-
 function fillFilter() {
     const filterConf = [];
     const author = document.getElementById("vendor-filter").value;
@@ -168,17 +140,19 @@ function fillNewPostData() {
 
 function addNewPost() {
     let newPost = fillNewPostData();
-    if (postsCollection.add(newPost)) {
-        postData(postsCollection.get(newPost.id), "/post").then(function (value) {
+    if (postServise.add(newPost)) {
+        postData(postServise.get(newPost.id), "/post").then((value) => {
             alert(value);
-        }).catch(function (reason) {
-            alert("error adding " + reason);
+        }).catch(reason => {
+            //modal.create
         });
-        storage.setItem("post" + newPost.id, postsCollection.postToJSON(newPost));
+        postServise.postToJSON(newPost).then((result) => {
+            storage.setItem("post" + newPost.id, result);
+        })
         removePostArea();
         makePage(0, countPosts);
     } else {
-        //add error message
+        //error
     }
 }
 
@@ -195,53 +169,81 @@ function createStringParam(firstPostNumber, postNumber, filter) {
     return paramString.slice(1);
 }
 
-async function getData(param, url) {
-    let response = await fetch(url + "?" + param, {
-        method: 'GET'
-    })
-    if (response.ok) {
-        let postList = JSON.parse(await response.text());
-        let result = [];
-        postList.forEach(post => {
-            result.push(postsCollection.JSONToPost(JSON.stringify(post)));
-        })
-        return Promise.resolve(result);
-    } else {
-        alert("Ошибка HTTP: " + await response.text());
-        return Promise.reject(response.text());
+async function postData(postData, url) {
+    let response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: postServise.postToJSON(postData)
+    });
+    if (response.status === 200) {
+        return Promise.resolve();
     }
+    return Promise.reject(response);
+}
+
+async function deletePost(url, id) {
+    let response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: id})
+    });
+    if (response.status === 200) {
+        return Promise.resolve();
+    }
+    return Promise.reject(response);
+}
+
+async function getData(param, url) {
+    await fetch(url + "?" + param, {
+        method: 'GET'
+    }).then(response => {
+        console.log(response);
+        return postServise.JSONToPostArray(response);
+    }).catch(reason => {
+        //error
+    });
 }
 
 function makePage(firstPostNumber, postNumber, filter) {
     for (let i = 0; i < storage.length; i++) {
-        postsCollection.add(postsCollection.JSONToPost(storage.getItem(storage.key(i))));
+        postServise.add(postServise.JSONToPost(storage.getItem(storage.key(i))));
     }
     let paramString = createStringParam(firstPostNumber, postNumber, filter);
-    getData(paramString, "/posts/search")
-        .then((responseData) => {
-            responseData.forEach(post => {
-                postsCollection.add(post);
-            })
-        })
-        .catch((reason) => {
-            alert("error 1 " + reason);
-        });
-    let posts = postsCollection.getPage(firstPostNumber, postNumber, filter);
-    if (posts) {
-        view.redrawPosts(posts);
-    }
-    initializeFilter();
-    setPostEvents(posts);
-    if (view.isAuthorized()) {
-        let logOutBtn = document.querySelector('.logout-button');
-        logOutBtn.removeEventListener('click', modals.createSingInModal);
-        logOutBtn.addEventListener('click', modals.createLogOutModal);
-        initializeAddPostButton();
-    } else {
-        let signInBtn = document.querySelector('.login-button');
-        signInBtn.removeEventListener('click', modals.createLogOutModal);
-        signInBtn.addEventListener('click', modals.createSingInModal);
-    }
+    getData(paramString, "/posts/search").then(response => {
+        console.log(response);
+        return Promise.all(response.map(post => {
+            return postServise.add(post);
+        }));
+    }).then(()=>{
+        let posts = postServise.getPage(firstPostNumber, postNumber, filter);
+        if (posts) {
+            //modal.createErrorModal("text");
+            view.redrawPosts(posts);
+        }
+        initializeFilter();
+        setPostEvents(posts);
+        if (view.isAuthorized()) {
+            let logOutBtn = document.querySelector('.logout-button');
+            logOutBtn.removeEventListener('click', modals.createSingInModal);
+            logOutBtn.addEventListener('click', modals.createLogOutModal);
+            initializeAddPostButton();
+        } else {
+            let signInBtn = document.querySelector('.login-button');
+            signInBtn.removeEventListener('click', modals.createLogOutModal);
+            signInBtn.addEventListener('click', modals.createSingInModal);
+        }
+    }).catch(() =>{
+        //error
+    });
+    /*responseData.forEach(post => {
+        postServise.add(post);
+    })*/
+
+
 }
 
 function addPhoto(imageInputId, imageHolderId) {
@@ -266,9 +268,10 @@ function addPhoto(imageInputId, imageHolderId) {
             filePreview.innerHTML = `<img src="${e.target.result}" alt="Photo" class="file-photo">`;
         }
         reader.readAsDataURL(file);
-        postData(JSON.stringify(file), "/upload").then(function (value) {
+        postData(JSON.stringify(file), "/upload").then(value => {
             alert(value);
-        }).catch(function (reason) {
+        }).catch(reason => {
+            //error
             alert(reason);
         });
     }
@@ -359,9 +362,9 @@ function addComment(postId, markValue) {
     commentData.commentDate = new Date();
     commentData.commentMark = markValue;
     commentData.commentAuthor = view.getUser();
-    if (postsCollection.addComment(postId, commentData)) {
+    if (postServise.addComment(postId, commentData)) {
         _reloadComments(postId);
-        storage.setItem("post" + postId, postsCollection.postToJSON(postsCollection.get(postId)));
+        storage.setItem("post" + postId, postServise.postToJSON(postServise.get(postId)));
     }
 }
 
@@ -404,7 +407,7 @@ function redrawReviewButtons(mark) {
 }
 
 function _loadComments(postId) {
-    let post = postsCollection.get(postId);
+    let post = postServise.get(postId);
     let commArr = document.querySelector('[class="user-comments"]');
     if (post.comments) {
         post.comments.reverse();
@@ -496,19 +499,19 @@ function readInputFieldsEdit(postId) {
     if (validateUntil) {
         postEditions.validateUntil = new Date(validateUntil);
     }
-    postsCollection.edit(postId, postEditions);
-    postData(postsCollection.get(postId), "/post/edit").then(function (response) {
+    postServise.edit(postId, postEditions);
+    postData(postServise.get(postId), "/post/edit").then(function (response) {
         alert("succeed " + response);
     }).catch(function (reason) {
         alert("error 2" + reason);
     });
-    storage.setItem("post" + postId, postsCollection.postToJSON(postsCollection.get(postId)));
+    storage.setItem("post" + postId, postServise.postToJSON(postServise.get(postId)));
     makePage(0, 10);
     toggleModal();
 }
 
 function loadNextPosts() {
-    if (postsCollection.countPosts() / 10 + 1 >= +page.textContent + 1) {
+    if (postServise.countPosts() / 10 + 1 >= +page.textContent + 1) {
         makePage(skippedPost + countPosts, countPosts + 10);
         skippedPost += 10;
         page.textContent++;

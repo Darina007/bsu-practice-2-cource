@@ -456,8 +456,8 @@ let users = [
 window.storage = window.localStorage;
 if (!storage.length) {
     posts.forEach(post => {
-        storage.setItem("post" + post.id, postsCollection.postToJSON(post));
-        console.log(postsCollection.JSONToPost(storage.getItem("post"+post.id)));
+        storage.setItem("post" + post.id, postServise.postToJSON(post));
+        console.log(postServise.JSONToPost(storage.getItem("post"+post.id)));
     })
 }
 window.usersCollection.addAll(users);

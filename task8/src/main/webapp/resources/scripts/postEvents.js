@@ -5,7 +5,7 @@ class PostEvents {
             like.addEventListener('click',
                 evt => {
                     view.postViewer.pressLike(postId);
-                    storage.setItem("post" + postId, postsCollection.postToJSON(postsCollection.get(postId)));
+                    storage.setItem("post" + postId, postServise.postToJSON(postServise.get(postId)));
                     evt.stopPropagation();
                 }
             );
