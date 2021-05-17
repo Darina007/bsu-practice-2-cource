@@ -3,6 +3,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,10 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet("/posts/search")
-public class PostCollectionServlet extends HttpServlet {
+public class PostFilterServlet extends HttpServlet {
     private PostCollection posts;
-    private static Logger log = Logger.getLogger(PostCollectionServlet.class.getName());
-    public PostCollectionServlet() {
+    private static Logger log = Logger.getLogger(PostFilterServlet.class.getName());
+
+    public PostFilterServlet() {
         this.posts = new PostCollection(TestPosts.testPosts);
     }
 
@@ -25,11 +27,16 @@ public class PostCollectionServlet extends HttpServlet {
         List<Post> result = getFilteredPosts(request);
         response.setContentType(ConstantDictionary.CONTENT_TYPE);
         response.setCharacterEncoding(ConstantDictionary.CHARACTER_ENCODING);
+        response.setContentType("application/json");
         try {
             if (result.size() == 0) {
-                response.getWriter().write(ConstantDictionary.RESULT_NOT_FOUND);
+                //response.setStatus(404);
+                PrintWriter out = response.getWriter();
+                out.print(ConstantDictionary.RESULT_NOT_FOUND);
             } else {
-                response.getWriter().write(posts.toString(result));
+                response.setStatus(200);
+                PrintWriter out = response.getWriter();
+                out.print(posts.toJson());
             }
         } catch (IOException e) {
             log.log(Level.SEVERE, "Exception: ", e);

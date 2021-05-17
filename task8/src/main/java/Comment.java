@@ -1,35 +1,47 @@
+import com.google.gson.Gson;
 import lombok.Builder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Builder
-public class Comment {
-    private final String author;
-    private final String textComment;
-    private final int mark;
-    private final Date dateOfCreation;
+public class Comment implements postParser{
+    private final String commentAuthor;
+    private final String commentText;
+    private final int commentMark;
+    private final Date commentDate;
     private static final int MAX_MARK = 5;
     private static final int MIN_MARK = 1;
+    private static Logger log = Logger.getLogger(Comment.class.getName());
 
     public boolean isValidComment() {
-        return isAuthor() && isTextComment()
-               && isValidMark() && isDateOfCreation();
+        return getCommentAuthor() && getCommentText()
+               && isValidMark() && getCommentDate();
     }
 
-    private boolean isAuthor() {
-        return author != null;
+    private boolean getCommentAuthor() {
+        return commentAuthor != null;
     }
 
-    private boolean isTextComment() {
-        return textComment != null;
+    private boolean getCommentText() {
+        return commentText != null;
     }
 
     private boolean isValidMark() {
-        return mark <= MAX_MARK && mark >= MIN_MARK;
+        return commentMark <= MAX_MARK && commentMark >= MIN_MARK;
     }
 
-    private boolean isDateOfCreation() {
-        return dateOfCreation != null;
+    private boolean getCommentDate() {
+        return commentDate != null;
     }
 
+    public String toJson() {
+        String result;
+        Gson gson = new Gson();
+        result = replaceDateInJson(gson.toJson(this), this.commentDate);
+        return result;
+    }
 }

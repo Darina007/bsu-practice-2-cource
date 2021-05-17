@@ -1,5 +1,3 @@
-import com.google.gson.Gson;
-
 import java.util.*;
 
 public class PostCollection {
@@ -21,7 +19,7 @@ public class PostCollection {
             } else if (pair.getKey().equals(ConstantDictionary.KEY_CREATION_DATE)) {
                 if (pair.getValue() instanceof Date) {
                     posts.stream()
-                            .filter(post -> post.getCreationDate().equals(pair.getValue()))
+                            .filter(post -> post.getCreatedAt().equals(pair.getValue()))
                             .forEach(filteredPosts::add);
                 }
             } else if (pair.getKey().equals(ConstantDictionary.KEY_VALIDATE_UNTIL)) {
@@ -115,13 +113,13 @@ public class PostCollection {
         posts.clear();
     }
 
-    public String toString(List<Post> list) {
-        if (list.size() > 0) {
-            Gson gson = new Gson();
+    public String toJson() {
+        if (posts.size() > 0) {
             StringBuilder sb = new StringBuilder();
             sb.append("[");
-            for (Post post : list) {
-                sb.append(gson.toJson(post)).append(",");
+            for (Post post : posts) {
+                sb.append("\n").append(post.toString()).append(",");
+                sb.append(post.toJson()).append(",");
             }
             sb.append("]");
             return sb.toString().replace(",]", "]");

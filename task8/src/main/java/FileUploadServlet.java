@@ -25,7 +25,6 @@ public class FileUploadServlet extends HttpServlet {
                           HttpServletResponse response) {
         String applicationPath = request.getServletContext().getRealPath("");
         String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
-
         File fileSaveDir = new File(uploadFilePath);
         if (!fileSaveDir.exists()) {
             fileSaveDir.mkdirs();

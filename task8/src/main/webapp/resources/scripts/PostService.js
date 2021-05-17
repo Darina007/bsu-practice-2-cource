@@ -1,14 +1,10 @@
-class PostModel {
+class PostService {
     constructor(posts) {
         if (posts) {
             this._posts = posts.slice();
         } else {
             this._posts = [];
         }
-    }
-
-    getPosts() {
-        this.post = this._posts;
     }
 
     countPosts() {
@@ -19,11 +15,7 @@ class PostModel {
         return this._posts.find((item) => item.id === id);
     }
 
-    getCountPosts() {
-        return this._posts.length;
-    }
-
-    getPage(skip, top, filterConfig) {
+    async getPage(skip, top, filterConfig) {
         let countSkippedPosts = skip || 0;
         let countReceivedPosts = top || 10;
         let workingArray = [...this._posts];
@@ -71,19 +63,15 @@ class PostModel {
         return workingArray;
     }
 
-    add(post) {
-        if (PostModel._validate(post) && !this.get(post.id)) {
+    async add(post) {
+        if (PostService._validate(post) && !this.get(post.id)) {
             this._posts.push(post);
-            return true;
+            return Promise.resolve();
         }
-        return false;
+        return Promise.reject("Post not added");
     }
 
-    addAll(posts) {
-        posts.forEach((post) => this.add(post));
-    }
-
-    edit(id, changes) {
+    async edit(id, changes) {
         let mutablePost;
         if (this.get(id)) {
             mutablePost = Object.assign(this.get(id));
@@ -96,15 +84,15 @@ class PostModel {
                     }
                 }
             )
-            if (PostModel._validate(mutablePost) && this.get(id)) {
+            if (PostService._validate(mutablePost) && this.get(id)) {
                 let index = this._posts.indexOf(this.get(id));
                 if (index !== -1) {
                     this._posts.splice(index, 1, mutablePost);
                 }
-                return true;
+                return Promise.resolve(true);
             }
         }
-        return false;
+        return Promise.reject(false);
     }
 
     static _validate(post) {
@@ -136,50 +124,52 @@ class PostModel {
         return true;
     }
 
-    addComment(id, commentData) {
+    async addComment(id, commentData) {
         let post = this.get(id);
-        if (PostModel._validateComment(commentData)) {
+        if (PostService._validateComment(commentData)) {
             post.comments.push(commentData);
-            return true;
+            return Promise.resolve(true);
         }
-        return false;
+        return Promise.reject(false);
     }
 
-    removePost(id) {
+    async removePost(id) {
         if (this.get(id)) {
             let index = this._posts.indexOf(this.get(id));
             this._posts.splice(index, 1, this.get(id));
-            return true;
+            return Promise.resolve(true);
         }
-        return false;
+        return Promise.reject(false);
     }
 
-    clear() {
-        this._posts = [];
-    }
-
-    postToJSON(post) {
-        /*if (!PostModel._validate(post)) {
-            return;
-        }*/
+    async postToJSON(post) {
+        if (!PostService._validate(post)) {
+            return Promise.reject("Invalid post");
+        }
         return JSON.stringify(post);
     }
 
-    JSONToPost(post) {
+    async JSONToPost(post) {
         let postObj = JSON.parse(post);
         if (postObj.comments) {
             postObj.comments.forEach(commentData => {
                 commentData.commentDate = new Date(commentData.commentDate);
+                if (!PostService._validateComment(commentData)) {
+                    return Promise.reject("Invalid comment")
+                }
             })
         } else {
             postObj.comments = [];
         }
         postObj.validateUntil = new Date(postObj.validateUntil);
         postObj.createdAt = new Date(postObj.createdAt);
-        return postObj;
+        if (!PostService._validate(postObj)) {
+            return Promise.reject("Invalid post");
+        }
+        return Promise.resolve(postObj);
     }
 }
 
 (() => {
-    window.postsCollection = new PostModel();
+    window.postServise = new PostService();
 })();

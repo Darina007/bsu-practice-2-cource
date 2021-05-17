@@ -1,15 +1,20 @@
+import com.google.gson.Gson;
 import lombok.Builder;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 
 @Builder
-public class Post {
+public class Post implements postParser {
     private final String id;
     private final String author;
     private String description;
-    private final Date creationDate;
+    private final Date createdAt;
     private Date validateUntil;
     private String photoLink;
     private List<String> hashTags;
@@ -46,7 +51,7 @@ public class Post {
     }
 
     public boolean isDateOfCreation() {
-        return creationDate != null;
+        return createdAt != null;
     }
 
     public boolean isValidDescription() {
@@ -73,8 +78,8 @@ public class Post {
         return description;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     public Date getValidateUntil() {
@@ -145,7 +150,7 @@ public class Post {
         json.put("author", author);
         String photoLink = isPhotoLink() ? this.photoLink : "";
         json.put("photoLink", photoLink);
-        json.put("Date of creation", creationDate);
+        json.put("Date of creation", createdAt);
         json.put("Date of validity", validateUntil);
         String likes = isLikes() ? this.likes.toString() : "";
         json.put("likes", likes);
@@ -182,5 +187,13 @@ public class Post {
 
     public void setDiscount(int discount) {
         this.discount = discount;
+    }
+
+    public String toJson() {
+        String result;
+        Gson gson = new Gson();
+        result = replaceDateInJson(gson.toJson(this), this.validateUntil);
+        result = replaceDateInJson(result, this.createdAt);
+        return result;
     }
 }
