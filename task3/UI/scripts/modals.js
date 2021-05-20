@@ -9,19 +9,18 @@ class Modals {
     }
 
     toggleModal() {
-        this.modal.classList.toggle('show-modal');
-
+        modals.modal.classList.toggle('show-modal');
     }
 
     removeModal() {
         modals.toggleModal();
-        while (this.modal.firstChild) {
-            this.modal.removeChild(this.modal.firstChild);
+        while (modals.modal.firstChild) {
+            modals.modal.removeChild(modals.modal.firstChild);
         }
     }
 
     windowOnClick(event) {
-        if (event.target === this.modal) {
+        if (event.target === modals.modal) {
             modals.toggleModal();
             modals.removeModal();
         }
@@ -30,8 +29,8 @@ class Modals {
     createSingInModal() {
         let signInTemplate = document.getElementById("sign-in-template");
         let signInModal = document.importNode(signInTemplate.content, true);
-        this.modal.appendChild(signInModal);
-        modals.closeModal(this.modal);
+        modals.modal.appendChild(signInModal);
+        modals.closeModal(modals.modal);
         const form = document.getElementById("sign-in-form");
         form.onsubmit = () => {
             return false;
@@ -42,9 +41,9 @@ class Modals {
     createLogOutModal() {
         let logOutTemplate = document.getElementById("log-out-template");
         let logOutModal = document.importNode(logOutTemplate.content, true);
-        this.modal.appendChild(logOutModal);
+        modals.modal.appendChild(logOutModal);
         let yesBtn = document.querySelector('.log-button');
-        modals.closeModal(this.modal);
+        modals.closeModal(modals.modal);
         yesBtn.addEventListener('click', () => {
             view.unFillUser();
             feedEvents.makePage();
@@ -55,9 +54,9 @@ class Modals {
     createDeleteModal(postId) {
         let deleteTemplate = document.getElementById("delete-modal-template");
         let deleteModal = document.importNode(deleteTemplate.content, true);
-        this.modal.appendChild(deleteModal);
+        modals.modal.appendChild(deleteModal);
         let yesBtn = document.querySelector('.log-button');
-        modals.closeModal(this.modal);
+        modals.closeModal(modals.modal);
         yesBtn.addEventListener('click', () => {
             view.postViewer.deletePost(postId);
             postsCollection.removePost(postId);
@@ -70,9 +69,9 @@ class Modals {
     createEditModal(postId) {
         let editTemplate = document.getElementById("edit-modal-template");
         let editModal = document.importNode(editTemplate.content, true);
-        this._fillEditFields(postId, editModal);
-        this.modal.appendChild(editModal);
-        window.modals.closeModal(this.modal);
+        modals._fillEditFields(postId, editModal);
+        modals.modal.appendChild(editModal);
+        window.modals.closeModal(modals.modal);
         const form = document.getElementById("edit-form");
         form.onsubmit = () => {
             return false;
@@ -94,7 +93,7 @@ class Modals {
         let text = document.createElement("p");
         text.textContent = message;
         messageContainer.appendChild(text);
-        this.modal.appendChild(errorModal);
+        modals.modal.appendChild(errorModal);
         modals.removeModal();
     }
 

@@ -8,20 +8,20 @@ class FeedEvents {
     initializeAddPostButton() {
         let button = document.getElementById("add-post");
         button.addEventListener("click", () => {
-            this.initializeAddPostArea();
+            feedEvents.initializeAddPostArea();
         })
     }
 
     initializeAddPostArea() {
         let addPostArea = document.querySelector('[class = "add-post-form"]');
         if (!addPostArea) {
-            addPostArea = this.drawPostArea();
+            addPostArea = feedEvents.drawPostArea();
             postEvent.setNewPostEventListener(addPostArea);
             document.getElementById("new-post-form").onsubmit = () => {
                 return false;
             }
         } else {
-            this.removePostArea();
+            feedEvents.removePostArea();
         }
     }
 
@@ -51,17 +51,17 @@ class FeedEvents {
 
     initializeFilter() {
         const form = document.getElementById("filter");
-        this.fillDateFilterFields();
+        feedEvents.fillDateFilterFields();
         form.onsubmit = () => {
             return false;
         };
         form.addEventListener("submit", () => {
-            const filterConf = this.fillFilter();
+            const filterConf = feedEvents.fillFilter();
             view.setFilter(filterConf);
             let filter = view.getFilter();
-            this.makePage(0, 10, filter);
+            feedEvents.makePage(0, 10, filter);
             form.reset();
-            this.fillDateFilterFields();
+            feedEvents.fillDateFilterFields();
         });
     }
 
@@ -89,7 +89,7 @@ class FeedEvents {
         let _addPostTemplate = document.getElementById("new-post-template");
         dataField.className = "add-post-form";
         let postForm = document.importNode(_addPostTemplate.content, true);
-        this.fillAddPostFields(postForm);
+        feedEvents.fillAddPostFields(postForm);
         dataField.appendChild(postForm);
         container.insertBefore(dataField, container.firstChild);
         return dataField;
@@ -153,13 +153,13 @@ class FeedEvents {
     }
 
     addNewPost() {
-        let newPost = this.fillNewPostData();
+        let newPost = feedEvents.fillNewPostData();
         if (postsCollection.add(newPost)) {
             storage.setItem("post" + newPost.id, postsCollection.postToJSON(newPost));
-            this.removePostArea();
-            this.makePage(0, this.countPosts);
+            feedEvents.removePostArea();
+            feedEvents.makePage(0, feedEvents.countPosts);
         } else {
-            this.removePostArea();
+            feedEvents.removePostArea();
             modals.createErrorModal("Error adding post")
         }
     }
@@ -172,15 +172,15 @@ class FeedEvents {
         if (posts) {
             view.redrawPosts(posts);
         }
-        this.initializeFilter();
-        this.setPostEvents(posts);
-        this.next.addEventListener('click', this.loadNextPosts);
-        this.prev.addEventListener('click', this.loadPreviousPosts);
+        feedEvents.initializeFilter();
+        feedEvents.setPostEvents(posts);
+        feedEvents.next.addEventListener('click', feedEvents.loadNextPosts);
+        feedEvents.prev.addEventListener('click', feedEvents.loadPreviousPosts);
         if (view.isAuthorized()) {
             let logOutBtn = document.querySelector('.logout-button');
             logOutBtn.removeEventListener('click', modals.createSingInModal);
             logOutBtn.addEventListener('click', modals.createLogOutModal);
-            this.initializeAddPostButton();
+            feedEvents.initializeAddPostButton();
         } else {
             let signInBtn = document.querySelector('.login-button');
             signInBtn.removeEventListener('click', modals.createLogOutModal);
@@ -193,9 +193,9 @@ class FeedEvents {
         let container = post.parentNode;
         let commentArea = document.querySelector('[class = "add-comment"]');
         if (!commentArea) {
-            this.drawCommentContainer(container, postId);
-            this.createCommentMarkButtons();
-            this.initializeCommentForm(postId);
+            feedEvents.drawCommentContainer(container, postId);
+            feedEvents.createCommentMarkButtons();
+            feedEvents.initializeCommentForm(postId);
         } else {
             container.classList.remove("post-dedicated");
             commentArea.remove();
@@ -204,11 +204,11 @@ class FeedEvents {
 
     drawCommentContainer(container, postId) {
         container.classList.add("post-dedicated");
-        let commentArea = this.drawCommentArea();
+        let commentArea = feedEvents.drawCommentArea();
         container.appendChild(commentArea);
-        this._loadComments(postId);
+        feedEvents._loadComments(postId);
         let addCommentArea = document.querySelector('[class="new-user-comment"]');
-        this.drawAddCommentArea(addCommentArea);
+        feedEvents.drawAddCommentArea(addCommentArea);
     }
 
     drawCommentArea() {
@@ -242,17 +242,17 @@ class FeedEvents {
             return false;
         }
         commentForm.addEventListener("submit", () => {
-            let mark = this.fillCommentMark();
+            let mark = feedEvents.fillCommentMark();
             this.addComment(postId, mark);
             commentForm.reset();
-            this.redrawReviewButtons(0);
+            feedEvents.redrawReviewButtons(0);
         })
     }
 
     updateCommentMark() {
         let button = event.target;
         let numb = button.id.substr(button.id.length - 1);
-        this.redrawReviewButtons(numb);
+        feedEvents.redrawReviewButtons(numb);
         return numb;
     }
 
@@ -274,16 +274,16 @@ class FeedEvents {
         commentData.commentMark = markValue;
         commentData.commentAuthor = view.getUser();
         if (postsCollection.addComment(postId, commentData)) {
-            this._reloadComments(postId);
+            feedEvents._reloadComments(postId);
             storage.setItem("post" + postId, postsCollection.postToJSON(postsCollection.get(postId)));
         }
     }
 
     createCommentMarkButtons() {
         let mark = document.querySelector('[class="review-buttons"]');
-        this.drawReviewButtons(mark);
+        feedEvents.drawReviewButtons(mark);
         mark.addEventListener('click', () => {
-            this.updateCommentMark();
+            feedEvents.updateCommentMark();
         })
     }
 
@@ -306,14 +306,14 @@ class FeedEvents {
 
     redrawReviewButtons(mark) {
         let buttons = document.querySelector('[class="review-buttons"]');
-        let flag = this.isClearReviewButton(buttons);
+        let flag = feedEvents.isClearReviewButton(buttons);
         while (buttons.firstChild) {
             buttons.removeChild(buttons.firstChild);
         }
         if (flag && +mark === 1) {
-            this.drawReviewButtons(buttons, 0);
+            feedEvents.drawReviewButtons(buttons, 0);
         } else {
-            this.drawReviewButtons(buttons, mark);
+            feedEvents.drawReviewButtons(buttons, mark);
         }
     }
 
@@ -329,7 +329,7 @@ class FeedEvents {
                 let commentTemplate = document.getElementById("comment-template");
                 let commentField = document.importNode(commentTemplate.content, true);
                 comm.appendChild(commentField);
-                this._fillComment(comment, comm);
+                feedEvents._fillComment(comment, comm);
             })
         }
     }
@@ -341,7 +341,7 @@ class FeedEvents {
                 commArr.removeChild(commArr.lastChild);
             }
         }
-        this._loadComments(postId);
+        feedEvents._loadComments(postId);
     }
 
     _fillComment(comment, comm) {
@@ -367,20 +367,20 @@ class FeedEvents {
     readInputFieldsLogIn() {
         const username = document.getElementsByClassName('username-input').item(0).value;
         if (!username) {
-            this.showWarnings(".username-warning");
+            feedEvents.showWarnings(".username-warning");
         }
         const password = document.getElementsByClassName('password').item(0).value;
         if (!password) {
-            this.showWarnings(".password-warning");
+            feedEvents.showWarnings(".password-warning");
         }
         if (password && username) {
             const user = usersCollection.getUser(username, password);
             if (user) {
                 view.fillUser(user.username);
-                this.makePage(0, 10);
+                feedEvents.makePage(0, 10);
                 modals.removeModal();
             } else {
-                this.showWarnings(".sign-in-warning");
+                feedEvents.showWarnings(".sign-in-warning");
             }
         }
     }
@@ -412,23 +412,23 @@ class FeedEvents {
         }
         postsCollection.edit(postId, postEditions);
         storage.setItem("post" + postId, postsCollection.postToJSON(postsCollection.get(postId)));
-        this.makePage(0, 10);
+        feedEvents.makePage(0, 10);
         modals.removeModal();
     }
 
     loadNextPosts() {
-        if (postsCollection.countPosts() / 10 + 1 >= +page.textContent + 1) {
-            this.makePage(this.skippedPost + this.countPosts, this.countPosts + 10);
-            this.skippedPost += 10;
-            this.page.textContent++;
+        if (postsCollection.countPosts() / 10 + 1 >= +feedEvents.page.textContent + 1) {
+            feedEvents.makePage(feedEvents.skippedPost + feedEvents.countPosts, feedEvents.countPosts + 10);
+            feedEvents.skippedPost += 10;
+            feedEvents.page.textContent++;
         }
     }
 
     loadPreviousPosts() {
-        if (+this.page.textContent - 1 > 0) {
-            this.makePage(this.skippedPost - this.countPosts, this.countPosts - 10);
-            this.skippedPost -= 10;
-            this.page.textContent--;
+        if (+feedEvents.page.textContent - 1 > 0) {
+            feedEvents.makePage(feedEvents.skippedPost - feedEvents.countPosts, feedEvents.countPosts - 10);
+            feedEvents.skippedPost -= 10;
+            feedEvents.page.textContent--;
         }
     }
 
