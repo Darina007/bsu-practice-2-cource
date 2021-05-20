@@ -15,7 +15,7 @@ class PostEvents {
         if (comment) {
             comment.addEventListener('click',
                 evt => {
-                    createCommentArea(postId);
+                    feedEvents.createCommentArea(postId);
                     evt.stopPropagation();
                 }
             );
@@ -44,7 +44,7 @@ class PostEvents {
         if (add) {
             add.addEventListener('submit',
                 evt => {
-                    addNewPost();
+                    feedEvents.addNewPost();
                     evt.stopPropagation();
                 }
             );
@@ -53,7 +53,7 @@ class PostEvents {
         if (addPost) {
             addPost.addEventListener('click',
                 evt => {
-                    addPhoto('img-file', 'file-preview');
+                    feedEvents.addPhoto('img-file', 'file-preview');
                     evt.stopPropagation();
                 }
             );

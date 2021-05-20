@@ -457,8 +457,7 @@ window.storage = window.localStorage;
 if (!storage.length) {
     posts.forEach(post => {
         storage.setItem("post" + post.id, postsCollection.postToJSON(post));
-        console.log(postsCollection.JSONToPost(storage.getItem("post"+post.id)));
     })
 }
 window.usersCollection.addAll(users);
-makePage(0, 10);
+feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts);

@@ -29,11 +29,7 @@ class PostModel {
                 workingArray.sort((firstPost, secondPost) => secondPost.author - firstPost.author);
             }
             if (filterConfig.createdAt) {
-                workingArray = workingArray.filter(value => {
-                    return value.createdAt.getDate() === filterConfig.createdAt.getDate()
-                        && value.createdAt.getMonth() === filterConfig.createdAt.getMonth()
-                        && value.createdAt.getFullYear() === filterConfig.createdAt.getFullYear();
-                });
+                workingArray = workingArray.filter(value => value.createdAt >= filterConfig.createdAt);
                 workingArray.sort((firstPost, secondPost) => secondPost.createdAt - firstPost.createdAt);
             }
             if (filterConfig.hashTags) {

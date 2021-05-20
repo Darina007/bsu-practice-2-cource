@@ -2,6 +2,7 @@
     display: flex;
     flex: 1 1 45%;
     flex-direction: column;
+    max-width: 50%;
     max-height: 20rem;
     min-height: 15rem;
     margin: 20px;

@@ -68,7 +68,7 @@
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
 
-.username-input-div, .password-input-div, h1 {
+.username-input-div, .password-input-div, h1, #text-error {
     justify-content: center;
     flex-direction: column;
     text-align: center;
@@ -91,7 +91,7 @@
     justify-content: center;
 }
 
-.log-button, .edit-modal-button {
+.log-button {
     flex: 0 0 auto;
     align-self: center;
     margin: 15px;
@@ -110,6 +110,6 @@
     padding: 5px;
 }
 
-.sign-in-modal-button{
+.delete-modal-button{
     text-align: center;
 }

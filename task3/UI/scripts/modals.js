@@ -1,85 +1,101 @@
 class Modals {
+    modal = document.querySelector('.modal');
+
     closeModal(modal) {
         let closeBtn = document.querySelector('.close');
         modal.classList.toggle('show-modal');
-        closeBtn.addEventListener('click', toggleModal);
-        window.addEventListener('click', windowOnClick);
+        closeBtn.addEventListener('click', modals.removeModal);
+        addEventListener('click', modals.windowOnClick);
+    }
+
+    toggleModal() {
+        this.modal.classList.toggle('show-modal');
+
+    }
+
+    removeModal() {
+        modals.toggleModal();
+        while (this.modal.firstChild) {
+            this.modal.removeChild(this.modal.firstChild);
+        }
+    }
+
+    windowOnClick(event) {
+        if (event.target === this.modal) {
+            modals.toggleModal();
+            modals.removeModal();
+        }
     }
 
     createSingInModal() {
-        let modal = document.getElementsByClassName("modal").item(0);
         let signInTemplate = document.getElementById("sign-in-template");
         let signInModal = document.importNode(signInTemplate.content, true);
-        modal.appendChild(signInModal);
-        window.modals.closeModal(modal);
+        this.modal.appendChild(signInModal);
+        modals.closeModal(this.modal);
         const form = document.getElementById("sign-in-form");
         form.onsubmit = () => {
             return false;
         };
-        form.addEventListener("submit", readInputFieldsLogIn);
+        form.addEventListener("submit", feedEvents.readInputFieldsLogIn);
     }
 
     createLogOutModal() {
-        let modal = document.getElementsByClassName('modal').item(0);
         let logOutTemplate = document.getElementById("log-out-template");
         let logOutModal = document.importNode(logOutTemplate.content, true);
-        modal.appendChild(logOutModal);
+        this.modal.appendChild(logOutModal);
         let yesBtn = document.querySelector('.log-button');
-        window.modals.closeModal(modal);
+        modals.closeModal(this.modal);
         yesBtn.addEventListener('click', () => {
-            window.view.unFillUser();
-            makePage();
-            toggleModal();
+            view.unFillUser();
+            feedEvents.makePage();
+            modals.removeModal();
         });
     }
 
     createDeleteModal(postId) {
-        let modal = document.getElementsByClassName('modal').item(0);
         let deleteTemplate = document.getElementById("delete-modal-template");
         let deleteModal = document.importNode(deleteTemplate.content, true);
-        modal.appendChild(deleteModal);
-        let yesBtn = document.querySelector('.sign-in-modal-button');
-        modals.closeModal(modal);
+        this.modal.appendChild(deleteModal);
+        let yesBtn = document.querySelector('.log-button');
+        modals.closeModal(this.modal);
         yesBtn.addEventListener('click', () => {
             view.postViewer.deletePost(postId);
             postsCollection.removePost(postId);
             storage.removeItem("post" + postId);
-            toggleModal();
+            modals.removeModal();
         });
 
     }
 
     createEditModal(postId) {
-        let modal = document.getElementsByClassName('modal').item(0);
         let editTemplate = document.getElementById("edit-modal-template");
         let editModal = document.importNode(editTemplate.content, true);
         this._fillEditFields(postId, editModal);
-        modal.appendChild(editModal);
-        window.modals.closeModal(modal);
+        this.modal.appendChild(editModal);
+        window.modals.closeModal(this.modal);
         const form = document.getElementById("edit-form");
         form.onsubmit = () => {
             return false;
         };
         const editPhoto = document.getElementById("edit-img-file");
         editPhoto.addEventListener('click', () => {
-                addPhoto('edit-img-file', 'edit-file-preview');
+                feedEvents.addPhoto('edit-img-file', 'edit-file-preview');
             }
         );
         form.addEventListener('submit', () => {
-            readInputFieldsEdit(postId);
+            feedEvents.readInputFieldsEdit(postId);
         });
     }
 
     createErrorModal(message) {
-        let modal = document.getElementsByClassName('modal').item(0);
         let errorTemplate = document.getElementById("error-template");
         let errorModal = document.importNode(errorTemplate.content, true);
         let messageContainer = errorModal.getElementById("error-text");
         let text = document.createElement("p");
         text.textContent = message;
         messageContainer.appendChild(text);
-        modal.appendChild(errorModal);
-        window.modals.closeModal(modal);
+        this.modal.appendChild(errorModal);
+        modals.removeModal();
     }
 
     _fillEditFields(postId, editModal) {
@@ -96,7 +112,6 @@ class Modals {
         discount.textContent = editPost.discount;
     }
 }
-
 
 (() => {
     window.modals = new Modals();

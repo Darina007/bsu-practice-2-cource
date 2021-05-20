@@ -114,7 +114,36 @@
     </div>
 </footer>
 <div class="modal"></div>
-<template id="add-new-post-template">
+<template id="sign-in-template">
+    <div class="modal-content" id="sign-in">
+        <span class="close">×</span>
+        <h1 class="modal-text">Sign in</h1>
+        <form id="sign-in-form">
+            <div class="username-input-div">
+                <p class="username-warning">There is no such username. Try again.</p>
+                <input class="username-input" placeholder=" username">
+            </div>
+            <div class="password-input-div">
+                <p class="password-warning">Incorrect password. Try again.</p>
+                <input class="password" type="password" placeholder=" password">
+            </div>
+            <div class="log-button-area">
+                <p class="sign-in-warning">There is no such user. Try again.</p>
+                <button type="submit" class="log-button">Sign in</button>
+            </div>
+        </form>
+    </div>
+</template>
+<template id="log-out-template">
+    <div class="modal-content" id="log-out">
+        <span class="close">×</span>
+        <h1 class="modal-text">Are you sure you want out?</h1>
+        <div class="log-button-area">
+            <button class="log-button"><strong>Yes</strong></button>
+        </div>
+    </div>
+</template>
+<template id="new-post-template">
     <form id="new-post-form">
         <div class="post-add">
             <div class="first-post-raw">
@@ -169,53 +198,25 @@
         <div id="comment-mark"></div>
     </div>
 </template>
-<template id="sign-in-template">
-    <div class="modal-content">
-        <span class="close">×</span>
-        <h1 class="modal-text">Sign in</h1>
-        <form id="sign-in-form">
-            <div class="username-input-div">
-                <p class="username-warning">There is no such username. Try again.</p>
-                <input class="username-input" placeholder=" username">
-            </div>
-            <div class="password-input-div">
-                <p class="password-warning">Incorrect password. Try again.</p>
-                <input class="password" type="password" placeholder=" password">
-            </div>
-            <div class="log-button-area">
-                <p class="sign-in-warning">There is no such user. Try again.</p>
-                <button type="submit" class="log-button">Sign in</button>
-            </div>
-        </form>
-    </div>
-</template>
-<template id="log-out-template">
-    <div class="modal-content">
-        <span class="close">×</span>
-        <h1 class="modal-text">Are you sure you want out?</h1>
-        <div class="log-button-area">
-            <button class="log-button"><strong>Yes</strong></button>
-        </div>
-    </div>
-</template>
-<template id="error-template">
-    <div class="modal-content">
-        <span class="close">×</span>
-        <h1 class="modal-text">Error</h1>
-        <div class="description" id="error-text"></div>
-    </div>
-</template>
 <template id="delete-modal-template">
-    <div class="modal-content">
+    <div class="modal-content" id="delete">
         <span class="close">×</span>
         <h1 class="modal-text">Are you sure you want to delete this post?</h1>
-        <div class="sign-in-modal-button">
+        <div class="delete-modal-button">
             <button class="log-button"><strong>Yes</strong></button>
         </div>
+    </div>
+</template>
+<template id="error-modal-template">
+    <div class="modal-content" id="error">
+        <span class="close">×</span>
+        <h1 class="modal-text">Error</h1>
+        <div id="text-error"></div>
+        <button class="log-button"><strong>Ok</strong></button>
     </div>
 </template>
 <template id="edit-modal-template">
-    <div class="modal-content-edit">
+    <div class="modal-content-edit" id="edit">
         <span class="close">×</span>
         <h1 class="modal-text">Editing</h1>
         <form id="edit-form">
@@ -224,7 +225,8 @@
                     <div class="first-post-column">
                         <div id="edit-file-preview" class="file-preview"></div>
                         <div class="file">
-                            <input id="edit-img-file" accept=".img, .jpg, .png" type="file" name="image" class="input-file"
+                            <input id="edit-img-file" accept=".img, .jpg, .png" type="file" name="image"
+                                   class="input-file"
                                    src="img/post_img.png">
                         </div>
                     </div>
@@ -243,9 +245,7 @@
                     <textarea class="sale" id="edit-discount-field"></textarea>
                 </div>
             </div>
-            <div class="load-more-posts">
-                <button type="submit" class="edit-modal-button">Edit</button>
-            </div>
+            <button type="submit" class="log-button">Edit</button>
         </form>
     </div>
 </template>
