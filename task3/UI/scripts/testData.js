@@ -1,130 +1,15 @@
-class AdCollection {
-    constructor(adList) {
-        if (adList) {
-            this._adList = adList.slice();
-        } else {
-            this._adList = [];
-        }
-    }
-
-    add(adItem) {
-        if (AdCollection._validate(adItem) && !this.get(adItem.id)) {
-            this._adList.push(adItem);
-            return true;
-        }
-        return false;
-    }
-
-    addAll(adList) {
-        let notValidPosts = [];
-        adList.forEach((post) => {
-            if (AdCollection._validate(post) && !this.get(post.id)) {
-                this._adList.push(post);
-            } else {
-                notValidPosts.push(post);
-            }
-        })
-        return notValidPosts;
-    }
-
-    getPage(skip, top, filterConfig) {
-        let countSkippedPosts = skip || 0;
-        let countReceivedPosts = top || 10;
-        let workingArray = [...this._adList];
-        if (filterConfig) {
-            if (filterConfig.author) {
-                workingArray = workingArray.filter(value => value.author === filterConfig.author)
-            }
-            if (filterConfig.createdAt) {
-                workingArray = workingArray.filter(value => {
-                    return value.createdAt.getDate() === filterConfig.createdAt.getDate()
-                        && value.createdAt.getMonth() === filterConfig.createdAt.getMonth()
-                        && value.createdAt.getFullYear() === filterConfig.createdAt.getFullYear();
-                })
-            }
-            if (filterConfig.tags) {
-                workingArray = workingArray.filter(value => {
-                    let flag = false;
-                    value.hashTags.forEach(tag => {
-                            if (filterConfig.tags.includes(tag)) {
-                                flag = true;
-                            }
-                        }
-                    )
-                    return flag;
-                })
-            }
-            if (filterConfig.validateUntil) {
-                workingArray = workingArray.filter(value => value.validateUntil >= filterConfig.validateUntil)
-            }
-            if (filterConfig.discount) {
-                workingArray = workingArray.filter(value => value.discount >= filterConfig.discount)
-            }
-            if (filterConfig.rating) {
-                workingArray = workingArray.filter(value => value.rating >= filterConfig.rating)
-            }
-        }
-
-        workingArray.sort((firstPost, secondPost) => secondPost.createdAt - firstPost.createdAt);
-        workingArray = workingArray.slice(countSkippedPosts, countSkippedPosts + countReceivedPosts);
-        return workingArray;
-    }
-
-    get(id) {
-        return this._adList.find((item) => item.id === id);
-    }
-
-    edit(id, adItem) {
-        let mutablePost;
-        if (this.get(id)) {
-            mutablePost = Object.assign(this.get(id));
-        }
-        let mutableFields = Object.keys(adItem);
-        if (mutablePost) {
-            mutableFields.forEach((field) => {
-                    if (field !== 'id' && field !== 'createdAt' && field !== 'author') {
-                        mutablePost[field] = adItem[field];
-                    }
-                }
-            )
-            if (AdCollection._validate(mutablePost) && this.get(id)) {
-                let index = this._adList.indexOf(this.get(id));
-                if (index !== -1) {
-                    this._adList.splice(index, 1, mutablePost);
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static _validate(adItem) {
-        let flag = false;
-        if (adItem.id && adItem.description
-            && adItem.author && adItem.createdAt
-            && (adItem.validateUntil - adItem.createdAt) > 0
-            && adItem.discount > 0 && adItem.discount <= 100) {
-            if (adItem.author.length !== 0 && adItem.description.length < 200) {
-                flag = true;
-            }
-        }
-        return flag;
-    }
-
-    remove(id) {
-        return this._adList.splice(this._adList.findIndex(item => item.id === id), 1);
-    }
-
-    clearAll() {
-        this._adList = [];
-    }
-
-    clear(skip, top, filterConfig) {
-        let removablePosts = this.getPage(skip, top, filterConfig);
-        removablePosts.forEach(post => this._adList.splice(this._adList.indexOf(post), this._adList.length))
-    }
-}
-
+//--------Info about post-------------
+/* id: required field
+description: required field (length < 200)
+createdAt: required field
+validateUntil: required field
+author: required field
+photoLink: optional field
+hashTags: optional field
+discount: required field (in percent)
+rating: optional field (from 1 to 5)
+likes: optional field
+comments: optional field*/
 
 let posts = [
     {
@@ -138,6 +23,12 @@ let posts = [
         discount: 12,
         rating: 2,
         likes: ['Kitty_love', 'Гитарный гений', 'Соловьева Евгения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '2',
@@ -150,6 +41,18 @@ let posts = [
         discount: 100,
         rating: 5,
         likes: ['Иванов Иван'],
+        comments: [{
+            commentAuthor: 'Иванов Иван',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'I like it!',
+            commentMark: 5
+        },
+            {
+                commentAuthor: 'Соловьева Евгения',
+                commentDate: new Date('2021-03-20T23:00:00'),
+                commentText: 'I have two cats and i need more!!!',
+                commentMark: 5
+            }]
     },
     {
         id: '3',
@@ -162,6 +65,12 @@ let posts = [
         discount: 25,
         rating: 3,
         likes: ['Иванов Иван', 'Соловьева Евгения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '4',
@@ -174,6 +83,7 @@ let posts = [
         discount: 30,
         rating: 2,
         likes: ['Иванов Иван'],
+        comments: []
     },
     {
         id: '5',
@@ -186,6 +96,7 @@ let posts = [
         discount: 12,
         rating: 4,
         likes: ['Иванов Иван', 'Соловьева Евгения', 'Соколов Иван', 'Lylalyuk Anna'],
+        comments: []
     },
     {
         id: '6',
@@ -198,6 +109,12 @@ let posts = [
         discount: 52,
         rating: 1,
         likes: ['Соколов Иван', 'Lylalyuk Anna'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '7',
@@ -210,6 +127,7 @@ let posts = [
         discount: 80,
         rating: 5,
         likes: ['Соловьева Евгения', 'Lylalyuk Anna'],
+        comments: []
     },
     {
         id: '8',
@@ -222,6 +140,12 @@ let posts = [
         discount: 60,
         rating: 3,
         likes: ['Соколов Иван'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '9',
@@ -234,6 +158,7 @@ let posts = [
         discount: 95,
         rating: 4,
         likes: ['Иванов Александр', 'Попова Ксения'],
+        comments: []
     },
     {
         id: '10',
@@ -246,6 +171,7 @@ let posts = [
         discount: 10,
         rating: 2,
         likes: ['Джонатан Трапп', 'Соколов Иван', 'Соколов Иван'],
+        comments: []
     },
     {
         id: '11',
@@ -258,6 +184,12 @@ let posts = [
         discount: 22,
         rating: 5,
         likes: ['Иванов Александр'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '12',
@@ -270,6 +202,7 @@ let posts = [
         discount: 5,
         rating: 2,
         likes: ['Соколов Иван', 'Джонатан Трапп'],
+        comments: []
     },
     {
         id: '13',
@@ -282,6 +215,12 @@ let posts = [
         discount: 12,
         rating: 2,
         likes: ['Соловьева Евгения', 'Иванов Александр'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '14',
@@ -294,6 +233,7 @@ let posts = [
         discount: 32,
         rating: 3,
         likes: ['Соколов Иван'],
+        comments: []
     },
     {
         id: '15',
@@ -303,19 +243,28 @@ let posts = [
         author: 'Player',
         photoLink: 'https://opt-1289634.ssl.1c-bitrix-cdn.ru/upload/iblock/790/7906fe4ed570929ca640580f05a7b4f6.jpg?1562573455190287',
         hashTags: ['guitar', 'learning_online'],
+        discount: 42,
+        rating: 3,
         likes: ['Иванов Александр'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '16',
         description: 'В центре Львова, в его исторической части расположен четырехзвездочный отель Швейцарский.',
         createdAt: new Date('2021-03-21T22:00:00'),
-        validateUntil: new Date('2021-5-23T23:00:00'),
+        validateUntil: new Date('2021-05-23T23:00:00'),
         author: 'Соловьева Евгения',
-        photoLink: null,
+        photoLink: 'null',
         hashTags: ['tourist', 'love'],
         discount: 44,
         rating: 3,
         likes: ['Соколов Иван'],
+        comments: []
     },
     {
         id: '17',
@@ -323,11 +272,12 @@ let posts = [
         createdAt: new Date('2020-10-13T23:00:00'),
         validateUntil: new Date('2021-10-23T23:00:00'),
         author: 'Иванов Александр',
-        photoLink: 'http://files.library.by/images/files/1476356097.jpg',
+        photoLink: 'https://files.library.by/images/files/1476356097.jpg',
         hashTags: ['game', 'cards'],
         discount: 31,
         rating: 3,
         likes: ['Попова Ксения'],
+        comments: []
     },
     {
         id: '18',
@@ -340,6 +290,12 @@ let posts = [
         discount: 72,
         rating: 3,
         likes: ['Соколов Иван', 'Соловьева Евгения', 'Попова Ксения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '19',
@@ -352,6 +308,7 @@ let posts = [
         discount: 10,
         rating: 3,
         likes: ['Соловьева Евгения', 'Попова Ксения'],
+        comments: []
     },
     {
         id: '20',
@@ -364,6 +321,7 @@ let posts = [
         discount: 22,
         rating: 2,
         likes: ['Соколов Иван'],
+        comments: []
     },
     {
         id: '21',
@@ -376,6 +334,12 @@ let posts = [
         discount: 25,
         rating: 2,
         likes: ['Попова Ксения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '22',
@@ -388,6 +352,7 @@ let posts = [
         discount: 12,
         rating: 4,
         likes: ['Соколов Иван'],
+        comments: []
     },
     {
         id: '23',
@@ -400,6 +365,7 @@ let posts = [
         discount: 2,
         rating: 2,
         likes: ['user1'],
+        comments: []
     },
     {
         id: '24',
@@ -412,121 +378,86 @@ let posts = [
         discount: 50,
         rating: 5,
         likes: ['Соловьева Евгения', 'Попова Ксения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
 ];
-const adCollection = new AdCollection(posts);
-
-console.log(adCollection.getPage(0, 10));
-console.log(adCollection.getPage(10, 10));
-console.log(adCollection.getPage(0, 10, {author: "Иванов Иван"}));
-console.log(adCollection.getPage(0, 10, {tags: ['love']}));
-console.log(adCollection.getPage(0, 10, {createdAt: new Date('2020-03-17T23:00:00')}));
-console.log(adCollection.getPage(3));
-console.log(adCollection.getPage(0, 10, {validateUntil: new Date('2020-03-17T23:00:00')}));
-console.log(adCollection.getPage(0, 10, {validateUntil: new Date()}));
-console.log(adCollection.getPage(0, 10, {discount: 50}));
-console.log(adCollection.getPage(0, 10, {rating: 5}));
-
-console.log(adCollection.add({
-    id: '25',
-    createdAt: new Date('2021-03-22T23:00:18'),
-    author: 'Иванов Иван',
-    description: 'Корпусная мебель с МИНИМАЛЬНОЙ выгодой.',
-    tags: ['discount', 'sale'],
-    discount: 12,
-    validateUntil: new Date('2021-03-27T23:00:00'),
-    rating: null,
-    likes: [],
-}));
-console.log(adCollection.add({
-    id: '26',
-    createdAt: new Date('2021-03-22T23:00:18'),
-    author: 'Иванов Иван',
-    description: 'Корпусная мебель с МИНИМАЛЬНОЙ выгодой.',
-    tags: ['discount', 'sale'],
-    discount: 122,
-    validateUntil: new Date('2021-03-27T23:00:00'),
-    rating: null,
-    likes: [],
-}));
-
-console.log(adCollection.get('25'));
-console.log(adCollection.get('26'));
-
-let newPosts = [
+let users = [
     {
-        id: '26',
-        description: 'Более 76 тыс. человек во всем мире уже излечились от заболевания, спровоцированного новым коронавирусом. Новая вакцина специально для вас!',
-        createdAt: new Date('2021-03-17T23:00:00'),
-        validateUntil: new Date('2021-03-27T23:00:00'),
-        author: 'Иванов Иван',
+        username: 'Darroman',
         photoLink: 'https://www.pressball.by/images/stories/2020/03/20200310231542.jpg',
-        hashTags: ['krone', 'virus', 'vaccine'],
-        discount: 92,
-        rating: 5,
-        likes: ['Kitty_love', 'Гитарный гений', 'Соловьева Евгения'],
+        password: '1111'
     },
     {
-        id: '27',
-        description: 'Котик всегда поднимет настроение! Возьмите котика в свой дом.',
-        createdAt: new Date('2021-03-12T23:00:00'),
-        validateUntil: new Date('2021-03-22T23:00:00'),
-        author: 'Kitty_love',
+        username: 'Kitty_love',
         photoLink: 'https://i.pinimg.com/564x/f4/d2/96/f4d2961b652880be432fb9580891ed62.jpg',
-        hashTags: ['kat', 'love'],
-        discount: 100,
-        rating: 5,
-        likes: ['Иванов Иван'],
+        password: '2222'
     },
     {
-        id: '28',
-        description: 'Нет ничего невозможного. Если ты хочешь что-то сделать - ты этот сделаешь. Основы игры на гитаре.',
-        createdAt: new Date('2021-02-17T23:00:00'),
-        validateUntil: new Date('2021-02-07T23:00:00'),
-        author: 'Гитарный гений',
+        username: 'Гитарный гений',
         photoLink: 'https://opt-1289634.ssl.1c-bitrix-cdn.ru/upload/iblock/790/7906fe4ed570929ca640580f05a7b4f6.jpg?1562573455190287',
-        hashTags: ['guitar', 'learning_online'],
-        discount: 25,
-        rating: 3,
-        likes: ['Иванов Иван', 'Соловьева Евгения'],
+        password: '3333'
     },
     {
-        id: '29',
-        description: 'В центре Львова, в его исторической части расположен четырехзвездочный отель Швейцарский.',
-        createdAt: new Date('2021-03-21T22:00:00'),
-        validateUntil: new Date('2021-03-31T23:00:00'),
-        author: 'Соловьева Евгения',
+        username: 'Соловьева Евгения',
         photoLink: null,
-        hashTags: ['tourist', 'love'],
-        discount: 30,
-        rating: 2,
-        likes: ['Иванов Иван'],
+        password: '4444'
+    },
+    {
+        username: 'Иванов Александр',
+        photoLink: 'http://files.library.by/images/files/1476356097.jpg',
+        password: '5555'
+    },
+    {
+        username: 'Просто мебель',
+        photoLink: null,
+        password: '6666'
+    },
+    {
+        username: 'Новиков Алексей',
+        photoLink: 'https://russianyellowpages.us/images/articles/29abuduschee.jpg',
+        password: '7777'
+    },
+    {
+        username: 'Lylalyuk Anna',
+        photoLink: 'https://www.pressball.by/images/stories/2020/03/20200310231542.jpg',
+        password: '8888'
+    },
+    {
+        username: 'Джонатан Трапп',
+        photoLink: 'https://russianyellowpages.us/images/articles/avozdshari.jpg',
+        password: '9999'
+    },
+    {
+        username: 'Попова Ксения',
+        photoLink: 'https://russianyellowpages.us/images/articles/agorkatr.jpg',
+        password: '1112'
+    },
+    {
+        username: 'Соколов Иван',
+        photoLink: 'https://russianyellowpages.us/images/articles/abudi.jpg',
+        password: '1113'
+    },
+    {
+        username: 'Мажей Виктор',
+        photoLink: 'https://www.pressball.by/images/stories/2020/03/20200310231542.jpg',
+        password: '1122'
+    },
+    {
+        username: 'Player',
+        photoLink: 'https://opt-1289634.ssl.1c-bitrix-cdn.ru/upload/iblock/790/7906fe4ed570929ca640580f05a7b4f6.jpg?1562573455190287',
+        password: '1234'
     }
 ];
-console.log(adCollection.addAll(newPosts));
-console.log(adCollection.get('25'));
-console.log(adCollection.edit('25', {description: 'Корпусная мебель с МАКСИМАЛЬНОЙ выгодой'}));
-console.log(adCollection.get('25'));
-console.log(adCollection.edit('25', {
-    description: 'Корпусная мебель с МАКСИМАЛЬНОЙ выгодой',
-    validateUntil: new Date('2021-05-27T23:00:00'),
-    discount: 40
-}));
-console.log(adCollection.get('25'));
-console.log(adCollection.edit('25', {
-    author: 'unknown',
-    description: 'Корпусная мебель с МАКСИМАЛЬНОЙ выгодой',
-    validateUntil: new Date('2021-05-27T23:00:00'),
-    discount: 40
-}));
-console.log(adCollection.get('25'));
-console.log(adCollection.remove('25'));
-console.log(adCollection.get(20, 10));
-
-
-console.log(adCollection.getPage(0, 10));
-console.log(adCollection.clearAll());
-console.log(adCollection.getPage(0, 10));
-console.log(adCollection.addAll(posts));
-console.log(adCollection.clear(0, 10, {author: "Иванов Иван"}));
-console.log(adCollection.getPage(0, 10));
+window.storage = window.localStorage;
+if (!storage.length) {
+    posts.forEach(post => {
+        storage.setItem("post" + post.id, postsCollection.postToJSON(post));
+    })
+}
+window.usersCollection.addAll(users);
+feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts);
