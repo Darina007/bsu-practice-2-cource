@@ -8,8 +8,8 @@ photoLink: optional field
 hashTags: optional field
 discount: required field (in percent)
 rating: optional field (from 1 to 5)
-likes: optional field  */
-
+likes: optional field
+comments: optional field*/
 
 let posts = [
     {
@@ -23,6 +23,12 @@ let posts = [
         discount: 12,
         rating: 2,
         likes: ['Kitty_love', 'Гитарный гений', 'Соловьева Евгения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '2',
@@ -35,6 +41,18 @@ let posts = [
         discount: 100,
         rating: 5,
         likes: ['Иванов Иван'],
+        comments: [{
+            commentAuthor: 'Иванов Иван',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'I like it!',
+            commentMark: 5
+        },
+            {
+                commentAuthor: 'Соловьева Евгения',
+                commentDate: new Date('2021-03-20T23:00:00'),
+                commentText: 'I have two cats and i need more!!!',
+                commentMark: 5
+            }]
     },
     {
         id: '3',
@@ -47,6 +65,12 @@ let posts = [
         discount: 25,
         rating: 3,
         likes: ['Иванов Иван', 'Соловьева Евгения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '4',
@@ -59,6 +83,7 @@ let posts = [
         discount: 30,
         rating: 2,
         likes: ['Иванов Иван'],
+        comments: []
     },
     {
         id: '5',
@@ -71,6 +96,7 @@ let posts = [
         discount: 12,
         rating: 4,
         likes: ['Иванов Иван', 'Соловьева Евгения', 'Соколов Иван', 'Lylalyuk Anna'],
+        comments: []
     },
     {
         id: '6',
@@ -83,6 +109,12 @@ let posts = [
         discount: 52,
         rating: 1,
         likes: ['Соколов Иван', 'Lylalyuk Anna'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '7',
@@ -95,6 +127,7 @@ let posts = [
         discount: 80,
         rating: 5,
         likes: ['Соловьева Евгения', 'Lylalyuk Anna'],
+        comments: []
     },
     {
         id: '8',
@@ -107,6 +140,12 @@ let posts = [
         discount: 60,
         rating: 3,
         likes: ['Соколов Иван'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '9',
@@ -119,6 +158,7 @@ let posts = [
         discount: 95,
         rating: 4,
         likes: ['Иванов Александр', 'Попова Ксения'],
+        comments: []
     },
     {
         id: '10',
@@ -131,6 +171,7 @@ let posts = [
         discount: 10,
         rating: 2,
         likes: ['Джонатан Трапп', 'Соколов Иван', 'Соколов Иван'],
+        comments: []
     },
     {
         id: '11',
@@ -143,6 +184,12 @@ let posts = [
         discount: 22,
         rating: 5,
         likes: ['Иванов Александр'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '12',
@@ -155,6 +202,7 @@ let posts = [
         discount: 5,
         rating: 2,
         likes: ['Соколов Иван', 'Джонатан Трапп'],
+        comments: []
     },
     {
         id: '13',
@@ -167,6 +215,12 @@ let posts = [
         discount: 12,
         rating: 2,
         likes: ['Соловьева Евгения', 'Иванов Александр'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '14',
@@ -179,6 +233,7 @@ let posts = [
         discount: 32,
         rating: 3,
         likes: ['Соколов Иван'],
+        comments: []
     },
     {
         id: '15',
@@ -188,19 +243,28 @@ let posts = [
         author: 'Player',
         photoLink: 'https://opt-1289634.ssl.1c-bitrix-cdn.ru/upload/iblock/790/7906fe4ed570929ca640580f05a7b4f6.jpg?1562573455190287',
         hashTags: ['guitar', 'learning_online'],
+        discount: 42,
+        rating: 3,
         likes: ['Иванов Александр'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '16',
         description: 'В центре Львова, в его исторической части расположен четырехзвездочный отель Швейцарский.',
         createdAt: new Date('2021-03-21T22:00:00'),
-        validateUntil: new Date('2021-5-23T23:00:00'),
+        validateUntil: new Date('2021-05-23T23:00:00'),
         author: 'Соловьева Евгения',
-        photoLink: null,
+        photoLink: 'null',
         hashTags: ['tourist', 'love'],
         discount: 44,
         rating: 3,
         likes: ['Соколов Иван'],
+        comments: []
     },
     {
         id: '17',
@@ -208,11 +272,12 @@ let posts = [
         createdAt: new Date('2020-10-13T23:00:00'),
         validateUntil: new Date('2021-10-23T23:00:00'),
         author: 'Иванов Александр',
-        photoLink: 'http://files.library.by/images/files/1476356097.jpg',
+        photoLink: 'https://files.library.by/images/files/1476356097.jpg',
         hashTags: ['game', 'cards'],
         discount: 31,
         rating: 3,
         likes: ['Попова Ксения'],
+        comments: []
     },
     {
         id: '18',
@@ -225,6 +290,12 @@ let posts = [
         discount: 72,
         rating: 3,
         likes: ['Соколов Иван', 'Соловьева Евгения', 'Попова Ксения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '19',
@@ -237,6 +308,7 @@ let posts = [
         discount: 10,
         rating: 3,
         likes: ['Соловьева Евгения', 'Попова Ксения'],
+        comments: []
     },
     {
         id: '20',
@@ -249,6 +321,7 @@ let posts = [
         discount: 22,
         rating: 2,
         likes: ['Соколов Иван'],
+        comments: []
     },
     {
         id: '21',
@@ -261,6 +334,12 @@ let posts = [
         discount: 25,
         rating: 2,
         likes: ['Попова Ксения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
     {
         id: '22',
@@ -273,6 +352,7 @@ let posts = [
         discount: 12,
         rating: 4,
         likes: ['Соколов Иван'],
+        comments: []
     },
     {
         id: '23',
@@ -285,6 +365,7 @@ let posts = [
         discount: 2,
         rating: 2,
         likes: ['user1'],
+        comments: []
     },
     {
         id: '24',
@@ -297,163 +378,88 @@ let posts = [
         discount: 50,
         rating: 5,
         likes: ['Соловьева Евгения', 'Попова Ксения'],
+        comments: [{
+            commentAuthor: 'Kitty_love',
+            commentDate: new Date('2021-03-18T23:00:00'),
+            commentText: 'Cool!',
+            commentMark: 5
+        }]
     },
 ];
-
-
-//------functions--------
-
-;(function () {
-    function getPosts(skip, top, filterConfig) {
-        let countSkippedPosts = skip || 0;
-        let countReceivedPosts = top || 10;
-        let workingArray = posts.slice();
-        if (typeof filterConfig !== 'undefined') {
-            if (typeof filterConfig.author != 'undefined') {
-                workingArray = workingArray.filter(function (value) {
-                    return value.author === filterConfig.author;
-                })
-            }
-            if (typeof filterConfig.createdAt != 'undefined') {
-                workingArray = workingArray.filter(function (value) {
-                    return value.createdAt.getDate() === filterConfig.createdAt.getDate()
-                        && value.createdAt.getMonth() === filterConfig.createdAt.getMonth()
-                        && value.createdAt.getFullYear() === filterConfig.createdAt.getFullYear();
-                })
-            }
-            if (typeof filterConfig.tags != 'undefined') {
-                workingArray = workingArray.filter(function (value) {
-                    let flag = false;
-                    value.hashTags.forEach(val => {
-                        if (filterConfig.tags.includes(val)) {
-                            flag = true;
-                        }
-                    });
-                    return flag;
-                })
-            }
-            if (typeof filterConfig.validateUntil != 'undefined') {
-                workingArray = workingArray.filter(function (value) {
-                    let flag = false;
-                    if (value.validateUntil-filterConfig.validateUntil >= 0) {
-                        flag = true;
-                    }
-                    return flag;
-                })
-            }
-            if (typeof filterConfig.discount != 'undefined') {
-                workingArray = workingArray.filter(function (value) {
-                    let flag = false;
-                    if (value.discount-filterConfig.discount >= 0) {
-                        flag = true;
-                    }
-                    return flag;
-                })
-            }
-            if (typeof filterConfig.rating != 'undefined') {
-                workingArray = workingArray.filter(function (value) {
-                    let flag = false;
-                    if (value.rating-filterConfig.rating >= 0) {
-                        flag = true;
-                    }
-                    return flag;
-                })
-            }
-        }
-
-        workingArray.sort(function (firstPost, secondPost) {
-            return secondPost.createdAt - firstPost.createdAt;
-        });
-        workingArray = workingArray.slice(countSkippedPosts, countSkippedPosts + countReceivedPosts);
-        return workingArray;
+let users = [
+    {
+        username: 'Darroman',
+        photoLink: 'https://www.pressball.by/images/stories/2020/03/20200310231542.jpg',
+        password: '1111'
+    },
+    {
+        username: 'Kitty_love',
+        photoLink: 'https://i.pinimg.com/564x/f4/d2/96/f4d2961b652880be432fb9580891ed62.jpg',
+        password: '2222'
+    },
+    {
+        username: 'Гитарный гений',
+        photoLink: 'https://opt-1289634.ssl.1c-bitrix-cdn.ru/upload/iblock/790/7906fe4ed570929ca640580f05a7b4f6.jpg?1562573455190287',
+        password: '3333'
+    },
+    {
+        username: 'Соловьева Евгения',
+        photoLink: null,
+        password: '4444'
+    },
+    {
+        username: 'Иванов Александр',
+        photoLink: 'http://files.library.by/images/files/1476356097.jpg',
+        password: '5555'
+    },
+    {
+        username: 'Просто мебель',
+        photoLink: null,
+        password: '6666'
+    },
+    {
+        username: 'Новиков Алексей',
+        photoLink: 'https://russianyellowpages.us/images/articles/29abuduschee.jpg',
+        password: '7777'
+    },
+    {
+        username: 'Lylalyuk Anna',
+        photoLink: 'https://www.pressball.by/images/stories/2020/03/20200310231542.jpg',
+        password: '8888'
+    },
+    {
+        username: 'Джонатан Трапп',
+        photoLink: 'https://russianyellowpages.us/images/articles/avozdshari.jpg',
+        password: '9999'
+    },
+    {
+        username: 'Попова Ксения',
+        photoLink: 'https://russianyellowpages.us/images/articles/agorkatr.jpg',
+        password: '1112'
+    },
+    {
+        username: 'Соколов Иван',
+        photoLink: 'https://russianyellowpages.us/images/articles/abudi.jpg',
+        password: '1113'
+    },
+    {
+        username: 'Мажей Виктор',
+        photoLink: 'https://www.pressball.by/images/stories/2020/03/20200310231542.jpg',
+        password: '1122'
+    },
+    {
+        username: 'Player',
+        photoLink: 'https://opt-1289634.ssl.1c-bitrix-cdn.ru/upload/iblock/790/7906fe4ed570929ca640580f05a7b4f6.jpg?1562573455190287',
+        password: '1234'
     }
+];
+window.storage = window.localStorage;
+if (!storage.length) {
+    posts.forEach(post => {
+        storage.setItem("post" + post.id, postServise.postToJSON(post));
+        console.log(postServise.JSONToPost(storage.getItem("post"+post.id)));
+    })
+}
+window.usersCollection.addAll(users);
+feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts);
 
-    function getPost(id) {
-        return posts.find(item => item.id === id);
-    }
-
-    function validatePost(post) {
-        let flag = false;
-        if (typeof post.id != 'undefined' && typeof post.description != 'undefined'
-            && typeof post.author != 'undefined' && typeof post.createdAt != 'undefined'
-            && (post.validateUntil - post.createdAt) > 0
-            && post.discount > 0 && post.discount <= 100) {
-            if (post.author.length !== 0 && post.description.length < 200) {
-                let unique = posts.findIndex(item => item.id === post.id);
-                if (unique === -1) {
-                    flag = true;
-                }
-            }
-        }
-        return flag;
-    }
-
-    function addPost(post) {
-        if (validatePost(post)) {
-            posts.push(post);
-            return true;
-        }
-        return false;
-    }
-
-    function editPost(id, edit) {
-        let unchanged = getPost(id);
-        let original = {...unchanged};
-        original.description = edit.description || original.description;
-        original.photoLink = edit.photoLink || original.photoLink;
-        original.hashTags = edit.tags || original.hashTags;
-        removePost(id);
-        if (validatePost(original)) {
-            addPost(original);
-            return true;
-        } else {
-            addPost(unchanged);
-            return false;
-        }
-    }
-
-    function removePost(id) {
-        return posts.splice(posts.findIndex(item => item.id === id), 1);
-    }
-
-
-    //------tests---------
-    console.log(getPosts(0, 10));
-    console.log(getPosts(10, 10));
-    console.log(getPosts(0, 10, {author: "Иванов Иван"}));
-    console.log(getPosts(0, 10, {tags: ['love']}));
-    console.log(getPosts(0, 10, {createdAt: new Date('2020-03-17T23:00:00')}));
-    console.log(getPost(3));
-    console.log(getPosts(0, 10, {validateUntil: new Date('2020-03-17T23:00:00')}));
-    console.log(getPosts(0, 10, {validateUntil: new Date()}));
-    console.log(getPosts(0, 10, {discount: 50}));
-    console.log(getPosts(0, 10, {rating: 5}));
-
-    console.log(addPost({
-        id: 25,
-        createdAt: new Date('2021-03-22T23:00:18'),
-        author: 'Иванов Иван',
-        description: 'Корпусная мебель с МИНИМАЛЬНОЙ выгодой.',
-        tags: ['discount', 'sale'],
-        discount: 12,
-        validateUntil: new Date('2021-03-27T23:00:00'),
-        rating: null,
-        likes: [],
-    }));
-    console.log(addPost({
-        id: 26,
-        createdAt: new Date('2021-03-22T23:00:18'),
-        author: 'Иванов Иван',
-        description: 'Корпусная мебель с МИНИМАЛЬНОЙ выгодой.',
-        tags: ['discount', 'sale'],
-        discount: 122,
-        validateUntil: new Date('2021-03-27T23:00:00'),
-        rating: null,
-        likes: [],
-    }));
-    console.log(getPost(25));
-    console.log(editPost(25, {description: 'Корпусная мебель с МАКСИМАЛЬНОЙ выгодой',}));
-    console.log(getPost(25));
-    console.log(removePost(25));
-    console.log(getPosts(20, 10));
-}());
