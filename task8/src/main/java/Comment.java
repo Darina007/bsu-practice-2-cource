@@ -1,10 +1,6 @@
-import com.google.gson.Gson;
 import lombok.Builder;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Builder
@@ -36,12 +32,5 @@ public class Comment implements postParser{
 
     private boolean getCommentDate() {
         return commentDate != null;
-    }
-
-    public String toJson() {
-        String result;
-        Gson gson = new Gson();
-        result = replaceDateInJson(gson.toJson(this), this.commentDate);
-        return result;
     }
 }

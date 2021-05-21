@@ -79,3 +79,4 @@ public interface postParser {
         return json.replaceAll(dateStr, reformatDate);
     }
 }
+

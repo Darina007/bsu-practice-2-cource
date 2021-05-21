@@ -21,8 +21,7 @@ public class FileUploadServlet extends HttpServlet {
     private static final String CONTENT_DISPOSITION = "content-disposition";
     private static Logger log = Logger.getLogger(FileUploadServlet.class.getName());
 
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response) {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         String applicationPath = request.getServletContext().getRealPath("");
         String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
         File fileSaveDir = new File(uploadFilePath);

@@ -22,6 +22,7 @@ public interface filterParser {
     default String parseAuthor(JsonObject object) {
         return object.get(ConstantDictionary.KEY_AUTHOR).getAsString();
     }
+
     default String parseHashTag(JsonObject object) {
         return object.get(ConstantDictionary.KEY_HASHTAG).getAsString();
     }

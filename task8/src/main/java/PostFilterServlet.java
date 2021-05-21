@@ -116,4 +116,5 @@ public class PostFilterServlet extends HttpServlet {
         result = filteredByIntegerParameters.getPage(skip, top, dateFilterConfig);
         return result;
     }
+
 }

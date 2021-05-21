@@ -17,5 +17,5 @@ public class ConstantDictionary {
     public static final String CONTENT_TYPE = "application/json";
     public static final String CHARACTER_ENCODING = "UTF-8";
     public static final String DATE_PATTERN = "yyyy-MM-dd";
-    public static final String DELETE_POST_TEXT = "Deleting of post with id: ";
+    public static final String DELETE_POST_TEXT = "Deleted post with id: ";
 }

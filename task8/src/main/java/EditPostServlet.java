@@ -16,8 +16,7 @@ import java.util.logging.Logger;
 public class EditPostServlet extends HttpServlet implements jsonParser, postParser {
     private static final Logger log = Logger.getLogger(EditPostServlet.class.getName());
 
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response) {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         String json = null;
         try {
             json = getStringRequest(request);
