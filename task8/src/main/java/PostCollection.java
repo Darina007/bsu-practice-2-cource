@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class PostCollection {
-    private List<Post> posts;
+    private final List<Post> posts;
 
     public PostCollection(List<Post> posts) {
         this.posts = posts;
@@ -107,10 +107,6 @@ public class PostCollection {
         }
         posts.remove(post);
         return true;
-    }
-
-    public void clearAll() {
-        posts.clear();
     }
 
     public String toJson() {
