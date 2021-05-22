@@ -1,0 +1,37 @@
+.footer {
+    position: fixed;
+    width: 100%;
+    padding: 1%;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+    background: #301C66;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex: 1 1 auto;
+    width: 80%;
+    color: #EDF1FF;
+    margin: 0 2%;
+}
+
+.creator-info {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-size: large;
+    flex: 0 1 auto;
+    padding: 0;
+}
+
+.mail-info {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-size: large;
+    flex: 0 1 auto;
+    padding: 0;
+    margin: 0 2%;
+}
