@@ -71,9 +71,9 @@
                 <div class="post">
                     <div class="first-post-raw">
                         <div class="first-post-column">
-                            <div class="post-img" data-target="photoLink"><img id="photoLink"
-                                                                               src="resources/img/post_img.png"
-                                                                               alt=""></div>
+                            <div class="file-photo">
+                                <img data-target="photoLink" id="photoLink" src="resources/img/post_img.png">
+                            </div>
                             <div class="grade" data-target="rating" id="grade"></div>
                             <div class="review" data-target="review" id="review"></div>
                         </div>
@@ -226,6 +226,7 @@
                     <div class="first-post-column">
                         <div id="edit-file-preview" class="file-preview"></div>
                         <div class="file">
+                            <p class="file-warning"></p>
                             <input id="edit-img-file" accept=".img, .jpg, .png" type="file" name="image"
                                    class="input-file"
                                    src="img/post_img.png">
@@ -253,10 +254,11 @@
 <script src="resources/scripts/PostService.js"></script>
 <script src="resources/scripts/PostView.js"></script>
 <script src="resources/scripts/FeedView.js"></script>
-<script src="resources/scripts/UsersCollection.js"></script>
+<script src="resources/scripts/UsersService.js"></script>
 <script src="resources/scripts/modals.js"></script>
+<script src="resources/scripts/AddPostEvent.js"></script>
+<script src="resources/scripts/CommentEvent.js"></script>
 <script src="resources/scripts/feedEvents.js"></script>
 <script src="resources/scripts/postEvents.js"></script>
-<script src="resources/scripts/testData.js"></script>
 </body>
 </html>

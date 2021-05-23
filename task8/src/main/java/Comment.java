@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 @Builder
-public class Comment implements postParser{
+public class Comment {
     private final String commentAuthor;
     private final String commentText;
     private final int commentMark;

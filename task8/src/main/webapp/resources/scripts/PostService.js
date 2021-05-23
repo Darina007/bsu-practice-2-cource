@@ -116,31 +116,6 @@ class PostService {
         return flag;
     }
 
-    static _validateComment(comment) {
-        if (!comment.commentAuthor) {
-            return false;
-        }
-        if (!comment.commentDate) {
-            return false;
-        }
-        if (!comment.commentText) {
-            return false;
-        }
-        if (!comment.commentMark) {
-            return false;
-        }
-        return true;
-    }
-
-    addComment(id, commentData) {
-        let post = this.get(id);
-        if (PostService._validateComment(commentData)) {
-            post.comments.push(commentData);
-            return true;
-        }
-        return false;
-    }
-
     removePost(id) {
         if (this.get(id)) {
             let index = this._posts.indexOf(this.get(id));
@@ -150,12 +125,32 @@ class PostService {
         return false;
     }
 
-    async JSONToPostArray(jsonPosts) {
-        let result = JSON.parse(jsonPosts);
-        let postArray = []
-        return Promise.all(result.map(post => {
-            postArray.push(post);
-        }));
+    addComment(id, commentData) {
+        let post = postServise.get(id);
+        if (PostService._validateComment(commentData)) {
+            if (!post.comments) {
+                post.comments = [];
+            }
+            post.comments.push(commentData);
+            return true;
+        }
+        return false;
+    }
+
+    static _validateComment(comment) {
+        return comment.commentAuthor || comment.commentDate ||
+            comment.commentText || comment.commentMark;
+    }
+
+    parseComments(commentsArray) {
+        if (commentsArray) {
+            commentsArray.forEach(comment => {
+                commentsArray.commentDate = new Date(comment.commentDate);
+            })
+        } else {
+            commentsArray = [];
+        }
+        return commentsArray;
     }
 
     postToJSON(post) {
@@ -166,15 +161,9 @@ class PostService {
 
     async JSONToPost(post) {
         let postObj = JSON.parse(post);
-        if (postObj.comments) {
-            postObj.comments.forEach(commentData => {
-                commentData.commentDate = new Date(commentData.commentDate);
-            })
-        } else {
-            postObj.comments = [];
-        }
         postObj.validateUntil = new Date(postObj.validateUntil);
         postObj.createdAt = new Date(postObj.createdAt);
+        postServise.parseComments(post.comments);
         return postObj;
     }
 }

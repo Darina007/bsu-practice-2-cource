@@ -54,7 +54,6 @@
 .add-new-post {
     display: flex;
     justify-content: center;
-
 }
 
 .add-button {
@@ -66,5 +65,6 @@
 
 
 .file-photo{
+    border-radius: 20px;
     width: 100%;
 }

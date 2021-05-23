@@ -15,12 +15,7 @@ import java.util.logging.Logger;
 
 @WebServlet("/posts/search")
 public class PostFilterServlet extends HttpServlet {
-    private PostCollection posts;
     private static Logger log = Logger.getLogger(PostFilterServlet.class.getName());
-
-    public PostFilterServlet() {
-        this.posts = new PostCollection(TestPosts.testPosts);
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -36,7 +31,7 @@ public class PostFilterServlet extends HttpServlet {
             } else {
                 response.setStatus(200);
                 PrintWriter out = response.getWriter();
-                out.print(posts.toJson());
+                out.print(PostContainer.toJson(result));
             }
         } catch (IOException e) {
             log.log(Level.SEVERE, "Exception: ", e);
@@ -108,12 +103,9 @@ public class PostFilterServlet extends HttpServlet {
         Map<String, Integer> integerFilterParam = setIntegerFilterParam(request);
         Map<String, Date> dateFilterConfig = setDateFilterParam(request);
         List<Post> result;
-        result = posts.getPage(skip, top, stringFilterParam);
-        PostCollection filteredByStringParameters = new PostCollection(result);
-        result = filteredByStringParameters.getPage(skip, top, integerFilterParam);
-        PostCollection filteredByIntegerParameters = new PostCollection(result);
-        result = filteredByIntegerParameters.getPage(skip, top, dateFilterConfig);
+        result = PostContainer.getPage(skip, top, stringFilterParam, PostContainer.posts);
+        result = PostContainer.getPage(skip, top, integerFilterParam, result);
+        result = PostContainer.getPage(skip, top, dateFilterConfig, result);
         return result;
     }
-
 }

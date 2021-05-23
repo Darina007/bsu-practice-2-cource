@@ -1,4 +1,4 @@
-class UsersCollection {
+class UsersService {
     _users;
 
     constructor(initialUsers) {
@@ -25,5 +25,5 @@ class UsersCollection {
 }
 
 (() => {
-    window.usersCollection = new UsersCollection();
+    window.usersCollection = new UsersService();
 })();

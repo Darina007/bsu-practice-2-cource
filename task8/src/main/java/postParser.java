@@ -1,12 +1,14 @@
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.security.PublicKey;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
-public interface postParser {
+public interface postParser extends jsonParser {
     default String parseId(JsonObject object) {
         return object.get(ConstantDictionary.KEY_ID).getAsString();
     }
@@ -24,6 +26,9 @@ public interface postParser {
     }
 
     default int parseRating(JsonObject object) {
+        if (object.get(ConstantDictionary.KEY_RATING) == null) {
+            return 0;
+        }
         return object.get(ConstantDictionary.KEY_RATING).getAsInt();
     }
 
@@ -34,6 +39,9 @@ public interface postParser {
 
     default List<String> parseLikes(JsonObject object) {
         Gson g = new Gson();
+        if (object.get(ConstantDictionary.KEY_LIKES) == null) {
+            return new LinkedList<>();
+        }
         return g.fromJson(object.get(ConstantDictionary.KEY_LIKES), List.class);
     }
 
@@ -48,26 +56,11 @@ public interface postParser {
     }
 
     default Post parsePostFields(JsonObject object) throws ParseException {
-        return Post.builder()
-                .id(parseId(object))
-                .author(parseAuthor(object))
-                .description(parseDescription(object))
-                .createdAt(parseCreateDate(object))
-                .validateUntil(parseValidDate(object))
-                .hashTags(parseHashTah(object))
-                .likes(parseLikes(object))
-                .rating(parseRating(object))
-                .discount(parseDiscount(object))
-                .build();
+        return null;
     }
 
-    default Post parseEditFields(JsonObject object) throws ParseException {
-        return Post.builder()
-                .description(parseDescription(object))
-                .validateUntil(parseValidDate(object))
-                .hashTags(parseHashTah(object))
-                .discount(parseDiscount(object))
-                .build();
+    default Comment parseCommentFields(JsonObject object) throws ParseException {
+        return null;
     }
 }
 

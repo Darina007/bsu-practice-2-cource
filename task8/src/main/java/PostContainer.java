@@ -1,13 +1,13 @@
 import java.util.*;
 
-public class PostCollection {
-    private final List<Post> posts;
+public class PostContainer {
+    public static List<Post> posts = TestPosts.testPosts;
 
-    public PostCollection(List<Post> posts) {
-        this.posts = posts;
+    public PostContainer(List<Post> posts) {
+        PostContainer.posts = posts;
     }
 
-    public List<Post> getPage(int skip, int top, Map<String, ?> filterConfig) {
+    public static List<Post> getPage(int skip, int top, Map<String, ?> filterConfig, List<Post> posts) {
         List<Post> filteredPosts = new ArrayList<>();
         for (Map.Entry pair : filterConfig.entrySet()) {
             if (pair.getKey().equals(ConstantDictionary.KEY_AUTHOR)) {
@@ -49,7 +49,7 @@ public class PostCollection {
             }
         }
         if (filterConfig.size() == 0) {
-            filteredPosts = new ArrayList(posts);
+            filteredPosts = posts;
         }
         if (top > filteredPosts.size()) {
             top = filteredPosts.size();
@@ -64,13 +64,13 @@ public class PostCollection {
         }
     }
 
-    public Post getPost(String id) {
+    public static Post getPost(String id) {
         return posts.stream()
                 .filter(post -> post.getId().equals(id))
                 .findFirst().orElse(null);
     }
 
-    public boolean addPost(Post post) {
+    public static boolean addPost(Post post) {
         if (!post.isValid()) {
             return false;
         }
@@ -78,7 +78,7 @@ public class PostCollection {
         return true;
     }
 
-    public boolean editPost(String id, Post filterConfig) {
+    public static boolean editPost(String id, Post filterConfig) {
         Post post = getPost(id);
         if (post == null) {
             return false;
@@ -100,7 +100,7 @@ public class PostCollection {
         return true;
     }
 
-    public boolean removePost(String id) {
+    public static boolean removePost(String id) {
         Post post = getPost(id);
         if (post == null) {
             return false;
@@ -109,7 +109,7 @@ public class PostCollection {
         return true;
     }
 
-    public String toJson() {
+    public static String toJson(List<Post> posts) {
         if (posts.size() > 0) {
             StringBuilder sb = new StringBuilder();
             sb.append("[");

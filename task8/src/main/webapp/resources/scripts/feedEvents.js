@@ -5,26 +5,6 @@ class FeedEvents {
     skippedPost = 0;
     countPosts = 10;
 
-    initializeAddPostButton() {
-        let button = document.getElementById("add-post");
-        button.addEventListener("click", () => {
-            feedEvents.initializeAddPostArea();
-        })
-    }
-
-    initializeAddPostArea() {
-        let addPostArea = document.querySelector('[class = "add-post-form"]');
-        if (!addPostArea) {
-            addPostArea = feedEvents.drawPostArea();
-            postEvent.setNewPostEventListener(addPostArea);
-            document.getElementById("new-post-form").onsubmit = () => {
-                return false;
-            }
-        } else {
-            feedEvents.removePostArea();
-        }
-    }
-
     initializeFilter() {
         const form = document.getElementById("filter");
         feedEvents.fillDateFilterFields();
@@ -32,10 +12,11 @@ class FeedEvents {
             return false;
         };
         form.addEventListener("submit", () => {
+            view.clearFilter();
             const filterConf = feedEvents.fillFilter();
             view.setFilter(filterConf);
             let filter = view.getFilter();
-            feedEvents.makePage(0, 10, filter);
+            feedEvents.makePage(0, 10, filter).then();
             form.reset();
             feedEvents.fillDateFilterFields();
         });
@@ -50,30 +31,6 @@ class FeedEvents {
         if (validateUntilVal) {
             validateUntilVal.value = view.postViewer.dateForm(new Date());
         }
-    }
-
-    fillAddPostFields(postForm) {
-        let validateUntil = postForm.getElementById('validate-until-field');
-        validateUntil.value = view.postViewer.dateForm(new Date());
-        let author = postForm.getElementById('author');
-        author.textContent = view.getUser();
-    }
-
-    drawPostArea() {
-        let dataField = document.createElement("div");
-        let container = document.getElementById("container");
-        let _addPostTemplate = document.getElementById("new-post-template");
-        dataField.className = "add-post-form";
-        let postForm = document.importNode(_addPostTemplate.content, true);
-        feedEvents.fillAddPostFields(postForm);
-        dataField.appendChild(postForm);
-        container.insertBefore(dataField, container.firstChild);
-        return dataField;
-    }
-
-    removePostArea() {
-        let dataField = document.querySelector('[class = "add-post-form"]');
-        dataField.remove();
     }
 
     fillFilter() {
@@ -107,46 +64,7 @@ class FeedEvents {
         return filterConf;
     }
 
-    fillNewPostData() {
-        const image = document.getElementById('img-file').value;
-        const validateUntil = document.getElementById('validate-until-field').value;
-        const description = document.getElementById('description-field').value;
-        const discount = document.getElementById('discount-field').value;
-        const tagsStr = document.getElementById('hashTags-field').value;
-        let tags = tagsStr.split(' ');
-        let post = {};
-        post.id = Date.now().toString(32) + (Math.random() * Math.pow(2, 20)).toString(32);
-        post.description = description;
-        post.author = view.getUser();
-        post.photoLink = image;
-        post.createdAt = new Date();
-        post.validateUntil = new Date(validateUntil);
-        post.discount = discount;
-        post.hashTags = tags;
-        post.likes = [];
-        post.comments = [];
-        return post;
-    }
-
-    addNewPost() {
-        let newPost = feedEvents.fillNewPostData();
-        if (postServise.add(newPost)) {
-            feedEvents.postData(postServise.get(newPost.id), "/post").then((value) => {
-                alert(value);
-            }).catch(reason => {
-                //modal.create
-                console.log(reason);
-            });
-            postServise.postToJSON(newPost);
-            feedEvents.removePostArea();
-            feedEvents.makePage(0, feedEvents.countPosts);
-        } else {
-            feedEvents.removePostArea();
-            modals.createErrorModal("Error adding post");
-        }
-    }
-
-    createStringParam(firstPostNumber, postNumber, filter) {
+    createRequestParam(firstPostNumber, postNumber, filter) {
         let filterData = Object.assign({}, filter);
         filterData.skip = firstPostNumber;
         filterData.top = postNumber;
@@ -159,270 +77,37 @@ class FeedEvents {
         return paramString.slice(1);
     }
 
-    makePage(firstPostNumber, postNumber, filter) {
-        let paramString = feedEvents.createStringParam(firstPostNumber, postNumber, filter);
-        feedEvents.getData(paramString, "/posts/search").then(response => {
+    async makePage(firstPostNumber, postNumber, filter) {
+        let paramString = feedEvents.createRequestParam(firstPostNumber, postNumber, filter);
+        await feedEvents.getPosts(paramString, "/posts/search").then(response => {
             postServise.addAll(response);
             let posts = postServise.getPage(firstPostNumber, postNumber, filter);
             if (posts) {
                 view.redrawPosts(posts);
             }
             feedEvents.initializeFilter();
+            feedEvents.next.addEventListener("click", feedEvents._loadNextPosts);
+            feedEvents.prev.addEventListener("click", feedEvents._loadPreviousPosts);
             feedEvents.setPostEvents(posts);
             if (view.isAuthorized()) {
                 let logOutBtn = document.querySelector('.logout-button');
                 logOutBtn.removeEventListener('click', modals.createSingInModal);
                 logOutBtn.addEventListener('click', modals.createLogOutModal);
-                feedEvents.initializeAddPostButton();
+                addPostEvent.initializeAddPostButton();
             } else {
                 let signInBtn = document.querySelector('.login-button');
                 signInBtn.removeEventListener('click', modals.createLogOutModal);
                 signInBtn.addEventListener('click', modals.createSingInModal);
             }
-        }).catch(() => {
-            console.log("Error")
+        }).catch(()=>{
+            modals.createErrorModal("Error creating page");
         });
     }
 
-    async getData(param, url) {
+    async getPosts(param, url) {
         return await fetch(url + "?" + param, {
             method: 'GET'
         }).then(response => response.json());
-    }
-
-    async deletePost(url, id) {
-        let response = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id: id})
-        });
-        if (response.status === 200) {
-            return Promise.resolve();
-        }
-        return Promise.reject(response);
-    }
-
-    async postData(postData, url) {
-        let response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: postServise.postToJSON(postData)
-        });
-        if (response.status === 200) {
-            return Promise.resolve();
-        }
-        return Promise.reject(response);
-    }
-
-    createCommentArea(postId) {
-        let post = document.getElementById(postId);
-        let container = post.parentNode;
-        let commentArea = document.querySelector('[class = "add-comment"]');
-        if (!commentArea) {
-            feedEvents.drawCommentContainer(container, postId);
-            feedEvents.createCommentMarkButtons();
-            feedEvents.initializeCommentForm(postId);
-        } else {
-            container.classList.remove("post-dedicated");
-            commentArea.remove();
-        }
-    }
-
-    drawCommentContainer(container, postId) {
-        container.classList.add("post-dedicated");
-        let commentArea = feedEvents.drawCommentArea();
-        container.appendChild(commentArea);
-        feedEvents._loadComments(postId);
-        let addCommentArea = document.querySelector('[class="new-user-comment"]');
-        feedEvents.drawAddCommentArea(addCommentArea);
-    }
-
-    drawCommentArea() {
-        let commentTemplate = document.getElementById("comment-area-template");
-        let comment = document.importNode(commentTemplate.content, true);
-        let commentArea = document.createElement('div');
-        commentArea.className = "add-comment";
-        commentArea.appendChild(comment);
-        return commentArea;
-    }
-
-    drawAddCommentArea(container) {
-        if (view.isAuthorized()) {
-            let addCommentTemplate = document.getElementById("add-comment-template");
-            let addComment = document.importNode(addCommentTemplate.content, true);
-            container.appendChild(addComment);
-        } else {
-            let addCommentMessage = document.createElement("div");
-            addCommentMessage.id = "new-comment-form";
-            let message = document.createElement("div");
-            message.id = "comment-text-input";
-            message.textContent = "Sign in to leave a comment";
-            addCommentMessage.appendChild(message);
-            container.appendChild(addCommentMessage);
-        }
-    }
-
-    initializeCommentForm(postId) {
-        let commentForm = document.getElementById("new-comment-form");
-        commentForm.onsubmit = () => {
-            return false;
-        }
-        commentForm.addEventListener("submit", () => {
-            let mark = feedEvents.fillCommentMark();
-            this.addComment(postId, mark);
-            commentForm.reset();
-            feedEvents.redrawReviewButtons(0);
-        })
-    }
-
-    updateCommentMark() {
-        let button = event.target;
-        let numb = button.id.substr(button.id.length - 1);
-        feedEvents.redrawReviewButtons(numb);
-        return numb;
-    }
-
-    fillCommentMark() {
-        let mark = document.querySelector('[class="review-buttons"]');
-        for (let i = 5; i >= 1; i--) {
-            let button = mark.childNodes[i - 1];
-            if (button.lastChild.alt === "star_pressed") {
-                return i;
-            }
-        }
-    }
-
-    addPhoto(imageInputId, imageHolderId) {
-        const image = document.getElementById(imageInputId);
-        const filePreview = document.getElementById(imageHolderId);
-        image.addEventListener("change", () => {
-            uploadFile(image.files[0]);
-        })
-
-        function uploadFile(file) {
-            if (!["image/jpeg", "image/png", "image/jpg"].includes(file.type)) {
-                alert("The file is not an image");
-                image.value = "";
-                return;
-            }
-            if (file.size > 2 * Math.pow(1024, 2)) {
-                alert("File too large");
-                return;
-            }
-            let reader = new FileReader();
-            reader.onload = function (e) {
-                filePreview.innerHTML = `<img src="${e.target.result}" alt="Photo" class="file-photo">`;
-            }
-            reader.readAsDataURL(file);
-            feedEvents.postData(JSON.stringify(file), "/upload").then(value => {
-                alert(value);
-            }).catch(reason => {
-                //error
-                alert(reason);
-            });
-        }
-    }
-
-    addComment(postId, markValue) {
-        let commentData = {};
-        let text = document.getElementById("comment-text-input");
-        commentData.commentText = text.value;
-        commentData.commentDate = new Date();
-        commentData.commentMark = markValue;
-        commentData.commentAuthor = view.getUser();
-        if (postServise.addComment(postId, commentData)) {
-            feedEvents._reloadComments(postId);
-            storage.setItem("post" + postId, postServise.postToJSON(postServise.get(postId)));
-        }
-    }
-
-    createCommentMarkButtons() {
-        let mark = document.querySelector('[class="review-buttons"]');
-        feedEvents.drawReviewButtons(mark);
-        mark.addEventListener('click', () => {
-            feedEvents.updateCommentMark();
-        })
-    }
-
-    drawReviewButtons(buttonContainer, mark) {
-        let button;
-        for (let i = 1; i <= 5; i++) {
-            if (i <= mark) {
-                button = view.postViewer._drawPostButton("review-button", "star_pressed");
-            } else {
-                button = view.postViewer._drawPostButton("review-button", "star_unpressed");
-            }
-            button.lastChild.id = "review-" + i;
-            buttonContainer.appendChild(button);
-        }
-    }
-
-    isClearReviewButton(buttonsContainer) {
-        return buttonsContainer.childNodes[0].lastChild.alt === "star_pressed";
-    }
-
-    redrawReviewButtons(mark) {
-        let buttons = document.querySelector('[class="review-buttons"]');
-        let flag = feedEvents.isClearReviewButton(buttons);
-        while (buttons.firstChild) {
-            buttons.removeChild(buttons.firstChild);
-        }
-        if (flag && +mark === 1) {
-            feedEvents.drawReviewButtons(buttons, 0);
-        } else {
-            feedEvents.drawReviewButtons(buttons, mark);
-        }
-    }
-
-    _loadComments(postId) {
-        let post = postServise.get(postId);
-        let commArr = document.querySelector('[class="user-comments"]');
-        if (post.comments) {
-            post.comments.reverse();
-            post.comments.forEach(comment => {
-                let comm = document.createElement("div");
-                commArr.appendChild(comm);
-                comm.className = "comment-holder";
-                let commentTemplate = document.getElementById("comment-template");
-                let commentField = document.importNode(commentTemplate.content, true);
-                comm.appendChild(commentField);
-                feedEvents._fillComment(comment, comm);
-            })
-        }
-    }
-
-    _reloadComments(postId) {
-        let commArr = document.querySelector('[class="user-comments"]');
-        if (commArr) {
-            while (commArr.lastChild) {
-                commArr.removeChild(commArr.lastChild);
-            }
-        }
-        feedEvents._loadComments(postId);
-    }
-
-    _fillComment(comment, comm) {
-        let author = comm.querySelector('[id="comment-author"]');
-        if (author) {
-            author.textContent = comment.commentAuthor;
-        }
-        let date = comm.querySelector('[id="date-comment"]');
-        if (date) {
-            date.textContent = comment.commentDate.toDateString();
-        }
-        let text = comm.querySelector('[id="comment-text"]');
-        if (text) {
-            text.textContent = comment.commentText;
-        }
-        let mark = comm.querySelector('[id="comment-mark"]');
-        if (mark) {
-            view.postViewer._drawRating(mark, comment.commentMark);
-        }
-        return comm;
     }
 
     readInputFieldsLogIn() {
@@ -438,8 +123,8 @@ class FeedEvents {
             const user = usersCollection.getUser(username, password);
             if (user) {
                 view.fillUser(user.username);
-                feedEvents.makePage(0, 10);
-                modals.removeModal();
+                modals._removeModal();
+                feedEvents.makePage(0, 10).then();
             } else {
                 feedEvents.showWarnings(".sign-in-warning");
             }
@@ -453,39 +138,13 @@ class FeedEvents {
         }
     }
 
-    readInputFieldsEdit(postId) {
-        let postEditions = [];
-        const description = document.getElementById("description").value;
-        if (description) {
-            postEditions.description = description;
-        }
-        const discount = document.getElementById("edit-discount-field").value;
-        if (discount) {
-            postEditions.discount = discount;
-        }
-        const tags = document.getElementById("edit-hashTags-field").value;
-        if (tags) {
-            postEditions.hashTags = tags.split(" ");
-        }
-        const validateUntil = document.getElementById("edit-validate-until-field").value;
-        if (validateUntil) {
-            postEditions.validateUntil = new Date(validateUntil);
-        }
-        postServise.edit(postId, postEditions);
-        storage.setItem("post" + postId, postServise.postToJSON(postServise.get(postId)));
-        feedEvents.makePage(0, 10);
-        modals.removeModal();
-    }
-
-    loadNextPosts() {
-        if (postServise.countPosts() / 10 + 1 >= +feedEvents.page.textContent + 1) {
+    _loadNextPosts() {
             feedEvents.makePage(feedEvents.skippedPost + feedEvents.countPosts, feedEvents.countPosts + 10);
             feedEvents.skippedPost += 10;
             feedEvents.page.textContent++;
-        }
     }
 
-    loadPreviousPosts() {
+    _loadPreviousPosts() {
         if (+feedEvents.page.textContent - 1 > 0) {
             feedEvents.makePage(feedEvents.skippedPost - feedEvents.countPosts, feedEvents.countPosts - 10);
             feedEvents.skippedPost -= 10;
@@ -503,4 +162,74 @@ class FeedEvents {
 
 (() => {
     window.feedEvents = new FeedEvents();
+    let users = [
+        {
+            username: 'Darroman',
+            photoLink: 'https://www.pressball.by/images/stories/2020/03/20200310231542.jpg',
+            password: '1111'
+        },
+        {
+            username: 'Kitty_love',
+            photoLink: 'https://i.pinimg.com/564x/f4/d2/96/f4d2961b652880be432fb9580891ed62.jpg',
+            password: '2222'
+        },
+        {
+            username: 'Guitar Genius',
+            photoLink: 'https://opt-1289634.ssl.1c-bitrix-cdn.ru/upload/iblock/790/7906fe4ed570929ca640580f05a7b4f6.jpg?1562573455190287',
+            password: '3333'
+        },
+        {
+            username: 'Evgeniya Solovyova',
+            photoLink: null,
+            password: '4444'
+        },
+        {
+            username: 'Ivanov Alexander',
+            photoLink: 'http://files.library.by/images/files/1476356097.jpg',
+            password: '5555'
+        },
+        {
+            username: 'Just furniture',
+            photoLink: null,
+            password: '6666'
+        },
+        {
+            username: 'Novikov Alexey'
+            ,
+            photoLink: 'https://russianyellowpages.us/images/articles/29abuduschee.jpg',
+            password: '7777'
+        },
+        {
+            username: 'Lylalyuk Anna',
+            photoLink: 'https://www.pressball.by/images/stories/2020/03/20200310231542.jpg',
+            password: '8888'
+        },
+        {
+            username: 'Jonathan Trapp',
+            photoLink: 'https://russianyellowpages.us/images/articles/avozdshari.jpg',
+            password: '9999'
+        },
+        {
+            username: 'Popova Ksenia',
+            photoLink: 'https://russianyellowpages.us/images/articles/agorkatr.jpg',
+            password: '1112'
+        },
+        {
+            username: 'Sokolov Ivan',
+            photoLink: 'https://russianyellowpages.us/images/articles/abudi.jpg',
+            password: '1113'
+        },
+        {
+            username: 'Mazhey Victor',
+            photoLink: 'https://www.pressball.by/images/stories/2020/03/20200310231542.jpg',
+            password: '1122'
+        },
+        {
+            username: 'Player',
+            photoLink: 'https://opt-1289634.ssl.1c-bitrix-cdn.ru/upload/iblock/790/7906fe4ed570929ca640580f05a7b4f6.jpg?1562573455190287',
+            password: '1234'
+        }
+    ];
+    window.usersCollection.addAll(users);
+    feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts).then();
 })();

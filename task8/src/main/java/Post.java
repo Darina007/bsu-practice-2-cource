@@ -4,9 +4,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 
 @Builder
@@ -24,18 +22,15 @@ public class Post implements postParser {
     private int discount;
     private static final int MAX_DISCOUNT = 100;
     private static final int MAX_LENGTH_OF_DESCRIPTION = 100;
-    private static final int MIN_DISCOUNT = 100;
+    private static final int MIN_DISCOUNT = 0;
 
     public static String generateID() {
         return UUID.randomUUID().toString();
     }
 
     public boolean isValid() {
-        if (!isAuthor() && !isDescription() &&
-            !isDateOfCreation() && !isDateOfValidation()) {
-            return false;
-        }
-        return isValidDiscount() && isValidDescription();
+        return isValidDiscount() && isValidDescription() && isAuthor() && isDescription() &&
+               isDateOfCreation() && isDateOfValidation();
     }
 
     public boolean isDescription() {
@@ -62,10 +57,6 @@ public class Post implements postParser {
         return discount >= MIN_DISCOUNT && discount <= MAX_DISCOUNT;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
     public String getId() {
         return id;
     }
@@ -86,16 +77,8 @@ public class Post implements postParser {
         return validateUntil;
     }
 
-    public String getPhotoLink() {
-        return photoLink;
-    }
-
     public List<String> getHashTags() {
         return hashTags;
-    }
-
-    public List<String> getLikes() {
-        return likes;
     }
 
     public int getRating() {
@@ -118,14 +101,15 @@ public class Post implements postParser {
         return hashTags != null;
     }
 
-    public boolean isComments() {
-        return comments != null;
-    }
-
-    public void addComment(Comment comment) {
-        if (comment.isValidComment()) {
-            this.comments.add(comment);
+    public boolean addComment(Comment comment) {
+        if (!comment.isValidComment()) {
+            return false;
         }
+        if (this.comments == null) {
+            this.comments = new ArrayList<>();
+        }
+        this.comments.add(comment);
+        return true;
     }
 
     private boolean findLike(String username) {
@@ -169,16 +153,8 @@ public class Post implements postParser {
         this.validateUntil = validateUntil;
     }
 
-    public void setPhotoLink(String photoLink) {
-        this.photoLink = photoLink;
-    }
-
     public void setHashTags(List<String> hashTags) {
         this.hashTags = hashTags;
-    }
-
-    public void setLikes(List<String> likes) {
-        this.likes = likes;
     }
 
     public void setRating(int rating) {

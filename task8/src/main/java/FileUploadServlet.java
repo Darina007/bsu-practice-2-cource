@@ -14,19 +14,19 @@ import java.util.logging.Logger;
 @WebServlet("/upload")
 public class FileUploadServlet extends HttpServlet {
     private static final String UPLOAD_DIR = "uploads";
+    private static final String UPLOAD_PATH = "D:/FAMSpractice/task8/src/main/webapp/resources";
     private static final String UPLOAD = "/upload";
     private static final String SUCCESS_UPLOADING = " File uploaded successfully!\nTo: ";
-    private static final String KEY_FILE_NAME = "fileName";
+    private static final String KEY_FILE_NAME = "filename";
     private static final String CONTENT_TYPE = "image/jpeg";
     private static final String CONTENT_DISPOSITION = "content-disposition";
     private static Logger log = Logger.getLogger(FileUploadServlet.class.getName());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        String applicationPath = request.getServletContext().getRealPath("");
-        String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
+        String uploadFilePath = UPLOAD_PATH + File.separator + UPLOAD_DIR;
         File fileSaveDir = new File(uploadFilePath);
         if (!fileSaveDir.exists()) {
-            fileSaveDir.mkdirs();
+            fileSaveDir.mkdir();
         }
         String fileName = null;
         try {
@@ -39,7 +39,6 @@ public class FileUploadServlet extends HttpServlet {
             log.log(Level.SEVERE, "Exception: ", e);
         }
     }
-
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         String URLAfterWebDomain = request.getRequestURI();

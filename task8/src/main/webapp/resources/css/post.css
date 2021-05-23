@@ -4,12 +4,13 @@
     flex-direction: column;
     max-height: 20rem;
     min-height: 15rem;
+    max-width: 45%;
     margin: 20px;
 }
 
 .post-dedicated {
     display: table;
-    flex: 1 1 95%;
+    margin: 0 20%;
 }
 
 .post {
@@ -50,6 +51,8 @@
 }
 
 #photoLink {
+    width: 100%;
+    height: auto;
     border-radius: 20px;
 }
 
@@ -124,5 +127,4 @@
     margin: 5px;
     width: 50%;
     height: 50%;
-
 }

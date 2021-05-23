@@ -11,8 +11,7 @@ import java.util.logging.Logger;
 
 
 @WebServlet("/post")
-public class PostServlet extends HttpServlet implements jsonParser, postParser {
-    private PostCollection posts = new PostCollection(TestPosts.testPosts);
+public class PostServlet extends HttpServlet implements postParser {
     private static Logger log = Logger.getLogger(PostServlet.class.getName());
 
     @Override
@@ -22,7 +21,7 @@ public class PostServlet extends HttpServlet implements jsonParser, postParser {
         response.setContentType(ConstantDictionary.CONTENT_TYPE);
         response.setCharacterEncoding(ConstantDictionary.CHARACTER_ENCODING);
         try {
-            if (posts.removePost(id)) {
+            if (PostContainer.removePost(id)) {
                 response.setStatus(200);
                 response.getWriter().write(ConstantDictionary.DELETE_POST_TEXT + id);
                 response.getWriter().write(ConstantDictionary.RESULT_SUCCESS);
@@ -49,7 +48,7 @@ public class PostServlet extends HttpServlet implements jsonParser, postParser {
         response.setCharacterEncoding(ConstantDictionary.CHARACTER_ENCODING);
         try {
             response.getWriter().write(post.toString());
-            if (posts.addPost(post)) {
+            if (PostContainer.addPost(post)) {
                 response.setStatus(200);
                 response.getWriter().write(ConstantDictionary.RESULT_SUCCESS);
             } else {
@@ -79,6 +78,21 @@ public class PostServlet extends HttpServlet implements jsonParser, postParser {
             log.log(Level.SEVERE, "Exception: ", e);
         }
         return parseStringToJsonObj(json);
+    }
+
+    @Override
+    public Post parsePostFields(JsonObject object) throws ParseException {
+        return Post.builder()
+                .id(parseId(object))
+                .author(parseAuthor(object))
+                .description(parseDescription(object))
+                .createdAt(parseCreateDate(object))
+                .validateUntil(parseValidDate(object))
+                .hashTags(parseHashTah(object))
+                .likes(parseLikes(object))
+                .rating(parseRating(object))
+                .discount(parseDiscount(object))
+                .build();
     }
 }
 

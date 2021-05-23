@@ -28,15 +28,14 @@ class PostView {
     pressLike(postId) {
         const username = this.userName;
         const post = document.getElementById(postId);
-        const postCol = postsCollection.get(postId);
+        const postCol = postServise.get(postId);
         const likeIndex = postCol.likes.indexOf(username);
         if (likeIndex === -1) {
             postCol.likes.push(username);
-            this.updateLike(post);
         } else {
             postCol.likes.splice(likeIndex, 1);
-            this.updateLike(post);
         }
+        this.updateLike(post);
     }
 
     updateLike(post) {
@@ -60,7 +59,9 @@ class PostView {
         let article = newPost.querySelector('div.post');
         article.id = postData.id;
         let photo = newPost.querySelector('[data-target = "photoLink"]');
-        photo.src = postData.photoLink;
+        if (postData.photoLink) {
+            photo.src = "resources/uploads/" + postData.photoLink;
+        }
         let author = newPost.querySelector('[data-target = "author"]');
         author.textContent = postData.author;
         let validUntil = newPost.querySelector('[data-target = "validateUntil"]');
@@ -111,7 +112,7 @@ class PostView {
         let lastTag = newPost.querySelector('[class="review"]');
         let post = newPost.querySelector('[class="post"]');
         if (!isGuest) {
-            const postCol = window.postsCollection.get(post.id);
+            const postCol = postServise.get(post.id);
             const likeIndex = postCol.likes.indexOf(this.userName);
             let buttonLike;
             if (likeIndex === -1) {

@@ -21,7 +21,6 @@ public interface jsonParser {
 
     default JsonObject parseStringToJsonObj(String string) {
         JsonParser parser = new JsonParser();
-        JsonObject object = parser.parse(string).getAsJsonObject();
-        return object;
+        return parser.parse(string).getAsJsonObject();
     }
 }
