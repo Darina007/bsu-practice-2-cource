@@ -110,15 +110,18 @@ class PostEvents {
     }
 
     async _postNewPost() {
-        let newPost = addPostEvent.fillNewPostData();
-        const image = document.getElementById('img-file');
-        await addPostEvent.postPhoto(image.files[0], "/upload");
-        let response = await addPostEvent.postData(newPost, "/post");
-        if (response !== 200) {
+        let newPost =await addPostEvent.fillNewPostData();
+        let image = document.getElementById('img-file');
+        let responseUploadingPhoto = await addPostEvent.postPhoto(image.files[0], "/upload");
+        if (responseUploadingPhoto !== 200) {
             addPostEvent.removePostArea();
-            modals.createErrorModal("Error adding post on service");
-            return;
+            modals.createErrorModal("Error adding photo on service");
         }
+        let response = await addPostEvent.postData(newPost, "/post");
+            if (response !== 200) {
+                addPostEvent.removePostArea();
+                modals.createErrorModal("Error adding post on service");
+            }
         if (!await postServise.add(newPost)) {
             addPostEvent.removePostArea();
             modals.createErrorModal("Error adding post");

@@ -63,7 +63,7 @@ class Modals {
         });
     }
 
-    async createErrorModal(message) {
+    createErrorModal(message) {
         let errorTemplate = document.getElementById("error-modal-template");
         let errorModal = document.importNode(errorTemplate.content, true);
         let messageContainer = errorModal.getElementById("text-error");
@@ -73,14 +73,14 @@ class Modals {
         modals.modal.appendChild(errorModal);
         let button = document.querySelector('[class="log-button"]');
         button.addEventListener("click", modals._removeModal);
-        await modals._closeModal(modals.modal);
+        modals._closeModal(modals.modal);
     }
 
     async _editPost(postId) {
-        let editFields = modals._readInputFieldsEdit();
+        let editFields = await modals._readInputFieldsEdit();
         try {
-            let response = postEvent.editPost("/post/edit", postId, editFields);
-            if (!response.ok) {
+            let response = await postEvent.editPost("/post/edit", postId, editFields);
+            if (response !== 200) {
                 return new Error("Can't edit post");
             }
             await postServise.edit(postId, editFields);
@@ -125,7 +125,7 @@ class Modals {
         return postEditions;
     }
 
-    async _fillEditFields(postId, editModal) {
+    _fillEditFields(postId, editModal) {
         let editPost = postServise.get(postId);
         const author = editModal.getElementById("edit-author-field");
         author.textContent = editPost.author;
@@ -139,7 +139,7 @@ class Modals {
         discount.textContent = editPost.discount;
     }
 
-    async _closeModal(modal) {
+    _closeModal(modal) {
         let closeBtn = document.querySelector('.close');
         modal.classList.toggle('show-modal');
         closeBtn.addEventListener('click', modals._removeModal);

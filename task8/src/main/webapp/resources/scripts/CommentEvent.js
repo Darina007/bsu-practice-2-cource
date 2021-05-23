@@ -55,8 +55,8 @@ class CommentEvent {
         commentForm.addEventListener("submit", async () => {
             let mark = commentEvent.fillCommentMark();
             await commentEvent.addComment(postId, mark);
-            await commentForm.reset();
-            await commentEvent.redrawReviewButtons(0);
+            commentForm.reset();
+            commentEvent.redrawReviewButtons(0);
         })
     }
 
@@ -156,7 +156,7 @@ class CommentEvent {
                 let commentTemplate = document.getElementById("comment-template");
                 let commentField = document.importNode(commentTemplate.content, true);
                 comm.appendChild(commentField);
-                comment._fillComment(comment, comm);
+                commentEvent._fillComment(comment, comm);
             })
         }
     }
@@ -171,7 +171,7 @@ class CommentEvent {
         commentEvent._loadComments(postId);
     }
 
-    async _fillComment(comment, comm) {
+    _fillComment(comment, comm) {
         let author = comm.querySelector('[id="comment-author"]');
         if (author) {
             author.textContent = comment.commentAuthor;
@@ -186,7 +186,7 @@ class CommentEvent {
         }
         let mark = comm.querySelector('[id="comment-mark"]');
         if (mark) {
-           await view.postViewer._drawRating(mark, comment.commentMark);
+            view.postViewer._drawRating(mark, comment.commentMark);
         }
         return comm;
     }

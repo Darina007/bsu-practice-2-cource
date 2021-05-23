@@ -50,7 +50,7 @@
     flex: 1 1 60%;
 }
 
-#photoLink {
+#photoLink, .edit-img-file {
     width: 100%;
     height: auto;
     border-radius: 20px;

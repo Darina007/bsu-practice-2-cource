@@ -3,26 +3,11 @@ class FeedView {
     users;
     filter = [];
 
-    async constructor(posts, users, userData) {
-        if (userData) {
-            this.postViewer.isGuest = false;
-            this.fillUser(userData);
-            this.drawAddPostButton();
-        }
-        this.users = users;
-        if (users) {
-            this.fillFilterUser(users);
-        }
-        if (posts) {
-            await this.drawPosts(posts);
-        }
-    }
-
     async isAuthorized() {
         return !!this.postViewer.userName;
     }
 
-    async getUser() {
+    getUser() {
         return this.postViewer.userName;
     }
 
@@ -110,14 +95,14 @@ class FeedView {
         }
     }
 
-    async drawPosts(posts) {
-        await posts.reverse().forEach((post) => this.postViewer.drawPost(post));
+    drawPosts(posts) {
+        posts.reverse().forEach((post) => this.postViewer.drawPost(post));
     }
 
-    async redrawPosts(posts) {
+    redrawPosts(posts) {
         let oldPosts = this.postViewer.feedPosts.querySelectorAll("div.post-container");
         Array.prototype.forEach.call(oldPosts, (oldPost) => this.postViewer.feedPosts.removeChild(oldPost));
-        await this.drawPosts(posts);
+        this.drawPosts(posts);
     }
 
     _createOption(user) {
@@ -126,14 +111,4 @@ class FeedView {
         return option;
     }
 }
-
-
-(async () => {
-    window.view = new FeedView();
-    await window.view.fillUser('Darroman');
-    let users = ['Darroman', 'Ivanov Ivan', 'Solovieva Evgeniya', 'Popova Ksenia',
-        'Sokolov Ivan', 'Jonathan Trapp', 'Lylalyuk Anna', 'Novikov Alexey',
-        'Just furniture', 'Ivanov Alexander', 'Player', 'Kitty_love', 'Mazhey Victor'];
-    await window.view.fillFilterUser(users);
-})();
 

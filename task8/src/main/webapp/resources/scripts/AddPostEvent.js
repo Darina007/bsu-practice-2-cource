@@ -1,8 +1,8 @@
-class AddPostEvent{
+class AddPostEvent {
     async initializeAddPostButton() {
         let button = document.getElementById("add-post");
-        button.addEventListener("click", async() => {
-           await addPostEvent.initializeAddPostArea();
+        button.addEventListener("click", async () => {
+            await addPostEvent.initializeAddPostArea();
         })
     }
 
@@ -43,7 +43,7 @@ class AddPostEvent{
         dataField.remove();
     }
 
-    async fillNewPostData() {
+    fillNewPostData() {
         const image = document.getElementById('img-file').files[0].name;
         const validateUntil = document.getElementById('validate-until-field').value;
         const description = document.getElementById('description-field').value;
@@ -53,7 +53,7 @@ class AddPostEvent{
         let post = {};
         post.id = Date.now().toString(32) + (Math.random() * Math.pow(2, 20)).toString(32);
         post.description = description;
-        await post.author = view.getUser();
+        post.author = view.getUser();
         post.photoLink = image;
         post.createdAt = new Date();
         post.validateUntil = new Date(validateUntil);
@@ -84,6 +84,6 @@ class AddPostEvent{
     }
 }
 
-(()=>{
+(() => {
     window.addPostEvent = new AddPostEvent();
 })();

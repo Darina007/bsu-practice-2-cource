@@ -15,7 +15,7 @@ class FeedEvents {
             await view.clearFilter();
             const filterConf = feedEvents.fillFilter();
             await view.setFilter(filterConf);
-            let filter = view.getFilter();
+            let filter = await view.getFilter();
             await feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts, filter);
             form.reset();
             feedEvents.fillDateFilterFields();
@@ -83,16 +83,16 @@ class FeedEvents {
             let posts = await feedEvents.getPosts(paramString, "/posts/search");
             await postServise.addAll(posts);
             let postsArray = await postServise.getPage(firstPostNumber, postNumber, filter);
-            await view.redrawPosts(postsArray);
+            view.redrawPosts(postsArray);
             await feedEvents.setPostEvents(postsArray);
             await feedEvents.initializePage();
         } catch (err) {
-            await modals.createErrorModal("Error creating page");
+            modals.createErrorModal("Error creating page");
         }
     }
 
     async initializePage() {
-        feedEvents.initializeFilter();
+        await feedEvents.initializeFilter();
         feedEvents.next.addEventListener("click", feedEvents._loadNextPosts);
         feedEvents.prev.addEventListener("click", feedEvents._loadPreviousPosts);
         if (await view.isAuthorized()) {
@@ -165,7 +165,13 @@ class FeedEvents {
     }
 }
 
-(() => {
+(async () => {
+    window.view = new FeedView();
+    await window.view.fillUser('Darroman');
+    let usersNames = ['Darroman', 'Ivanov Ivan', 'Solovieva Evgeniya', 'Popova Ksenia',
+        'Sokolov Ivan', 'Jonathan Trapp', 'Lylalyuk Anna', 'Novikov Alexey',
+        'Just furniture', 'Ivanov Alexander', 'Player', 'Kitty_love', 'Mazhey Victor'];
+    await window.view.fillFilterUser(usersNames);
     window.feedEvents = new FeedEvents();
     let users = [
         {
@@ -235,6 +241,6 @@ class FeedEvents {
             password: '1234'
         }
     ];
-    window.usersCollection.addAll(users);
-    feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts).then();
+    await window.usersCollection.addAll(users);
+    await feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts);
 })();

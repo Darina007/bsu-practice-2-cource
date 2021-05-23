@@ -11,18 +11,22 @@ class PostView {
         }
     }
 
-    async drawPost(postData) {
+    drawPost(postData) {
         let newPost = document.importNode(this._postTemplate.content, true);
-        await this._fillPostData(newPost, postData);
+        this._fillPostData(newPost, postData);
+        this.drawButtons(newPost, postData);
+        this.feedPosts.insertBefore(newPost, this.feedPosts.firstChild);
+    }
+
+    drawButtons(newPost, postData){
         if (!this.isGuest) {
             if (this.userName === postData.author) {
-                await this._drawAuthorPostButtons(newPost);
+                this._drawAuthorPostButtons(newPost);
             }
-            await this._drawUserPostButtons(newPost, false);
+            this._drawUserPostButtons(newPost, false);
         } else {
-            await this._drawUserPostButtons(newPost, true);
+            this._drawUserPostButtons(newPost, true);
         }
-        this.feedPosts.insertBefore(newPost, this.feedPosts.firstChild);
     }
 
     async pressLike(postId) {
@@ -55,7 +59,7 @@ class PostView {
         await this.feedPosts.removeChild(post.parentNode);
     }
 
-    async _fillPostData(newPost, postData) {
+    _fillPostData(newPost, postData) {
         let article = newPost.querySelector('div.post');
         article.id = postData.id;
         let photo = newPost.querySelector('[data-target = "photoLink"]');
@@ -74,12 +78,12 @@ class PostView {
         let discount = newPost.querySelector('[data-target="discount"]');
         discount.textContent = postData.discount + "%";
         let rating = newPost.querySelector('[data-target="rating"]');
-        await this._drawRating(rating, postData.rating);
+        this._drawRating(rating, postData.rating);
         let tags = newPost.querySelector('[data-target="hashTags"]');
         postData.hashTags.forEach((tag) => tags.appendChild(this._createTag(tag)));
     }
 
-    async _drawRating(placeHolder, rating) {
+    _drawRating(placeHolder, rating) {
         let img;
         for (let i = 1; i <= 5; i++) {
             if (rating > 0) {
@@ -92,23 +96,23 @@ class PostView {
         }
     }
 
-    async _createTag(tagText) {
+    _createTag(tagText) {
         let tag = document.createElement('li');
         tag.className = "hashtag";
         tag.textContent = "#" + tagText;
         return tag;
     }
 
-    async _drawAuthorPostButtons(newPost) {
+    _drawAuthorPostButtons(newPost) {
         let lastTag = newPost.querySelector('[class="second-post-raw"]');
-        let buttonDelete = await this._drawPostButton("delete", "delete");
-        let buttonEdit = await this._drawPostButton("edit", "edit");
+        let buttonDelete = this._drawPostButton("delete", "delete");
+        let buttonEdit = this._drawPostButton("edit", "edit");
         lastTag.appendChild(buttonDelete);
         lastTag.appendChild(buttonEdit);
         return lastTag;
     }
 
-    async _drawUserPostButtons(newPost, isGuest) {
+    _drawUserPostButtons(newPost, isGuest) {
         let lastTag = newPost.querySelector('[class="review"]');
         let post = newPost.querySelector('[class="post"]');
         if (!isGuest) {
@@ -116,33 +120,33 @@ class PostView {
             const likeIndex = postCol.likes.indexOf(this.userName);
             let buttonLike;
             if (likeIndex === -1) {
-                buttonLike = await this._drawPostButton("like", "like", "like");
+                buttonLike = this._drawPostButton("like", "like", "like");
             } else {
-                buttonLike = await this._drawPostButton("like", "unlike", "like");
+                buttonLike = this._drawPostButton("like", "unlike", "like");
             }
-            let buttonComment = await this._drawPostButton("comment", "comment", "comment");
+            let buttonComment = this._drawPostButton("comment", "comment", "comment");
             lastTag.appendChild(buttonLike);
             lastTag.appendChild(buttonComment);
         } else {
-            let buttonComment = await this._drawPostButton("comment", "comment", "view comments");
+            let buttonComment = this._drawPostButton("comment", "comment", "view comments");
             lastTag.appendChild(buttonComment);
         }
         return lastTag;
     }
 
-    async _drawPostButton(type, imgName, buttonText) {
+    _drawPostButton(type, imgName, buttonText) {
         let button = document.createElement("button");
         button.setAttribute("type", "button");
         if (buttonText) {
             button.textContent = buttonText;
         }
         button.className = type;
-        let image = await this._createImage(imgName);
+        let image = this._createImage(imgName);
         button.appendChild(image);
         return button;
     }
 
-    async _createImage(imgName) {
+    _createImage(imgName) {
         let image = document.createElement("img");
         image.src = "resources/img/" + imgName + ".png";
         image.alt = imgName;
