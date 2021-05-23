@@ -3,7 +3,7 @@ class FeedView {
     users;
     filter = [];
 
-    constructor(posts, users, userData) {
+    async constructor(posts, users, userData) {
         if (userData) {
             this.postViewer.isGuest = false;
             this.fillUser(userData);
@@ -14,19 +14,19 @@ class FeedView {
             this.fillFilterUser(users);
         }
         if (posts) {
-            this.drawPosts(posts);
+            await this.drawPosts(posts);
         }
     }
 
-    isAuthorized() {
+    async isAuthorized() {
         return !!this.postViewer.userName;
     }
 
-    getUser() {
+    async getUser() {
         return this.postViewer.userName;
     }
 
-    fillUser(user) {
+    async fillUser(user) {
         let userName = document.getElementById("user-name");
         userName.textContent = user;
         let button = document.getElementById("login-button");
@@ -35,10 +35,10 @@ class FeedView {
         button.textContent = "Log out";
         this.postViewer.userName = user;
         this.postViewer.isGuest = false;
-        this.drawAddPostButton();
+        await this.drawAddPostButton();
     }
 
-    unFillUser() {
+    async unFillUser() {
         let userName = document.getElementById("user-name");
         userName.textContent = "Guest";
         let button = document.getElementById("logout-button");
@@ -47,7 +47,7 @@ class FeedView {
         button.textContent = "Log in";
         this.postViewer.userName = null;
         this.postViewer.isGuest = true;
-        this.deleteAddPostButton();
+        await this.deleteAddPostButton();
     }
 
     drawAddPostButton() {
@@ -71,7 +71,7 @@ class FeedView {
         }
     }
 
-    setFilter(filter) {
+    async setFilter(filter) {
         let filterFields = Object.keys(filter);
         filterFields.forEach((field) => {
                 this.filter[field] = filter[field];
@@ -79,15 +79,15 @@ class FeedView {
         )
     }
 
-    clearFilter() {
+    async clearFilter() {
         this.filter = [];
     }
 
-    getFilter() {
+    async getFilter() {
         return this.filter;
     }
 
-    fillFilterUser(users) {
+    async fillFilterUser(users) {
         let filter = document.getElementById('vendor-filter');
         users.forEach((user) => filter.appendChild(this._createOption(user)));
     }
@@ -110,14 +110,14 @@ class FeedView {
         }
     }
 
-    drawPosts(posts) {
-        posts.reverse().forEach((post) => this.postViewer.drawPost(post));
+    async drawPosts(posts) {
+        await posts.reverse().forEach((post) => this.postViewer.drawPost(post));
     }
 
-    redrawPosts(posts) {
+    async redrawPosts(posts) {
         let oldPosts = this.postViewer.feedPosts.querySelectorAll("div.post-container");
         Array.prototype.forEach.call(oldPosts, (oldPost) => this.postViewer.feedPosts.removeChild(oldPost));
-        this.drawPosts(posts);
+        await this.drawPosts(posts);
     }
 
     _createOption(user) {
@@ -128,12 +128,12 @@ class FeedView {
 }
 
 
-(() => {
+(async () => {
     window.view = new FeedView();
-    window.view.fillUser('Darroman');
-    let users = ['Darroman', 'Иванов Иван', 'Соловьева Евгения', 'Попова Ксения',
-        'Соколов Иван', 'Джонатан Трапп', 'Lylalyuk Anna', 'Новиков Алексей',
-        'Просто мебель', 'Иванов Александр', 'Player', 'Kitty_love', 'Мажей Виктор'];
-    window.view.fillFilterUser(users);
+    await window.view.fillUser('Darroman');
+    let users = ['Darroman', 'Ivanov Ivan', 'Solovieva Evgeniya', 'Popova Ksenia',
+        'Sokolov Ivan', 'Jonathan Trapp', 'Lylalyuk Anna', 'Novikov Alexey',
+        'Just furniture', 'Ivanov Alexander', 'Player', 'Kitty_love', 'Mazhey Victor'];
+    await window.view.fillFilterUser(users);
 })();
 

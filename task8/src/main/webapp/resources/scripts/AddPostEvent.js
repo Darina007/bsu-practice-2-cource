@@ -1,16 +1,16 @@
 class AddPostEvent{
-    initializeAddPostButton() {
+    async initializeAddPostButton() {
         let button = document.getElementById("add-post");
-        button.addEventListener("click", () => {
-            addPostEvent.initializeAddPostArea();
+        button.addEventListener("click", async() => {
+           await addPostEvent.initializeAddPostArea();
         })
     }
 
-    initializeAddPostArea() {
+    async initializeAddPostArea() {
         let addPostArea = document.querySelector('[class = "add-post-form"]');
         if (!addPostArea) {
             addPostArea = addPostEvent.drawPostArea();
-            postEvent.setNewPostEventListener(addPostArea);
+            await postEvent.setNewPostEventListener(addPostArea);
             document.getElementById("new-post-form").onsubmit = () => {
                 return false;
             }
@@ -43,7 +43,7 @@ class AddPostEvent{
         dataField.remove();
     }
 
-    fillNewPostData() {
+    async fillNewPostData() {
         const image = document.getElementById('img-file').files[0].name;
         const validateUntil = document.getElementById('validate-until-field').value;
         const description = document.getElementById('description-field').value;
@@ -53,7 +53,7 @@ class AddPostEvent{
         let post = {};
         post.id = Date.now().toString(32) + (Math.random() * Math.pow(2, 20)).toString(32);
         post.description = description;
-        post.author = view.getUser();
+        await post.author = view.getUser();
         post.photoLink = image;
         post.createdAt = new Date();
         post.validateUntil = new Date(validateUntil);

@@ -1,25 +1,25 @@
 class CommentEvent {
-    createCommentArea(postId) {
+    async createCommentArea(postId) {
         let post = document.getElementById(postId);
         let container = post.parentNode;
         let commentArea = document.querySelector('[class = "add-comment"]');
         if (!commentArea) {
-            commentEvent.drawCommentContainer(container, postId);
-            commentEvent.createCommentMarkButtons();
-            commentEvent.initializeCommentForm(postId);
+            await commentEvent.drawCommentContainer(container, postId);
+            await commentEvent.createCommentMarkButtons();
+            await commentEvent.initializeCommentForm(postId);
         } else {
             container.classList.remove("post-dedicated");
             commentArea.remove();
         }
     }
 
-    drawCommentContainer(container, postId) {
+    async drawCommentContainer(container, postId) {
         container.classList.add("post-dedicated");
         let commentArea = commentEvent.drawCommentArea();
         container.appendChild(commentArea);
         commentEvent._loadComments(postId);
         let addCommentArea = document.querySelector('[class="new-user-comment"]');
-        commentEvent.drawAddCommentArea(addCommentArea);
+        await commentEvent.drawAddCommentArea(addCommentArea);
     }
 
     drawCommentArea() {
@@ -31,8 +31,8 @@ class CommentEvent {
         return commentArea;
     }
 
-    drawAddCommentArea(container) {
-        if (view.isAuthorized()) {
+    async drawAddCommentArea(container) {
+        if (await view.isAuthorized()) {
             let addCommentTemplate = document.getElementById("add-comment-template");
             let addComment = document.importNode(addCommentTemplate.content, true);
             container.appendChild(addComment);
@@ -47,16 +47,16 @@ class CommentEvent {
         }
     }
 
-    initializeCommentForm(postId) {
+    async initializeCommentForm(postId) {
         let commentForm = document.getElementById("new-comment-form");
         commentForm.onsubmit = () => {
             return false;
         }
-        commentForm.addEventListener("submit", () => {
+        commentForm.addEventListener("submit", async () => {
             let mark = commentEvent.fillCommentMark();
-            commentEvent.addComment(postId, mark);
-            commentForm.reset();
-            commentEvent.redrawReviewButtons(0);
+            await commentEvent.addComment(postId, mark);
+            await commentForm.reset();
+            await commentEvent.redrawReviewButtons(0);
         })
     }
 
@@ -77,7 +77,7 @@ class CommentEvent {
         }
     }
 
-    addComment(postId, markValue) {
+    async addComment(postId, markValue) {
         let commentData = {};
         let text = document.getElementById("comment-text-input");
         commentData.commentText = text.value;
@@ -86,15 +86,14 @@ class CommentEvent {
         commentData.commentAuthor = view.getUser();
         let requestObject = commentData;
         requestObject.id = postId;
-        commentEvent.postComment(requestObject, "/post/comment").then((response) => {
-            if (response !== 200) {
-                modals.createErrorModal("Error creating comment");
-                return;
-            }
-            if (postServise.addComment(postId, commentData)) {
-                commentEvent._reloadComments(postId);
-            }
-        })
+        let response = await commentEvent.postComment(requestObject, "/post/comment");
+        if (response !== 200) {
+            await modals.createErrorModal("Error creating comment");
+            return;
+        }
+        if (await postServise.addComment(postId, commentData)) {
+            commentEvent._reloadComments(postId);
+        }
     }
 
     async postComment(data, url) {
@@ -172,7 +171,7 @@ class CommentEvent {
         commentEvent._loadComments(postId);
     }
 
-    _fillComment(comment, comm) {
+    async _fillComment(comment, comm) {
         let author = comm.querySelector('[id="comment-author"]');
         if (author) {
             author.textContent = comment.commentAuthor;
@@ -187,7 +186,7 @@ class CommentEvent {
         }
         let mark = comm.querySelector('[id="comment-mark"]');
         if (mark) {
-            view.postViewer._drawRating(mark, comment.commentMark);
+           await view.postViewer._drawRating(mark, comment.commentMark);
         }
         return comm;
     }

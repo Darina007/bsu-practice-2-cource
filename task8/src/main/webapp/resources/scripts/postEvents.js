@@ -1,8 +1,8 @@
 class PostEvents {
-    setPostEventListener(postElement, postId) {
-        const like = postElement.getElementsByClassName('like').item(0);
-        if (like) {
-            like.addEventListener('click',
+    async setPostEventListener(postElement, postId) {
+        const likePost = postElement.getElementsByClassName('like').item(0);
+        if (likePost) {
+            likePost.addEventListener('click',
                 evt => {
                     postEvent._updateLike(postId);
                     evt.stopPropagation();
@@ -10,9 +10,9 @@ class PostEvents {
             );
         }
 
-        const comment = postElement.getElementsByClassName('comment').item(0);
-        if (comment) {
-            comment.addEventListener('click',
+        const commentPost = postElement.getElementsByClassName('comment').item(0);
+        if (commentPost) {
+            commentPost.addEventListener('click',
                 evt => {
                     commentEvent.createCommentArea(postId);
                     evt.stopPropagation();
@@ -39,12 +39,16 @@ class PostEvents {
         }
     }
 
-    setNewPostEventListener(postAreaElement) {
+    async setNewPostEventListener(postAreaElement) {
         const add = postAreaElement.getElementsByTagName("form").item(0);
         if (add) {
             add.addEventListener('submit',
                 evt => {
-                    postEvent._postNewPost().catch(() => modals.createErrorModal("Server error"));
+                    try {
+                        postEvent._postNewPost();
+                    } catch (error) {
+                        modals.createErrorModal("Server error");
+                    }
                     evt.stopPropagation();
                 }
             );
@@ -96,35 +100,32 @@ class PostEvents {
         }).then(response => response.status);
     }
 
-    _updateLike(postId) {
-        postEvent.postLike(postId, "/post/update/like").then((response) => {
-                if (response !== 200) {
-                    modals.createErrorModal("Error updating like");
-                    return;
-                }
-                view.postViewer.pressLike(postId);
-            }
-        );
+    async _updateLike(postId) {
+        let response = await postEvent.postLike(postId, "/post/update/like");
+        if (response !== 200) {
+            modals.createErrorModal("Error updating like");
+            return;
+        }
+        await view.postViewer.pressLike(postId);
     }
 
     async _postNewPost() {
         let newPost = addPostEvent.fillNewPostData();
         const image = document.getElementById('img-file');
         await addPostEvent.postPhoto(image.files[0], "/upload");
-        await addPostEvent.postData(newPost, "/post").then(response => {
-            if (response !== 200) {
-                addPostEvent.removePostArea();
-                modals.createErrorModal("Error adding post on service");
-                return;
-            }
-            if (!postServise.add(newPost)) {
-                addPostEvent.removePostArea();
-                modals.createErrorModal("Error adding post");
-                return;
-            }
+        let response = await addPostEvent.postData(newPost, "/post");
+        if (response !== 200) {
             addPostEvent.removePostArea();
-            feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts).then();
-        });
+            modals.createErrorModal("Error adding post on service");
+            return;
+        }
+        if (!await postServise.add(newPost)) {
+            addPostEvent.removePostArea();
+            modals.createErrorModal("Error adding post");
+            return;
+        }
+        addPostEvent.removePostArea();
+        await feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts);
     }
 
     drawPreviewPhoto(imageInputId, imageHolderId) {

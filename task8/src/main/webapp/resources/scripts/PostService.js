@@ -7,15 +7,11 @@ class PostService {
         }
     }
 
-    countPosts() {
-        return this._posts.length;
-    }
-
     get(id) {
         return this._posts.find((item) => item.id === id);
     }
 
-    getPage(skip, top, filterConfig) {
+    async getPage(skip, top, filterConfig) {
         let countSkippedPosts = skip || 0;
         let countReceivedPosts = top || 10;
         let workingArray = [...this._posts];
@@ -60,10 +56,10 @@ class PostService {
             workingArray.sort((firstPost, secondPost) => secondPost.createdAt - firstPost.createdAt);
         }
         workingArray = workingArray.slice(countSkippedPosts, countSkippedPosts + countReceivedPosts);
-        return workingArray;
+        return Promise.resolve(workingArray);
     }
 
-    add(post) {
+    async add(post) {
         if (PostService._validate(post) && !this.get(post.id)) {
             this._posts.push(post);
             return true;
@@ -71,15 +67,15 @@ class PostService {
         return false;
     }
 
-    addAll(posts) {
-        posts.forEach(post => {
+    async addAll(posts) {
+        await posts.forEach(post => {
             post.validateUntil = new Date(post.validateUntil);
             post.createdAt = new Date(post.createdAt);
             this.add(post);
         })
     }
 
-    edit(id, changes) {
+    async edit(id, changes) {
         let mutablePost;
         if (this.get(id)) {
             mutablePost = Object.assign(this.get(id));
@@ -116,7 +112,7 @@ class PostService {
         return flag;
     }
 
-    removePost(id) {
+    async removePost(id) {
         if (this.get(id)) {
             let index = this._posts.indexOf(this.get(id));
             this._posts.splice(index, 1, this.get(id));
@@ -125,7 +121,7 @@ class PostService {
         return false;
     }
 
-    addComment(id, commentData) {
+    async addComment(id, commentData) {
         let post = postServise.get(id);
         if (PostService._validateComment(commentData)) {
             if (!post.comments) {
@@ -142,7 +138,7 @@ class PostService {
             comment.commentText || comment.commentMark;
     }
 
-    parseComments(commentsArray) {
+    async parseComments(commentsArray) {
         if (commentsArray) {
             commentsArray.forEach(comment => {
                 commentsArray.commentDate = new Date(comment.commentDate);
@@ -153,17 +149,11 @@ class PostService {
         return commentsArray;
     }
 
-    postToJSON(post) {
-        if (PostService._validate(post)) {
-            return JSON.stringify(post);
-        }
-    }
-
     async JSONToPost(post) {
         let postObj = JSON.parse(post);
         postObj.validateUntil = new Date(postObj.validateUntil);
         postObj.createdAt = new Date(postObj.createdAt);
-        postServise.parseComments(post.comments);
+        await postServise.parseComments(post.comments);
         return postObj;
     }
 }

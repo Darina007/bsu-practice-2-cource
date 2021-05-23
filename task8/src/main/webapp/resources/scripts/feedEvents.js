@@ -5,18 +5,18 @@ class FeedEvents {
     skippedPost = 0;
     countPosts = 10;
 
-    initializeFilter() {
+    async initializeFilter() {
         const form = document.getElementById("filter");
         feedEvents.fillDateFilterFields();
         form.onsubmit = () => {
             return false;
         };
-        form.addEventListener("submit", () => {
-            view.clearFilter();
+        form.addEventListener("submit", async () => {
+            await view.clearFilter();
             const filterConf = feedEvents.fillFilter();
-            view.setFilter(filterConf);
+            await view.setFilter(filterConf);
             let filter = view.getFilter();
-            feedEvents.makePage(0, 10, filter).then();
+            await feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts, filter);
             form.reset();
             feedEvents.fillDateFilterFields();
         });
@@ -79,29 +79,32 @@ class FeedEvents {
 
     async makePage(firstPostNumber, postNumber, filter) {
         let paramString = feedEvents.createRequestParam(firstPostNumber, postNumber, filter);
-        await feedEvents.getPosts(paramString, "/posts/search").then(response => {
-            postServise.addAll(response);
-            let posts = postServise.getPage(firstPostNumber, postNumber, filter);
-            if (posts) {
-                view.redrawPosts(posts);
-            }
-            feedEvents.initializeFilter();
-            feedEvents.next.addEventListener("click", feedEvents._loadNextPosts);
-            feedEvents.prev.addEventListener("click", feedEvents._loadPreviousPosts);
-            feedEvents.setPostEvents(posts);
-            if (view.isAuthorized()) {
-                let logOutBtn = document.querySelector('.logout-button');
-                logOutBtn.removeEventListener('click', modals.createSingInModal);
-                logOutBtn.addEventListener('click', modals.createLogOutModal);
-                addPostEvent.initializeAddPostButton();
-            } else {
-                let signInBtn = document.querySelector('.login-button');
-                signInBtn.removeEventListener('click', modals.createLogOutModal);
-                signInBtn.addEventListener('click', modals.createSingInModal);
-            }
-        }).catch(()=>{
-            modals.createErrorModal("Error creating page");
-        });
+        try {
+            let posts = await feedEvents.getPosts(paramString, "/posts/search");
+            await postServise.addAll(posts);
+            let postsArray = await postServise.getPage(firstPostNumber, postNumber, filter);
+            await view.redrawPosts(postsArray);
+            await feedEvents.setPostEvents(postsArray);
+            await feedEvents.initializePage();
+        } catch (err) {
+            await modals.createErrorModal("Error creating page");
+        }
+    }
+
+    async initializePage() {
+        feedEvents.initializeFilter();
+        feedEvents.next.addEventListener("click", feedEvents._loadNextPosts);
+        feedEvents.prev.addEventListener("click", feedEvents._loadPreviousPosts);
+        if (await view.isAuthorized()) {
+            let logOutBtn = document.querySelector('.logout-button');
+            logOutBtn.removeEventListener('click', modals.createSingInModal);
+            logOutBtn.addEventListener('click', modals.createLogOutModal);
+            await addPostEvent.initializeAddPostButton();
+        } else {
+            let signInBtn = document.querySelector('.login-button');
+            signInBtn.removeEventListener('click', modals.createLogOutModal);
+            signInBtn.addEventListener('click', modals.createSingInModal);
+        }
     }
 
     async getPosts(param, url) {
@@ -110,7 +113,7 @@ class FeedEvents {
         }).then(response => response.json());
     }
 
-    readInputFieldsLogIn() {
+    async readInputFieldsLogIn() {
         const username = document.getElementsByClassName('username-input').item(0).value;
         if (!username) {
             feedEvents.showWarnings(".username-warning");
@@ -122,7 +125,7 @@ class FeedEvents {
         if (password && username) {
             const user = usersCollection.getUser(username, password);
             if (user) {
-                view.fillUser(user.username);
+                await view.fillUser(user.username);
                 modals._removeModal();
                 feedEvents.makePage(0, 10).then();
             } else {
@@ -139,20 +142,22 @@ class FeedEvents {
     }
 
     _loadNextPosts() {
-            feedEvents.makePage(feedEvents.skippedPost + feedEvents.countPosts, feedEvents.countPosts + 10);
-            feedEvents.skippedPost += 10;
-            feedEvents.page.textContent++;
+        feedEvents.makePage(feedEvents.skippedPost + feedEvents.countPosts, feedEvents.countPosts + 10)
+            .catch(() => modals.createErrorModal("Error creating page"));
+        feedEvents.skippedPost += 10;
+        feedEvents.page.textContent++;
     }
 
     _loadPreviousPosts() {
         if (+feedEvents.page.textContent - 1 > 0) {
-            feedEvents.makePage(feedEvents.skippedPost - feedEvents.countPosts, feedEvents.countPosts - 10);
+            feedEvents.makePage(feedEvents.skippedPost - feedEvents.countPosts, feedEvents.countPosts - 10)
+                .catch(() => modals.createErrorModal("Error creating page"));
             feedEvents.skippedPost -= 10;
             feedEvents.page.textContent--;
         }
     }
 
-    setPostEvents(posts) {
+    async setPostEvents(posts) {
         posts.forEach(post => {
             let postElem = document.getElementById(post.id);
             postEvent.setPostEventListener(postElem, post.id);

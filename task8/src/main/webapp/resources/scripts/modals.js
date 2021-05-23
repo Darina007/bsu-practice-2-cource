@@ -1,11 +1,11 @@
 class Modals {
     modal = document.querySelector('.modal');
 
-    createSingInModal() {
+    async createSingInModal() {
         let signInTemplate = document.getElementById("sign-in-template");
         let signInModal = document.importNode(signInTemplate.content, true);
         modals.modal.appendChild(signInModal);
-        modals._closeModal(modals.modal);
+        await modals._closeModal(modals.modal);
         const form = document.getElementById("sign-in-form");
         form.onsubmit = () => {
             return false;
@@ -13,12 +13,12 @@ class Modals {
         form.addEventListener("submit", feedEvents.readInputFieldsLogIn);
     }
 
-    createLogOutModal() {
+    async createLogOutModal() {
         let logOutTemplate = document.getElementById("log-out-template");
         let logOutModal = document.importNode(logOutTemplate.content, true);
         modals.modal.appendChild(logOutModal);
         let yesBtn = document.querySelector('.log-button');
-        modals._closeModal(modals.modal);
+        await modals._closeModal(modals.modal);
         yesBtn.addEventListener('click', () => {
             view.unFillUser();
             feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts).then(() => {
@@ -27,18 +27,18 @@ class Modals {
         });
     }
 
-    createDeleteModal(postId) {
+    async createDeleteModal(postId) {
         let deleteTemplate = document.getElementById("delete-modal-template");
         let deleteModal = document.importNode(deleteTemplate.content, true);
         modals.modal.appendChild(deleteModal);
         let yesBtn = document.querySelector('.log-button');
-        modals._closeModal(modals.modal);
+        await modals._closeModal(modals.modal);
         yesBtn.addEventListener('click', () => {
             modals._deletePost(postId).catch(reason => modals.createErrorModal(reason));
         });
     }
 
-    createEditModal(postId) {
+    async createEditModal(postId) {
         let editTemplate = document.getElementById("edit-modal-template");
         let editModal = document.importNode(editTemplate.content, true);
         modals._fillEditFields(postId, editModal);
@@ -50,19 +50,20 @@ class Modals {
         };
         const editPhoto = document.getElementById("edit-img-file");
         editPhoto.addEventListener('click', () => {
-                postEvent._postPhoto('edit-img-file', 'edit-file-preview');
+                addPostEvent.postPhoto('edit-img-file', 'edit-file-preview');
             }
         );
-        form.addEventListener('submit', () => {
-            modals._editPost(postId)
-                .then(() => feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts).then())
-                .catch(reason => {
-                    modals.createErrorModal(reason);
-                })
+        form.addEventListener('submit', async () => {
+            try {
+                await modals._editPost(postId);
+                await feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts);
+            } catch (error) {
+                modals.createErrorModal(error);
+            }
         });
     }
 
-    createErrorModal(message) {
+    async createErrorModal(message) {
         let errorTemplate = document.getElementById("error-modal-template");
         let errorModal = document.importNode(errorTemplate.content, true);
         let messageContainer = errorModal.getElementById("text-error");
@@ -72,32 +73,38 @@ class Modals {
         modals.modal.appendChild(errorModal);
         let button = document.querySelector('[class="log-button"]');
         button.addEventListener("click", modals._removeModal);
-        modals._closeModal(modals.modal);
+        await modals._closeModal(modals.modal);
     }
 
-    _editPost(postId) {
+    async _editPost(postId) {
         let editFields = modals._readInputFieldsEdit();
-        return postEvent.editPost("/post/edit", postId, editFields).then(response => {
-            if (response !== 200) {
+        try {
+            let response = postEvent.editPost("/post/edit", postId, editFields);
+            if (!response.ok) {
                 return new Error("Can't edit post");
             }
-            postServise.edit(postId, editFields);
+            await postServise.edit(postId, editFields);
             modals._removeModal();
-        })
+        } catch (error) {
+            modals.createErrorModal(error);
+        }
     }
 
-    _deletePost(postId) {
-        return postEvent.deletePost("/post", postId).then(response => {
+    async _deletePost(postId) {
+        try {
+            let response = await postEvent.deletePost("/post", postId)
             if (response !== 200) {
                 return new Error("Can't to delete post");
             }
-            view.postViewer.deletePost(postId);
-            postServise.removePost(postId);
-            modals._removeModal();
-        })
+            await postServise.removePost(postId);
+            await view.postViewer.deletePost(postId);
+            await modals._removeModal();
+        } catch (error) {
+            modals.createErrorModal(error);
+        }
     }
 
-    _readInputFieldsEdit() {
+    async _readInputFieldsEdit() {
         let postEditions = [];
         const description = document.getElementById("description").value;
         if (description) {
@@ -118,7 +125,7 @@ class Modals {
         return postEditions;
     }
 
-    _fillEditFields(postId, editModal) {
+    async _fillEditFields(postId, editModal) {
         let editPost = postServise.get(postId);
         const author = editModal.getElementById("edit-author-field");
         author.textContent = editPost.author;
@@ -132,7 +139,7 @@ class Modals {
         discount.textContent = editPost.discount;
     }
 
-    _closeModal(modal) {
+    async _closeModal(modal) {
         let closeBtn = document.querySelector('.close');
         modal.classList.toggle('show-modal');
         closeBtn.addEventListener('click', modals._removeModal);
