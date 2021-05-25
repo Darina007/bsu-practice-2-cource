@@ -11,7 +11,7 @@ class PostService {
         return this._posts.find((item) => item.id === id);
     }
 
-    async getPage(skip, top, filterConfig) {
+    getPage(skip, top, filterConfig) {
         let countSkippedPosts = skip || 0;
         let countReceivedPosts = top || 10;
         let workingArray = [...this._posts];
@@ -59,7 +59,7 @@ class PostService {
         return Promise.resolve(workingArray);
     }
 
-    async add(post) {
+    add(post) {
         if (PostService._validate(post) && !this.get(post.id)) {
             this._posts.push(post);
             return true;
@@ -75,7 +75,7 @@ class PostService {
         })
     }
 
-    async edit(id, changes) {
+    edit(id, changes) {
         let mutablePost;
         if (this.get(id)) {
             mutablePost = Object.assign(this.get(id));
@@ -112,7 +112,7 @@ class PostService {
         return flag;
     }
 
-    async removePost(id) {
+    removePost(id) {
         if (this.get(id)) {
             let index = this._posts.indexOf(this.get(id));
             this._posts.splice(index, 1, this.get(id));
@@ -121,7 +121,7 @@ class PostService {
         return false;
     }
 
-    async addComment(id, commentData) {
+    addComment(id, commentData) {
         let post = postServise.get(id);
         if (PostService._validateComment(commentData)) {
             if (!post.comments) {
@@ -138,7 +138,7 @@ class PostService {
             comment.commentText || comment.commentMark;
     }
 
-    async parseComments(commentsArray) {
+    parseComments(commentsArray) {
         if (commentsArray) {
             commentsArray.forEach(comment => {
                 commentsArray.commentDate = new Date(comment.commentDate);
@@ -147,6 +147,115 @@ class PostService {
             commentsArray = [];
         }
         return commentsArray;
+    }
+
+    async deletePost(url, id) {
+        let response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id: id})
+        });
+        return response.status;
+    }
+
+    async editPost(url, id, editFields) {
+        let response = await fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: id,
+                description: editFields.description,
+                discount: editFields.discount,
+                hashTags: editFields.hashTags,
+                validateUntil: editFields.validateUntil,
+            })
+        });
+        return response.status;
+    }
+
+    async postLike(postId, url) {
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id: postId, author: view.getUser()})
+        });
+        return response.status;
+    }
+
+    async _postNewPost() {
+        let newPost = await addPostEvent.fillNewPostData();
+        let image = document.getElementById('img-file');
+        let responseUploadingPhoto = await postServise.postPhoto(image.files[0], "/upload");
+        if (responseUploadingPhoto !== 200) {
+            addPostEvent.removePostArea();
+            modals.createErrorModal("Error adding photo on service");
+        }
+        let response = await postServise.postData(newPost, "/post");
+        if (response !== 200) {
+            addPostEvent.removePostArea();
+            modals.createErrorModal("Error adding post on service");
+        }
+        if (!await postServise.add(newPost)) {
+            addPostEvent.removePostArea();
+            modals.createErrorModal("Error adding post");
+            return;
+        }
+        addPostEvent.removePostArea();
+        await feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts);
+    }
+
+    async _updateLike(postId) {
+        let response = await postServise.postLike(postId, "/post/update/like");
+        if (response !== 200) {
+            modals.createErrorModal("Error updating like");
+            return;
+        }
+        await view.postViewer.pressLike(postId);
+    }
+
+    async getPosts(param, url) {
+        let response = await fetch(url + "?" + param, {
+            method: 'GET'
+        });
+        return response.json();
+    }
+
+    async postData(postData, url) {
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+        });
+        return response.status;
+    }
+
+    async postPhoto(photo, url) {
+        let formData = new FormData();
+        formData.append("image", photo, photo.name);
+        let response = await fetch(url, {
+            method: 'POST',
+            body: formData
+        });
+        return response.status;
+    }
+
+    async postComment(data, url) {
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        return response.status;
     }
 
     async JSONToPost(post) {

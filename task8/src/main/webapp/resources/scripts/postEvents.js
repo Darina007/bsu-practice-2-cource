@@ -1,10 +1,10 @@
 class PostEvents {
-    async setPostEventListener(postElement, postId) {
+    setPostEventListener(postElement, postId) {
         const likePost = postElement.getElementsByClassName('like').item(0);
         if (likePost) {
             likePost.addEventListener('click',
                 evt => {
-                    postEvent._updateLike(postId);
+                    postServise._updateLike(postId);
                     evt.stopPropagation();
                 }
             );
@@ -39,13 +39,13 @@ class PostEvents {
         }
     }
 
-    async setNewPostEventListener(postAreaElement) {
+    setNewPostEventListener(postAreaElement) {
         const add = postAreaElement.getElementsByTagName("form").item(0);
         if (add) {
             add.addEventListener('submit',
                 evt => {
                     try {
-                        postEvent._postNewPost();
+                        postServise._postNewPost();
                     } catch (error) {
                         modals.createErrorModal("Server error");
                     }
@@ -62,73 +62,6 @@ class PostEvents {
                 }
             );
         }
-    }
-
-    async deletePost(url, id) {
-        return await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id: id})
-        }).then(response => response.status);
-    }
-
-    async editPost(url, id, editFields) {
-        return await fetch(url, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: id,
-                description: editFields.description,
-                discount: editFields.discount,
-                hashTags: editFields.hashTags,
-                validateUntil: editFields.validateUntil,
-            })
-        }).then(response => response.status);
-    }
-
-    async postLike(postId, url) {
-        return await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id: postId, author: view.getUser()})
-        }).then(response => response.status);
-    }
-
-    async _updateLike(postId) {
-        let response = await postEvent.postLike(postId, "/post/update/like");
-        if (response !== 200) {
-            modals.createErrorModal("Error updating like");
-            return;
-        }
-        await view.postViewer.pressLike(postId);
-    }
-
-    async _postNewPost() {
-        let newPost =await addPostEvent.fillNewPostData();
-        let image = document.getElementById('img-file');
-        let responseUploadingPhoto = await addPostEvent.postPhoto(image.files[0], "/upload");
-        if (responseUploadingPhoto !== 200) {
-            addPostEvent.removePostArea();
-            modals.createErrorModal("Error adding photo on service");
-        }
-        let response = await addPostEvent.postData(newPost, "/post");
-            if (response !== 200) {
-                addPostEvent.removePostArea();
-                modals.createErrorModal("Error adding post on service");
-            }
-        if (!await postServise.add(newPost)) {
-            addPostEvent.removePostArea();
-            modals.createErrorModal("Error adding post");
-            return;
-        }
-        addPostEvent.removePostArea();
-        await feedEvents.makePage(feedEvents.skippedPost, feedEvents.countPosts);
     }
 
     drawPreviewPhoto(imageInputId, imageHolderId) {

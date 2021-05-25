@@ -1,5 +1,5 @@
 class AddPostEvent {
-    async initializeAddPostButton() {
+    initializeAddPostButton() {
         let button = document.getElementById("add-post");
         button.addEventListener("click", async () => {
             await addPostEvent.initializeAddPostArea();
@@ -62,25 +62,6 @@ class AddPostEvent {
         post.likes = [];
         post.comments = [];
         return post;
-    }
-
-    async postData(postData, url) {
-        return await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(postData)
-        }).then(response => response.status);
-    }
-
-    async postPhoto(photo, url) {
-        let formData = new FormData();
-        formData.append("image", photo, photo.name);
-        return await fetch(url, {
-            method: 'POST',
-            body: formData
-        }).then(response => response.status);
     }
 }
 

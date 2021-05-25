@@ -50,7 +50,7 @@ class Modals {
         };
         const editPhoto = document.getElementById("edit-img-file");
         editPhoto.addEventListener('click', () => {
-                addPostEvent.postPhoto('edit-img-file', 'edit-file-preview');
+            postServise.postPhoto('edit-img-file', 'edit-file-preview');
             }
         );
         form.addEventListener('submit', async () => {
@@ -79,7 +79,7 @@ class Modals {
     async _editPost(postId) {
         let editFields = await modals._readInputFieldsEdit();
         try {
-            let response = await postEvent.editPost("/post/edit", postId, editFields);
+            let response = await postServise.editPost("/post/edit", postId, editFields);
             if (response !== 200) {
                 return new Error("Can't edit post");
             }
@@ -92,7 +92,7 @@ class Modals {
 
     async _deletePost(postId) {
         try {
-            let response = await postEvent.deletePost("/post", postId)
+            let response = await postServise.deletePost("/post", postId)
             if (response !== 200) {
                 return new Error("Can't to delete post");
             }

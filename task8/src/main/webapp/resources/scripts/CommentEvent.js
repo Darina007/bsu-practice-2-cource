@@ -86,7 +86,7 @@ class CommentEvent {
         commentData.commentAuthor = view.getUser();
         let requestObject = commentData;
         requestObject.id = postId;
-        let response = await commentEvent.postComment(requestObject, "/post/comment");
+        let response = await postServise.postComment(requestObject, "/post/comment");
         if (response !== 200) {
             await modals.createErrorModal("Error creating comment");
             return;
@@ -94,16 +94,6 @@ class CommentEvent {
         if (await postServise.addComment(postId, commentData)) {
             commentEvent._reloadComments(postId);
         }
-    }
-
-    async postComment(data, url) {
-        return await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(response => response.status);
     }
 
     createCommentMarkButtons() {

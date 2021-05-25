@@ -80,7 +80,7 @@ class FeedEvents {
     async makePage(firstPostNumber, postNumber, filter) {
         let paramString = feedEvents.createRequestParam(firstPostNumber, postNumber, filter);
         try {
-            let posts = await feedEvents.getPosts(paramString, "/posts/search");
+            let posts = await postServise.getPosts(paramString, "/posts/search");
             await postServise.addAll(posts);
             let postsArray = await postServise.getPage(firstPostNumber, postNumber, filter);
             view.redrawPosts(postsArray);
@@ -105,12 +105,6 @@ class FeedEvents {
             signInBtn.removeEventListener('click', modals.createLogOutModal);
             signInBtn.addEventListener('click', modals.createSingInModal);
         }
-    }
-
-    async getPosts(param, url) {
-        return await fetch(url + "?" + param, {
-            method: 'GET'
-        }).then(response => response.json());
     }
 
     async readInputFieldsLogIn() {

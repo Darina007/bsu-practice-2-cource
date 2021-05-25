@@ -42,7 +42,7 @@ class PostView {
         await this.updateLike(post);
     }
 
-    async updateLike(post) {
+    updateLike(post) {
         let button = post.querySelector('[class="like"]');
         let like = button.querySelector("img");
         if (like.getAttribute("alt") === "like") {

@@ -3,7 +3,7 @@ class FeedView {
     users;
     filter = [];
 
-    async isAuthorized() {
+    isAuthorized() {
         return !!this.postViewer.userName;
     }
 
@@ -56,7 +56,7 @@ class FeedView {
         }
     }
 
-    async setFilter(filter) {
+    setFilter(filter) {
         let filterFields = Object.keys(filter);
         filterFields.forEach((field) => {
                 this.filter[field] = filter[field];
@@ -64,15 +64,15 @@ class FeedView {
         )
     }
 
-    async clearFilter() {
+    clearFilter() {
         this.filter = [];
     }
 
-    async getFilter() {
+    getFilter() {
         return this.filter;
     }
 
-    async fillFilterUser(users) {
+    fillFilterUser(users) {
         let filter = document.getElementById('vendor-filter');
         users.forEach((user) => filter.appendChild(this._createOption(user)));
     }
