@@ -1,0 +1,70 @@
+.add-post {
+    display: flex;
+    position: fixed;
+    top: 15%;
+    left: 0;
+    background-color: #482D8F;
+    color: #EDF1FF;
+    border-radius: 20px;
+    padding: 2px 10px;
+}
+
+
+.add-post-form {
+    flex: 1 1 80%;
+    align-items: center;
+    align-content: center;
+    padding: 2%;
+    margin: 0 15%;
+    background-color: #D5DEFB;
+    border-radius: 20px;
+    border: #000925 solid 2px;
+    font-size: x-large;
+}
+
+.new-post-form {
+    display: flex;
+    flex: 1 1 100%;
+}
+
+#description-field {
+    background-color: #DFD5FB;
+    border-radius: 20px;
+    text-align: center;
+    width: 95%;
+    height: 5rem;
+    background-repeat: no-repeat;
+    outline: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+#validate-until-field, #hashTags-field, #discount-field {
+    background-color: #DFD5FB;
+    outline: none;
+    border: none;
+    border-radius: 20px;
+    text-align: center;
+    align-items: center;
+    padding: 5px;
+    margin: 5px;
+}
+
+.add-new-post {
+    display: flex;
+    justify-content: center;
+}
+
+.add-button {
+    background-color: #482D8F;
+    color: #EDF1FF;
+    border-radius: 20px;
+    padding: 2px 10px;
+}
+
+
+.file-photo{
+    border-radius: 20px;
+    width: 100%;
+}
